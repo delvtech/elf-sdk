@@ -1,8 +1,8 @@
 import { Provider } from "@ethersproject/providers";
 import { BigNumber, Signer } from "ethers";
 
-import { BasePool__factory } from "src/types/factories/BasePool__factory";
-import { Vault__factory } from "src/types/factories/Vault__factory";
+import { BasePool__factory } from "../typechain/factories/BasePool__factory";
+import { Vault__factory } from "../typechain/factories/Vault__factory";
 
 interface ReservesResult {
   /**

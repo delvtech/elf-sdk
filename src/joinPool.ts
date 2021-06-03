@@ -1,7 +1,7 @@
 import { BigNumber, Signer } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 
-import { Vault__factory } from "src/types/factories/Vault__factory";
+import { Vault__factory } from "../typechain/factories/Vault__factory";
 
 /**
  * Add liquidity to a ConvergentCurvePool.

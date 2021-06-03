@@ -5,9 +5,9 @@ import {
   Signer,
 } from "ethers";
 
-import { Vault__factory } from "src/types/factories/Vault__factory";
+import { Vault__factory } from "../typechain/factories/Vault__factory";
 
-import { ONE_DAY_IN_SECONDS } from "src/time";
+import { ONE_DAY_IN_SECONDS } from "../src/constants/time";
 
 const BALANCER_ETH_SENTINEL = "0x0000000000000000000000000000000000000000";
 

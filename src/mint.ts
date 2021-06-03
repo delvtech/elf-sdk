@@ -1,9 +1,9 @@
 import { Provider } from "@ethersproject/providers";
 import { BigNumber, ContractTransaction, Signer } from "ethers";
 import { parseUnits } from "ethers/lib/utils";
-import { Tranche__factory } from "src/types/factories/Tranche__factory";
+import { Tranche__factory } from "../typechain/factories/Tranche__factory";
 
-import { UserProxy__factory } from "src/types/factories/UserProxy__factory";
+import { UserProxy__factory } from "../typechain/factories/UserProxy__factory";
 
 export const ETH_SENTINEL_ADDRESS =
   "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
