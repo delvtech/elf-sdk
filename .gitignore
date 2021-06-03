@@ -4,3 +4,4 @@ contracts
 artifacts
 cache
 typechain
+elf.env
