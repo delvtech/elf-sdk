@@ -1,10 +1,17 @@
-export function calcSpotPriceCCPool(
-    xReserves: number,
-    yReserves: number,
+export function calcSpotPricePt(
+    baseReserves: number,
+    ptReserves: number,
     totalSupply: number,
     timeRemainingSeconds: number,
     tParamSeconds: number,
   ): number {
     const t = timeRemainingSeconds / tParamSeconds;
-    return (xReserves / (yReserves + totalSupply))**t
+    return (baseReserves / (ptReserves + totalSupply))**t
+}
+
+export function calcSpotPriceYt(
+    baseReserves: number,
+    ytReserves: number,
+  ): number {
+      return baseReserves / ytReserves
 }

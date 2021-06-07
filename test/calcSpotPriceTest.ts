@@ -1,18 +1,25 @@
-import { calcSpotPriceCCPool } from '../src/calcSpotPrice';
+import { calcSpotPricePt, calcSpotPriceYt } from '../src/calcSpotPrice';
 import { THIRTY_DAYS_IN_SECONDS,ONE_YEAR_IN_SECONDS } from "../src/constants/time";
 
 import { expect } from 'chai';
 
 
-describe('calcSpotPriceCCPool', () => {
-    const epsilon = 10**(-16)
+describe('calcSpotPrices', () => {
     it('should properly calculate spot price of PT', () => {
-        const yReserves = 100;
-        const xReserves = 161.2400925773352;
-        const totalSupply = xReserves + yReserves;
+        const ptReserves = 100;
+        const baseReserves = 161.2400925773352;
+        const totalSupply = baseReserves + ptReserves;
         const timeRemainingSeconds = THIRTY_DAYS_IN_SECONDS;
-        const tParamSeconds = 4*ONE_YEAR_IN_SECONDS
-        const result = calcSpotPriceCCPool(xReserves,yReserves,totalSupply,timeRemainingSeconds,tParamSeconds);
-        expect(result).to.equal(0.9835616438356165-epsilon);
-  });
+        const timeStretch = 4;
+        const tParamSeconds = timeStretch*ONE_YEAR_IN_SECONDS
+        const result = calcSpotPricePt(baseReserves,ptReserves,totalSupply,timeRemainingSeconds,tParamSeconds);
+        expect(result).to.equal(0.9835616438356164);
+    });
+    
+    it('should properly calculate spot price of YT', () => {
+        const baseReserves = 24;
+        const ytReserves = 12308;
+        const result = calcSpotPriceYt(baseReserves,ytReserves);
+        expect(result).to.equal(0.0019499512512187196);
+    });
 });
