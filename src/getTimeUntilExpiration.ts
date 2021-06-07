@@ -3,6 +3,12 @@ import { BigNumber, Signer,  providers} from "ethers";
 
 import { ConvergentCurvePool__factory } from "../typechain/factories/ConvergentCurvePool__factory";
 
+/**
+ * Get the time until expiration for a given pool
+ * @param poolAddress any pool with a getPoolId method
+ * @param signerOrProvider
+ * @returns the time until expiration
+ */
 export async function getTimeUntilExpiration(
     poolAddress: string,
     signerOrProvider: Signer | Provider
