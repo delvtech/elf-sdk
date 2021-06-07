@@ -4,7 +4,7 @@ import { BigNumber, Signer } from "ethers";
 import { BasePool__factory } from "../typechain/factories/BasePool__factory";
 import { Vault__factory } from "../typechain/factories/Vault__factory";
 
-interface ReservesResult {
+export interface ReservesResult {
   /**
    * addresses of tokens
    */
