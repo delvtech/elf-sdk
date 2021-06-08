@@ -25,7 +25,7 @@ import { BigNumber } from "ethers";
 
 describe("calcSpotPrices", () => {
   it("should properly calculate spot price of PT", () => {
-    const ptReserves =   BigNumber.from("1000000000000000");
+    const ptReserves = BigNumber.from("1000000000000000");
     const baseReserves = BigNumber.from("1612400925773352");
     const totalSupply = baseReserves.add(ptReserves);
     const timeRemainingSeconds = THIRTY_DAYS_IN_SECONDS;
