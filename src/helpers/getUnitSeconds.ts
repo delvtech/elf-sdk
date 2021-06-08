@@ -1,7 +1,7 @@
 import { Provider } from "@ethersproject/providers";
 import { BigNumber, Signer,  providers} from "ethers";
 
-import { ConvergentCurvePool__factory } from "../typechain/factories/ConvergentCurvePool__factory";
+import { ConvergentCurvePool__factory } from "../../typechain/factories/ConvergentCurvePool__factory";
 
 /**
  * Get the unit seconds for a given pool

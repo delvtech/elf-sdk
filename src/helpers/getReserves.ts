@@ -1,9 +1,9 @@
 import { Provider } from "@ethersproject/providers";
 import { BigNumber, Signer } from "ethers";
 
-import { BasePool__factory } from "../typechain/factories/BasePool__factory";
-import { Vault__factory } from "../typechain/factories/Vault__factory";
-import { ERC20__factory } from "../typechain/factories/ERC20__factory";
+import { BasePool__factory } from "../../typechain/factories/BasePool__factory";
+import { Vault__factory } from "../../typechain/factories/Vault__factory";
+import { ERC20__factory } from "../../typechain/factories/ERC20__factory";
 
 export interface ReservesResult {
   /**
