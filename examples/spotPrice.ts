@@ -1,9 +1,9 @@
 import { ethers } from "hardhat"
-import { getTotalSupply } from "../src/getTotalSupply"
-import { getReserves, ReservesResult } from "../src/getReserves"
-import { calcSpotPricePt, calcSpotPriceYt } from '../src/calcSpotPrice'
-import { getTimeUntilExpiration } from '../src/getTimeUntilExpiration'
-import { getUnitSeconds } from '../src/getUnitSeconds'
+import { getTotalSupply } from "../src/helpers/getTotalSupply"
+import { getReserves, ReservesResult } from "../src/helpers/getReserves"
+import { calcSpotPricePt, calcSpotPriceYt } from '../src/helpers/calcSpotPrice'
+import { getTimeUntilExpiration } from '../src/helpers/getTimeUntilExpiration'
+import { getUnitSeconds } from '../src/helpers/getUnitSeconds'
 import { BigNumber } from "ethers"
 
 async function main() {

@@ -1,4 +1,4 @@
-import { calcSpotPricePt, calcSpotPriceYt } from '../src/calcSpotPrice';
+import { calcSpotPricePt, calcSpotPriceYt } from '../src/helpers/calcSpotPrice';
 import { THIRTY_DAYS_IN_SECONDS,ONE_YEAR_IN_SECONDS } from "../src/constants/time";
 
 import { expect } from 'chai';
