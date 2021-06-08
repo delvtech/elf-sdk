@@ -4,7 +4,7 @@
     "description": "",
     "scripts": {
       "build": "npx hardhat compile && rm ./typechain/index.ts",
-      "test": "npx hardhat compile && rm ./typechain/index.ts && npx hardhat test ./test/*.ts",
+      "test": "npx hardhat compile && rm ./typechain/index.ts && npx hardhat test --config hardhat.config.test.ts ./test/*.ts",
       "style-check": "npx prettier --check .",
       "prettier": "npx prettier --write .",
       "load-contracts": "sh scripts/load-element.sh && sh scripts/load-balancer.sh"
