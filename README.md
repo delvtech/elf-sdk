@@ -2,6 +2,8 @@
 [![Build Status](https://github.com/element-fi/elf-sdk/workflows/Tests/badge.svg)](https://github.com/element-fi/elf-sdk/actions)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/element-fi/elf-sdk/blob/master/LICENSE)
 
+**⚠️ This is a work in progress! ⚠️**
+
 This repo provides an SDK for developers to use when interacting with and building on Element smart contracts.
 
 ## Install
