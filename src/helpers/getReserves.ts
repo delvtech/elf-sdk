@@ -37,16 +37,18 @@ export async function getReserves(
   const poolContract = BasePool__factory.connect(poolAddress, signerOrProvider);
   const poolId = await poolContract.getPoolId();
   const poolTokens = await balancerVault.getPoolTokens(poolId);
-  let decimals = []
-  await Promise.all(poolTokens.tokens.map(async (token) => {
-    const poolTokenContract = ERC20__factory.connect(token, signerOrProvider);
-    const poolTokenDecimals = await poolTokenContract.decimals();
-    decimals.push(poolTokenDecimals);
-  }));
+  let decimals = [];
+  await Promise.all(
+    poolTokens.tokens.map(async (token) => {
+      const poolTokenContract = ERC20__factory.connect(token, signerOrProvider);
+      const poolTokenDecimals = await poolTokenContract.decimals();
+      decimals.push(poolTokenDecimals);
+    })
+  );
 
   return {
     tokens: poolTokens.tokens,
     balances: poolTokens.balances,
-    decimals: decimals
+    decimals: decimals,
   };
 }
