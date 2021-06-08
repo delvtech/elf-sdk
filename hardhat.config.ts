@@ -4,9 +4,10 @@ import "hardhat-gas-reporter";
 
 import { HardhatUserConfig } from "hardhat/config";
 
-const ALCHEMY_KEY = process.env.ALCHEMY_KEY || "";
-const SDK_PRIVATE_KEY =
-  process.env.SDK_PRIVATE_KEY ||
+const MAINNET_PROVIDER_URL = process.env.MAINNET_PROVIDER_URL || "";
+const GOERLI_PROVIDER_URL = process.env.GOERLI_PROVIDER_URL || "";
+const PRIVATE_KEY =
+  process.env.PRIVATE_KEY ||
   "0000000000000000000000000000000000000000000000000000000000000000";
 
 const config: HardhatUserConfig = {
@@ -57,7 +58,7 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       forking: {
-        url: "https://eth-mainnet.alchemyapi.io/v2/kwjMP-X-Vajdk1ItCfU-56Uaq1wwhamK",
+        url: `${MAINNET_PROVIDER_URL}`,
         blockNumber: 11853372,
       },
       accounts: {
@@ -66,12 +67,12 @@ const config: HardhatUserConfig = {
       },
     },
     goerli: {
-      url: `https://eth-goerli.alchemyapi.io/v2/${ALCHEMY_KEY}`,
-      accounts: [`0x${SDK_PRIVATE_KEY}`],
+      url: `${GOERLI_PROVIDER_URL}`,
+      accounts: [`0x${PRIVATE_KEY}`],
     },
     mainnet: {
-      url: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`,
-      accounts: [`0x${SDK_PRIVATE_KEY}`],
+      url: `${MAINNET_PROVIDER_URL}`,
+      accounts: [`0x${PRIVATE_KEY}`],
     },
   },
 };

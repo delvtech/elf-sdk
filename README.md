@@ -30,8 +30,9 @@ cp elf.default.env elf.env
 2) Update elf.env with your private key and alchemy api key
 
 ```bash
-export ALCHEMY_KEY=[YOUR_API_KEY_HERE]
-export DEPLOYER_PRIVATE_KEY=[YOUR_PRIVATE_KEY_HERE]
+export MAINNET_PROVIDER_URL=[MAINNET_PROVIDER_URL_HERE]
+export GOERLI_PROVIDER_URL=[GOERLI_PROVIDER_URL_HERE]
+export PRIVATE_KEY=[PRIVATE_KEY_HERE]
 ```
 
 3) Source the env file
