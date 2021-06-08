@@ -5,6 +5,8 @@
     "scripts": {
       "build": "npx hardhat compile && rm ./typechain/index.ts",
       "test": "npx hardhat compile && rm ./typechain/index.ts && npx hardhat test --config hardhat.config.test.ts ./test/*.ts",
+      "style-check": "npx prettier --check .",
+      "prettier": "npx prettier --write .",
       "load-contracts": "sh scripts/load-element.sh && sh scripts/load-balancer.sh"
     },
     "_moduleAliases": {
@@ -29,6 +31,7 @@
       "hardhat": "^2.1.2",
       "hardhat-gas-reporter": "^1.0.4",
       "hardhat-typechain": "^0.3.4",
+      "prettier": "^2.2.1",
       "ts-generator": "^0.1.1",
       "ts-node": "^9.1.1",
       "typechain": "^4.0.1",

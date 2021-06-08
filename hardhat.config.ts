@@ -4,9 +4,10 @@ import "hardhat-gas-reporter";
 
 import { HardhatUserConfig } from "hardhat/config";
 
-const ALCHEMY_KEY = process.env.ALCHEMY_KEY || '';
+const ALCHEMY_KEY = process.env.ALCHEMY_KEY || "";
 const SDK_PRIVATE_KEY =
-  process.env.SDK_PRIVATE_KEY || '0000000000000000000000000000000000000000000000000000000000000000';
+  process.env.SDK_PRIVATE_KEY ||
+  "0000000000000000000000000000000000000000000000000000000000000000";
 
 const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
@@ -56,8 +57,7 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       forking: {
-        url:
-          "https://eth-mainnet.alchemyapi.io/v2/kwjMP-X-Vajdk1ItCfU-56Uaq1wwhamK",
+        url: "https://eth-mainnet.alchemyapi.io/v2/kwjMP-X-Vajdk1ItCfU-56Uaq1wwhamK",
         blockNumber: 11853372,
       },
       accounts: {
@@ -67,15 +67,11 @@ const config: HardhatUserConfig = {
     },
     goerli: {
       url: `https://eth-goerli.alchemyapi.io/v2/${ALCHEMY_KEY}`,
-      accounts: [
-        `0x${SDK_PRIVATE_KEY}`
-      ],
+      accounts: [`0x${SDK_PRIVATE_KEY}`],
     },
     mainnet: {
       url: `https://eth-mainnet.alchemyapi.io/v2/${ALCHEMY_KEY}`,
-      accounts: [
-        `0x${SDK_PRIVATE_KEY}`
-      ],
+      accounts: [`0x${SDK_PRIVATE_KEY}`],
     },
   },
 };
