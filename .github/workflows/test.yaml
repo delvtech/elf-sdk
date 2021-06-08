@@ -15,8 +15,6 @@ jobs:
         - uses: actions/checkout@v2
         - name: Install dependencies
           run: npm ci && npm run load-contracts
-        - name: compile
-          run: npx hardhat compile
         - name: test
           run: npm run test
 
