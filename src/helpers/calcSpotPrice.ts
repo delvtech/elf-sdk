@@ -15,19 +15,19 @@
  */
 
 export function calcSpotPricePt(
-  baseReserves: number,
-  ptReserves: number,
-  totalSupply: number,
+  baseReserves: string,
+  ptReserves: string,
+  totalSupply: string,
   timeRemainingSeconds: number,
   tParamSeconds: number
 ): number {
   const t = timeRemainingSeconds / tParamSeconds;
-  return (baseReserves / (ptReserves + totalSupply)) ** t;
+  return (+baseReserves / (+ptReserves + +totalSupply)) ** t;
 }
 
 export function calcSpotPriceYt(
-  baseReserves: number,
-  ytReserves: number
+  baseReserves: string,
+  ytReserves: string
 ): number {
-  return baseReserves / ytReserves;
+  return +baseReserves / +ytReserves;
 }

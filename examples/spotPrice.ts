@@ -30,24 +30,17 @@ async function main() {
   // calculate principal token spot price
   const ptPool = "0x9eB7F54C0eCc4d0D2dfF28a1276e36d598F2B0D1"; // principal token Pool address
   let totalSupply = await getTotalSupply(ptPool, signer);
-  totalSupply = totalSupply.div(BigNumber.from("1000000000000000000"));
   let reserves = await getReserves(ptPool, balVault, signer);
   let ptIndex = reserves.tokens[0] == base ? 1 : 0;
   let baseIndex = reserves.tokens[0] == base ? 0 : 1;
-  let ptDecimals = BigNumber.from(10).pow(
-    BigNumber.from(reserves.decimals[ptIndex])
-  );
-  let ptReserves = reserves.balances[ptIndex].div(ptDecimals);
-  let baseDecimals = BigNumber.from(10).pow(
-    BigNumber.from(reserves.decimals[baseIndex])
-  );
-  let baseReserves = reserves.balances[baseIndex].div(baseDecimals);
+  let ptReserves = reserves.balances[ptIndex];
+  let baseReserves = reserves.balances[baseIndex];
   let timeRemainingSeconds = await getTimeUntilExpiration(ptPool, signer);
   let unitSeconds = await getUnitSeconds(ptPool, signer);
   let ptSpotPrice = calcSpotPricePt(
-    baseReserves.toNumber(),
-    ptReserves.toNumber(),
-    totalSupply.toNumber(),
+    baseReserves.toString(),
+    ptReserves.toString(),
+    totalSupply.toString(),
     timeRemainingSeconds,
     unitSeconds
   );
@@ -64,17 +57,11 @@ async function main() {
   reserves = await getReserves(ytPool, balVault, signer);
   let ytIndex = reserves.tokens[0] == base ? 1 : 0;
   baseIndex = reserves.tokens[0] == base ? 0 : 1;
-  let ytDecimals = BigNumber.from(10).pow(
-    BigNumber.from(reserves.decimals[ytIndex])
-  );
-  let ytReserves = reserves.balances[ytIndex].div(ytDecimals);
-  baseDecimals = BigNumber.from(10).pow(
-    BigNumber.from(reserves.decimals[baseIndex])
-  );
-  baseReserves = reserves.balances[baseIndex].div(baseDecimals);
+  let ytReserves = reserves.balances[ytIndex];
+  baseReserves = reserves.balances[baseIndex];
   let ytSpotPrice = calcSpotPriceYt(
-    baseReserves.toNumber(),
-    ytReserves.toNumber()
+    baseReserves.toString(),
+    ytReserves.toString()
   );
   console.log("\nYield Token");
   console.log(`ytReserves: ${ytReserves}`);

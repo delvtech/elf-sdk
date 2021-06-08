@@ -21,19 +21,20 @@ import {
 } from "../src/constants/time";
 
 import { expect } from "chai";
+import { BigNumber } from "ethers";
 
 describe("calcSpotPrices", () => {
   it("should properly calculate spot price of PT", () => {
-    const ptReserves = 100;
-    const baseReserves = 161.2400925773352;
-    const totalSupply = baseReserves + ptReserves;
+    const ptReserves =   BigNumber.from("1000000000000000");
+    const baseReserves = BigNumber.from("1612400925773352");
+    const totalSupply = baseReserves.add(ptReserves);
     const timeRemainingSeconds = THIRTY_DAYS_IN_SECONDS;
     const timeStretch = 4;
     const tParamSeconds = timeStretch * ONE_YEAR_IN_SECONDS;
     const result = calcSpotPricePt(
-      baseReserves,
-      ptReserves,
-      totalSupply,
+      baseReserves.toString(),
+      ptReserves.toString(),
+      totalSupply.toString(),
       timeRemainingSeconds,
       tParamSeconds
     );
@@ -41,8 +42,8 @@ describe("calcSpotPrices", () => {
   });
 
   it("should properly calculate spot price of YT", () => {
-    const baseReserves = 24;
-    const ytReserves = 12308;
+    const baseReserves = "24";
+    const ytReserves = "12308";
     const result = calcSpotPriceYt(baseReserves, ytReserves);
     expect(result).to.equal(0.0019499512512187196);
   });
