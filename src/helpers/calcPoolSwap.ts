@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-export function calcSwapOutGivenInCCPoolUNSAFE(
+export function calcSwapOutGivenInCCPoolUnsafe(
   xAmount: string,
   xReserves: string,
   yReserves: string,
@@ -49,7 +49,7 @@ export function calcSwapOutGivenInCCPoolUNSAFE(
   return amountY;
 }
 
-export function calcSwapInGivenOutCCPoolUNSAFE(
+export function calcSwapInGivenOutCCPoolUnsafe(
   xAmount: string,
   xReserves: string,
   yReserves: string,
@@ -96,7 +96,7 @@ export function calcSwapInGivenOutCCPoolUNSAFE(
 // wI = weightIn               \      \       ( bI + aI )         /              /           //
 // wO = weightOut                                                                            //
 **********************************************************************************************/
-export function calcSwapOutGivenInWeightedPoolUNSAFE(
+export function calcSwapOutGivenInWeightedPoolUnsafe(
   amountIn: string,
   balanceOut: string,
   balanceIn: string
@@ -122,7 +122,7 @@ export function calcSwapOutGivenInWeightedPoolUNSAFE(
 // wI = weightIn               \  \       ( bO - aO )         /                   /          //
 // wO = weightOut                                                                            //
 **********************************************************************************************/
-export function calcSwapInGivenOutWeightedPoolUNSAFE(
+export function calcSwapInGivenOutWeightedPoolUnsafe(
   amountOut: string,
   balanceOut: string,
   balanceIn: string
