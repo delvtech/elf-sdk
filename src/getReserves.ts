@@ -3,16 +3,21 @@ import { BigNumber, Signer } from "ethers";
 
 import { BasePool__factory } from "../typechain/factories/BasePool__factory";
 import { Vault__factory } from "../typechain/factories/Vault__factory";
+import { ERC20__factory } from "../typechain/factories/ERC20__factory";
 
-interface ReservesResult {
+export interface ReservesResult {
   /**
    * addresses of tokens
    */
   tokens: string[];
   /**
-   * reserves of tokens in same order as tokens
+   * balances of tokens in same order as tokens
    */
-  reserves: BigNumber[];
+  balances: BigNumber[];
+  /**
+   * decimals of tokens in same order as tokens
+   */
+  decimals: number[];
 }
 /**
  * Returns the reserves for a given pool.
@@ -29,14 +34,19 @@ export async function getReserves(
     balancerVaultAddress,
     signerOrProvider
   );
-
   const poolContract = BasePool__factory.connect(poolAddress, signerOrProvider);
-
   const poolId = await poolContract.getPoolId();
   const poolTokens = await balancerVault.getPoolTokens(poolId);
+  let decimals = []
+  await Promise.all(poolTokens.tokens.map(async (token) => {
+    const poolTokenContract = ERC20__factory.connect(token, signerOrProvider);
+    const poolTokenDecimals = await poolTokenContract.decimals();
+    decimals.push(poolTokenDecimals);
+  }));
 
   return {
     tokens: poolTokens.tokens,
-    reserves: poolTokens.balances,
+    balances: poolTokens.balances,
+    decimals: decimals
   };
 }
