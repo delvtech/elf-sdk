@@ -56,16 +56,6 @@ const config: HardhatUserConfig = {
   },
   mocha: { timeout: 0 },
   networks: {
-    hardhat: {
-      forking: {
-        url: `${MAINNET_PROVIDER_URL}`,
-        blockNumber: 11853372,
-      },
-      accounts: {
-        accountsBalance: "100000000000000000000000", // 100000 ETH
-        count: 5,
-      },
-    },
     goerli: {
       url: `${GOERLI_PROVIDER_URL}`,
       accounts: [`0x${PRIVATE_KEY}`],
