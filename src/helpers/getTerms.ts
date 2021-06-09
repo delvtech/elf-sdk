@@ -22,7 +22,7 @@ import { TrancheFactory__factory } from "../../typechain/factories/TrancheFactor
 /**
  * Returns an array of tranche addresses for a given tranche factory.  filterable by wrapped position.
  *
- * @param trancheFactoryContract The TrancheFactory contract that deployed the tranches
+ * @param trancheFactoryAddress The TrancheFactory that deployed the tranches
  * @param wrappedPositionAddress The wrapped position to filter by
  * @returns a promise of an array of tranche addresses
  */
