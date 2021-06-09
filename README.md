@@ -11,6 +11,7 @@ This repo provides an SDK for developers to use when interacting with and buildi
 ```bash
 npm install
 npm run load-contracts
+npm run generate-interfaces
 ```
 
 ## Build
