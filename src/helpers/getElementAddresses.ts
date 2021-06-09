@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 import * as https from "https";
-import { Signer } from "ethers";
-import { Provider } from "@ethersproject/providers";
-import { Tranche__factory } from "../../typechain/factories/Tranche__factory";
 import { DeploymentAddresses } from "../../typechain/DeploymentAddresses";
 
 /**
