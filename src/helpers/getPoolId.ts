@@ -18,16 +18,16 @@ import { Signer } from "ethers";
 import { Provider } from "@ethersproject/providers";
 import { BasePool__factory } from "../../typechain/factories/BasePool__factory";
 
-
 /**
  * Returns the reserves for a given pool.
  * @param poolAddress any pool with a getPoolId method
  * @param signerOrProvider
  * @returns a promise for a poolId
  */
-export async function getPoolId(  
-    poolAddress: string,
-    signerOrProvider: Signer | Provider): Promise<string>{
-    const poolContract = BasePool__factory.connect(poolAddress, signerOrProvider);
-    return poolContract.getPoolId();
+export async function getPoolId(
+  poolAddress: string,
+  signerOrProvider: Signer | Provider
+): Promise<string> {
+  const poolContract = BasePool__factory.connect(poolAddress, signerOrProvider);
+  return poolContract.getPoolId();
 }

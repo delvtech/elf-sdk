@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 import * as https from "https";
+import { Signer } from "ethers";
+import { Provider } from "@ethersproject/providers";
+import { Tranche__factory } from "../../typechain/factories/Tranche__factory";
 import { DeploymentAddresses } from "../../typechain/DeploymentAddresses";
 
 /**
- * Get the contract addresses deployed by Element 
+ * Get the contract addresses deployed by Element
  * @param url The url of the json changelog file
  * @returns A Promise for the DeploymentAddresses object
  */
@@ -64,22 +67,21 @@ export async function getElementDeploymentAddresses(
  * @returns the TermFactory used to deploy each individual term
  */
 export function getElementTermFactoryAddresses(
-    deploymentAddresses: DeploymentAddresses
-  ): string[] {
-
-    // get TermFactories listed in each Term
-    let termFactories = []
-    for (const trancheListKey in deploymentAddresses.tranches) {
-        const trancheList = deploymentAddresses.tranches[trancheListKey];
-        for (const tranche of trancheList) {
-          termFactories.push(tranche.trancheFactory);
-        }
+  deploymentAddresses: DeploymentAddresses
+): string[] {
+  // get TermFactories listed in each Term
+  let termFactories = [];
+  for (const trancheListKey in deploymentAddresses.tranches) {
+    const trancheList = deploymentAddresses.tranches[trancheListKey];
+    for (const tranche of trancheList) {
+      termFactories.push(tranche.trancheFactory);
     }
-    // remove dups
-    return Array.from(new Set(termFactories));
   }
+  // remove dups
+  return Array.from(new Set(termFactories));
+}
 
-  /**
+/**
  * Get Element Term addresses
  * @param deploymentAddresses The DeploymentAddresses object
  * @returns An array of Term addresses
@@ -87,14 +89,13 @@ export function getElementTermFactoryAddresses(
 export function getElementTermAddresses(
   deploymentAddresses: DeploymentAddresses
 ): string[] {
-
-  // get TermFactories listed in each Term
-  let terms = []
+  // get each Term
+  let terms = [];
   for (const trancheListKey in deploymentAddresses.tranches) {
-      const trancheList = deploymentAddresses.tranches[trancheListKey];
-      for (const tranche of trancheList) {
-          terms.push(tranche.address);
-      }
+    const trancheList = deploymentAddresses.tranches[trancheListKey];
+    for (const tranche of trancheList) {
+      terms.push(tranche.address);
+    }
   }
   return terms;
 }
@@ -105,19 +106,18 @@ export function getElementTermAddresses(
  * @returns An array of PT Pool addresses
  */
 export function getElementPtPoolAddresses(
-    deploymentAddresses: DeploymentAddresses
-  ): string[] {
-
-    // get TermFactories listed in each Term
-    let pools = []
-    for (const trancheListKey in deploymentAddresses.tranches) {
-        const trancheList = deploymentAddresses.tranches[trancheListKey];
-        for (const tranche of trancheList) {
-            pools.push(tranche.ptPool.address);
-        }
+  deploymentAddresses: DeploymentAddresses
+): string[] {
+  // get PTPools listed in each Term
+  let pools = [];
+  for (const trancheListKey in deploymentAddresses.tranches) {
+    const trancheList = deploymentAddresses.tranches[trancheListKey];
+    for (const tranche of trancheList) {
+      pools.push(tranche.ptPool.address);
     }
-    return pools;
   }
+  return pools;
+}
 
 /**
  * Get PtPool addresses associated with each term
@@ -127,15 +127,13 @@ export function getElementPtPoolAddresses(
 export function getElementYtPoolAddresses(
   deploymentAddresses: DeploymentAddresses
 ): string[] {
-
-  // get TermFactories listed in each Term
-  let pools = []
+  // get get YTPools listed in each Term
+  let pools = [];
   for (const trancheListKey in deploymentAddresses.tranches) {
-      const trancheList = deploymentAddresses.tranches[trancheListKey];
-      for (const tranche of trancheList) {
-          pools.push(tranche.ytPool.address);
-      }
+    const trancheList = deploymentAddresses.tranches[trancheListKey];
+    for (const tranche of trancheList) {
+      pools.push(tranche.ytPool.address);
+    }
   }
   return pools;
 }
-
