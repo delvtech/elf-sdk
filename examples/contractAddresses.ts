@@ -34,7 +34,7 @@ async function main() {
   // get the official list of Element deployed addresses.
   let deploymentAddresses: DeploymentAddresses = <DeploymentAddresses>(
     await getElementDeploymentAddresses(
-      "https://raw.githubusercontent.com/element-fi/elf-deploy/802c94e9c06a7c2d1f4985dd11a05e88681ed80e/addresses/goerli.json"
+      "https://raw.githubusercontent.com/element-fi/elf-deploy/main/addresses/goerli.json"
     )
   );
   console.log(deploymentAddresses);
