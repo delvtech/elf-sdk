@@ -19,6 +19,7 @@ import { getTotalSupply } from "../src/helpers/getTotalSupply";
 import { getReserves, ReservesResult } from "../src/helpers/getReserves";
 import { calcSpotPricePt, calcSpotPriceYt } from "../src/helpers/calcSpotPrice";
 import { getTimeUntilExpiration } from "../src/helpers/getTimeUntilExpiration";
+import { getLatestBlockTimestamp } from "../src/helpers/getLatestBlockTimestamp";
 import { getUnitSeconds } from "../src/helpers/getUnitSeconds";
 import { BigNumber } from "ethers";
 
@@ -35,7 +36,12 @@ async function main() {
   let baseIndex = reserves.tokens[0] == base ? 0 : 1;
   let ptReserves = reserves.balances[ptIndex];
   let baseReserves = reserves.balances[baseIndex];
-  let timeRemainingSeconds = await getTimeUntilExpiration(ptPool, signer);
+  let blockTimestamp = await getLatestBlockTimestamp();
+  let timeRemainingSeconds = await getTimeUntilExpiration(
+    ptPool,
+    signer,
+    blockTimestamp
+  );
   let unitSeconds = await getUnitSeconds(ptPool, signer);
   let ptSpotPrice = calcSpotPricePt(
     baseReserves.toString(),
