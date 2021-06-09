@@ -17,7 +17,7 @@ import * as https from "https";
 import JsonToTS from "json-to-ts";
 import * as fs from "fs";
 
-// this url should point to either a goerli.json or a mainnet.json.  
+// this url should point to either a goerli.json or a mainnet.json.
 // ideally, they would both be checked against a schema to ensure they are the same
 let url =
   "https://raw.githubusercontent.com/element-fi/elf-deploy/802c94e9c06a7c2d1f4985dd11a05e88681ed80e/addresses/goerli.json";
