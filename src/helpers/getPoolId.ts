@@ -17,9 +17,12 @@
 import { Signer } from "ethers";
 import { Provider } from "@ethersproject/providers";
 import { BasePool__factory } from "../../typechain/factories/BasePool__factory";
+import { Tranche__factory } from "../../typechain/factories/Tranche__factory";
+import { InterestToken__factory } from "../../typechain/factories/InterestToken__factory";
+import { DeploymentAddresses } from "../../typechain/DeploymentAddresses";
 
 /**
- * Returns the reserves for a given pool.
+ * Returns the PoolId for a given pool.
  * @param poolAddress any pool with a getPoolId method
  * @param signerOrProvider
  * @returns a promise for a poolId
