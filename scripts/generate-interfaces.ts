@@ -32,6 +32,7 @@ https
     res.on("end", () => {
       try {
         let json = JSON.parse(body);
+        fs.appendFileSync("typechain/DeploymentAddresses.d.ts", " ", "utf8");
         fs.truncateSync("typechain/DeploymentAddresses.d.ts");
         JsonToTS(json, { rootName: "DeploymentAddresses" }).forEach(
           (typeInterface) => {
