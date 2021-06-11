@@ -16,6 +16,11 @@
 import * as https from "https";
 import { DeploymentAddresses } from "../../typechain/DeploymentAddresses";
 
+export enum PoolType {
+  PT,
+  YT,
+}
+
 /**
  * Get the contract addresses deployed by Element
  * @param url The url of the json changelog file
@@ -133,4 +138,32 @@ export function getElementYtPoolAddresses(
     }
   }
   return pools;
+}
+
+/**
+ * Returns the PoolId from the DeploymentAddresses that matches a termAddress
+ * @param termAddress termAddress to filter on
+ * @param deploymentAddresses The DeploymentAddresses object
+ * @param PoolType Either PT or YT
+ * @returns a promise for a poolId
+ */
+export async function getPoolIdByTermAddress(
+  termAddress: string,
+  deploymentAddresses: DeploymentAddresses,
+  poolType: PoolType
+): Promise<string> {
+  let poolId = "";
+  for (const trancheListKey in deploymentAddresses.tranches) {
+    const trancheList = deploymentAddresses.tranches[trancheListKey];
+    for (const tranche of trancheList) {
+      if (termAddress == tranche.address) {
+        if (poolType == PoolType.PT) {
+          poolId = tranche.ptPool.poolId;
+        } else {
+          poolId = tranche.ytPool.poolId;
+        }
+      }
+    }
+  }
+  return poolId;
 }

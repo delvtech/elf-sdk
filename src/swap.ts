@@ -27,12 +27,12 @@ import { ONE_DAY_IN_SECONDS } from "../src/constants/time";
 
 const BALANCER_ETH_SENTINEL = "0x0000000000000000000000000000000000000000";
 
-enum SwapKind {
+export enum SwapKind {
   GIVEN_IN,
   GIVEN_OUT,
 }
 
-interface SingleSwap {
+export interface SingleSwap {
   poolId: string;
   kind: SwapKind;
   assetIn: string;
@@ -70,6 +70,7 @@ export async function swap(
   amount: BigNumber,
   kind: SwapKind,
   limit: BigNumber,
+  gasPrice: BigNumber,
   expirationInSeconds: number = ONE_DAY_IN_SECONDS,
   useETH: boolean = false,
   wethAddress?: string,
@@ -84,7 +85,7 @@ export async function swap(
   const assetOut =
     useETH && tokenOutAddress === wethAddress
       ? BALANCER_ETH_SENTINEL
-      : tokenInAddress;
+      : tokenOutAddress;
 
   const swap: SingleSwap = {
     poolId,
@@ -106,7 +107,9 @@ export async function swap(
   const deadline = Math.round(Date.now() / 1000) + expirationInSeconds;
 
   const overrides: PayableOverrides | undefined =
-    tokenInAddress === BALANCER_ETH_SENTINEL ? { value: amount } : undefined;
+    tokenInAddress === BALANCER_ETH_SENTINEL
+      ? { value: amount, gasPrice: gasPrice }
+      : { gasPrice: gasPrice };
 
   const vaultContract = Vault__factory.connect(balancerVaultAddress, signer);
   const swapReceipt = await vaultContract.swap(
