@@ -43,6 +43,7 @@ export async function mintWithUserProxy(
   baseAssetAmount: string,
   baseAssetAddress: string,
   baseAssetDecimals: number,
+  gasPrice: BigNumber,
   signerOrProvider: Signer | Provider
 ): Promise<ContractTransaction> {
   const userProxyContract = UserProxy__factory.connect(
@@ -52,9 +53,10 @@ export async function mintWithUserProxy(
 
   const value = parseUnits(baseAssetAmount, baseAssetDecimals);
 
-  // if and only if we are minting with ETH, then we need to actually supply ETH in the transaction
   const overrides =
-    baseAssetAddress === ETH_SENTINEL_ADDRESS ? { value } : undefined;
+    baseAssetAddress === ETH_SENTINEL_ADDRESS
+      ? { value: baseAssetAmount, gasPrice: gasPrice }
+      : { gasPrice: gasPrice };
 
   const mintTx = await userProxyContract.mint(
     value,
@@ -79,10 +81,7 @@ export async function getTermExpiration(
   termAddress: string,
   signerOrProvider: Signer | Provider
 ): Promise<BigNumber> {
-  const termContract = Tranche__factory.connect(
-    termAddress,
-    signerOrProvider
-  );
+  const termContract = Tranche__factory.connect(termAddress, signerOrProvider);
 
   const expiration = await termContract.unlockTimestamp();
   return expiration;
@@ -98,10 +97,7 @@ export async function getTermPosition(
   termAddress: string,
   signerOrProvider: Signer | Provider
 ): Promise<string> {
-  const termContract = Tranche__factory.connect(
-    termAddress,
-    signerOrProvider
-  );
+  const termContract = Tranche__factory.connect(termAddress, signerOrProvider);
 
   const position = await termContract.position();
   return position;
