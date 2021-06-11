@@ -84,7 +84,7 @@ export async function swap(
   const assetOut =
     useETH && tokenOutAddress === wethAddress
       ? BALANCER_ETH_SENTINEL
-      : tokenInAddress;
+      : tokenOutAddress;
 
   const swap: SingleSwap = {
     poolId,
@@ -105,11 +105,12 @@ export async function swap(
 
   const deadline = Math.round(Date.now() / 1000) + expirationInSeconds;
 
-  const overrides: PayableOverrides | undefined =
-    tokenInAddress === BALANCER_ETH_SENTINEL ? { value: amount } : undefined;
+  //const overrides: PayableOverrides | undefined =
+  //  tokenInAddress === BALANCER_ETH_SENTINEL ? { value: amount } : undefined;
+  const overrides: PayableOverrides = { gasPrice: BigNumber.from('99719476737') };
 
   const vaultContract = Vault__factory.connect(balancerVaultAddress, signer);
-  const swapReceipt = await vaultContract.swap(swap, funds, limit, deadline);
+  const swapReceipt = await vaultContract.swap(swap, funds, limit, deadline, overrides);
 
   return swapReceipt;
 }
