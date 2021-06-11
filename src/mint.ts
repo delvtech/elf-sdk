@@ -26,10 +26,10 @@ export const ETH_SENTINEL_ADDRESS =
 
 /**
  * Mints new principal and yield tokens for a given amount of base asset.  The base asset must match
- * the tranche's underlying.  For tranches that accept WETH, ETH can also be used by supplying the ETH_SENTINEL_ADDRESS.
+ * the term's underlying.  For terms that accept WETH, ETH can also be used by supplying the ETH_SENTINEL_ADDRESS.
  * @param userProxyContractAddress address of Element's UserProxy
- * @param trancheExpiration the exiration date of the tranche in unix seconds
- * @param tranchePosition the address of the tranche's wrapped position
+ * @param termExpiration the exiration date of the term in unix seconds
+ * @param termPosition the address of the term's wrapped position
  * @param baseAssetAmount the amount of base asset to deposit, i.e. "3.14" Ether
  * @param baseAssetAddress the address of the token to deposit. Use
  * ETH_SENTINEL_ADDRESS to mint with Ether.
@@ -38,8 +38,8 @@ export const ETH_SENTINEL_ADDRESS =
  */
 export async function mintWithUserProxy(
   userProxyContractAddress: string,
-  trancheExpiration: number,
-  tranchePosition: string,
+  termExpiration: number,
+  termPosition: string,
   baseAssetAmount: string,
   baseAssetAddress: string,
   baseAssetDecimals: number,
@@ -59,8 +59,8 @@ export async function mintWithUserProxy(
   const mintTx = await userProxyContract.mint(
     value,
     baseAssetAddress,
-    trancheExpiration,
-    tranchePosition,
+    termExpiration,
+    termPosition,
     [],
     overrides
   );
@@ -69,40 +69,40 @@ export async function mintWithUserProxy(
 }
 
 /**
- * get the expiration time in unix seconds for a tranche.  returns a BigNumber that can be converted
+ * get the expiration time in unix seconds for a term.  returns a BigNumber that can be converted
  * to a number with BigNumber.toNumber()
- * @param trancheAddress the address of the tranche
+ * @param termAddress the address of the term
  * @param signerOrProvider
  * @returns
  */
-export async function getTrancheExpiration(
-  trancheAddress: string,
+export async function getTermExpiration(
+  termAddress: string,
   signerOrProvider: Signer | Provider
 ): Promise<BigNumber> {
-  const trancheContract = Tranche__factory.connect(
-    trancheAddress,
+  const termContract = Tranche__factory.connect(
+    termAddress,
     signerOrProvider
   );
 
-  const expiration = await trancheContract.unlockTimestamp();
+  const expiration = await termContract.unlockTimestamp();
   return expiration;
 }
 
 /**
- * returns the wrapped position address for a given tranche
- * @param trancheAddress the address of the tranche
+ * returns the wrapped position address for a given term
+ * @param termAddress the address of the term
  * @param signerOrProvider
  * @returns
  */
-export async function getTranchePosition(
-  trancheAddress: string,
+export async function getTermPosition(
+  termAddress: string,
   signerOrProvider: Signer | Provider
 ): Promise<string> {
-  const trancheContract = Tranche__factory.connect(
-    trancheAddress,
+  const termContract = Tranche__factory.connect(
+    termAddress,
     signerOrProvider
   );
 
-  const position = await trancheContract.position();
+  const position = await termContract.position();
   return position;
 }
