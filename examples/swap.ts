@@ -25,10 +25,7 @@ import {
 } from "../src/helpers/getElementAddresses";
 import { swap, SingleSwap, SwapKind } from "../src/swap";
 import { getTerms } from "../src/helpers/getTerms";
-import {
-  getTermTokenSymbols,
-  TermTokenSymbolsResult,
-} from "../src/helpers/getTermTokenSymbols";
+import { getTermByTokenSymbol } from "../src/helpers/getTermByTokenSymbol";
 import { DeploymentAddresses } from "../typechain/DeploymentAddresses";
 import { BigNumber } from "ethers";
 
@@ -45,26 +42,24 @@ async function main() {
   // get all official element term addresses
   const elementTermAddresses = getElementTermAddresses(deploymentAddresses);
   // find the term that matches the token symbol
-  const termAddress = elementTermAddresses.find(async (termAddress) => {
-    // get the symbols of a particular term address
-    const termTokenSymbols: TermTokenSymbolsResult = await getTermTokenSymbols(
-      termAddress,
-      signer
-    );
-    termTokenSymbols.principalTokenSymbol == "eP:eyUSDC:06-AUG-21-GMT";
-  });
+  const termAddress = await getTermByTokenSymbol(
+    elementTermAddresses,
+    "eP:eyUSDC:06-AUG-21-GMT",
+    signer
+  );
+  // get the poolid associated with the term and PoolType
   const poolId = await getPoolIdByTermAddress(
     termAddress,
     deploymentAddresses,
     PoolType.PT
   );
-  console.log("Pool ID: " + poolId);
   const tokenInAddress = deploymentAddresses.tokens.usdc;
   const tokenOutAddress = termAddress;
   const balancerVaultAddress = deploymentAddresses.balancerVault;
   const amount = BigNumber.from("1000000"); // 1 USDC
   const kind = SwapKind.GIVEN_IN;
   const limit = BigNumber.from("990000");
+  const gasPrice = BigNumber.from("99000000000");
   const result = await swap(
     signer,
     sender,
@@ -75,8 +70,10 @@ async function main() {
     balancerVaultAddress,
     amount,
     kind,
-    limit
+    limit,
+    gasPrice
   );
+  console.log(await result.wait(1));
 }
 
 main();

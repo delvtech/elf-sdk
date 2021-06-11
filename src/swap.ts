@@ -70,6 +70,7 @@ export async function swap(
   amount: BigNumber,
   kind: SwapKind,
   limit: BigNumber,
+  gasPrice: BigNumber,
   expirationInSeconds: number = ONE_DAY_IN_SECONDS,
   useETH: boolean = false,
   wethAddress?: string,
@@ -105,12 +106,19 @@ export async function swap(
 
   const deadline = Math.round(Date.now() / 1000) + expirationInSeconds;
 
-  //const overrides: PayableOverrides | undefined =
-  //  tokenInAddress === BALANCER_ETH_SENTINEL ? { value: amount } : undefined;
-  const overrides: PayableOverrides = { gasPrice: BigNumber.from('99719476737') };
+  const overrides: PayableOverrides | undefined =
+    tokenInAddress === BALANCER_ETH_SENTINEL
+      ? { value: amount, gasPrice: gasPrice }
+      : { gasPrice: gasPrice };
 
   const vaultContract = Vault__factory.connect(balancerVaultAddress, signer);
-  const swapReceipt = await vaultContract.swap(swap, funds, limit, deadline, overrides);
+  const swapReceipt = await vaultContract.swap(
+    swap,
+    funds,
+    limit,
+    deadline,
+    overrides
+  );
 
   return swapReceipt;
 }
