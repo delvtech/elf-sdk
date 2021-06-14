@@ -15,7 +15,7 @@
  */
 
 import { Provider } from "@ethersproject/providers";
-import { BigNumber, Signer, providers } from "ethers";
+import { Signer } from "ethers";
 
 import { ConvergentCurvePool__factory } from "../../typechain/factories/ConvergentCurvePool__factory";
 

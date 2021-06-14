@@ -16,12 +16,11 @@
 
 import { ethers } from "hardhat";
 import { getTotalSupply } from "../src/helpers/getTotalSupply";
-import { getReserves, ReservesResult } from "../src/helpers/getReserves";
+import { getReserves } from "../src/helpers/getReserves";
 import { calcSpotPricePt, calcSpotPriceYt } from "../src/helpers/calcSpotPrice";
 import { getTimeUntilExpiration } from "../src/helpers/getTimeUntilExpiration";
 import { getLatestBlockTimestamp } from "../src/helpers/getLatestBlockTimestamp";
 import { getUnitSeconds } from "../src/helpers/getUnitSeconds";
-import { BigNumber } from "ethers";
 
 async function main() {
   const balVault = "0x65748E8287Ce4B9E6D83EE853431958851550311"; // balancer vault address
@@ -30,20 +29,20 @@ async function main() {
 
   // calculate principal token spot price
   const ptPool = "0x9eB7F54C0eCc4d0D2dfF28a1276e36d598F2B0D1"; // principal token Pool address
-  let totalSupply = await getTotalSupply(ptPool, signer);
+  const totalSupply = await getTotalSupply(ptPool, signer);
   let reserves = await getReserves(ptPool, balVault, signer);
-  let ptIndex = reserves.tokens[0] == base ? 1 : 0;
+  const ptIndex = reserves.tokens[0] == base ? 1 : 0;
   let baseIndex = reserves.tokens[0] == base ? 0 : 1;
-  let ptReserves = reserves.balances[ptIndex];
+  const ptReserves = reserves.balances[ptIndex];
   let baseReserves = reserves.balances[baseIndex];
-  let blockTimestamp = await getLatestBlockTimestamp();
-  let timeRemainingSeconds = await getTimeUntilExpiration(
+  const blockTimestamp = await getLatestBlockTimestamp();
+  const timeRemainingSeconds = await getTimeUntilExpiration(
     ptPool,
     signer,
     blockTimestamp
   );
-  let unitSeconds = await getUnitSeconds(ptPool, signer);
-  let ptSpotPrice = calcSpotPricePt(
+  const unitSeconds = await getUnitSeconds(ptPool, signer);
+  const ptSpotPrice = calcSpotPricePt(
     baseReserves.toString(),
     ptReserves.toString(),
     totalSupply.toString(),
@@ -61,11 +60,11 @@ async function main() {
   // calculate yield token spot price
   const ytPool = "0xD75bfF2444FF738d443066ff4688691e6852b217"; // yield token Pool address
   reserves = await getReserves(ytPool, balVault, signer);
-  let ytIndex = reserves.tokens[0] == base ? 1 : 0;
+  const ytIndex = reserves.tokens[0] == base ? 1 : 0;
   baseIndex = reserves.tokens[0] == base ? 0 : 1;
-  let ytReserves = reserves.balances[ytIndex];
+  const ytReserves = reserves.balances[ytIndex];
   baseReserves = reserves.balances[baseIndex];
-  let ytSpotPrice = calcSpotPriceYt(
+  const ytSpotPrice = calcSpotPriceYt(
     baseReserves.toString(),
     ytReserves.toString()
   );

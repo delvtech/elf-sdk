@@ -18,26 +18,19 @@ import { ethers } from "hardhat";
 import { ERC20Permit__factory } from "../typechain/factories/ERC20Permit__factory";
 import {
   getElementDeploymentAddresses,
-  getElementTermFactoryAddresses,
-  getElementTermAddresses,
-  getElementPtPoolAddresses,
-  getPoolIdByTermAddress,
-  PoolType,
+  getElementTermAddresses
 } from "../src/helpers/getElementAddresses";
 import {
   mintWithUserProxy,
   getTermExpiration,
   getTermPosition,
 } from "../src/mint";
-import { getTerms } from "../src/helpers/getTerms";
 import { getTermByTokenSymbol } from "../src/helpers/getTermByTokenSymbol";
 import { DeploymentAddresses } from "../typechain/DeploymentAddresses";
 import { BigNumber } from "ethers";
 
 async function main() {
   const [signer] = await ethers.getSigners();
-  const sender = signer.address;
-  const recipient = signer.address;
   // get the official list of Element deployed addresses.
   const deploymentAddresses: DeploymentAddresses = <DeploymentAddresses>(
     await getElementDeploymentAddresses(

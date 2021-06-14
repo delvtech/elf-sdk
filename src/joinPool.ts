@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { BigNumber, Signer } from "ethers";
+import { BigNumber, Signer, ContractTransaction } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
 
 import { Vault__factory } from "../typechain/factories/Vault__factory";
@@ -40,8 +40,8 @@ export async function joinConvergentPool(
   vaultAddress: string,
   tokens: string[],
   maxAmountsIn: BigNumber[],
-  fromInternalBalance: boolean = false
-) {
+  fromInternalBalance = false
+): Promise<ContractTransaction> {
   // Balancer V2 vault allows userData as a way to pass props through to pool contracts.  In this
   // case we need to pass the maxAmountsIn.
   const userData = defaultAbiCoder.encode(["uint256[]"], [maxAmountsIn]);
@@ -95,9 +95,9 @@ export async function joinWeightedPool(
   tokens: string[],
   maxAmountsIn: BigNumber[],
   minBPTOut: BigNumber = ZeroBigNumber,
-  fromInternalBalance: boolean = false,
+  fromInternalBalance = false,
   joinKind: WeightedPoolJoinKind = WeightedPoolJoinKind.EXACT_TOKENS_IN_FOR_BPT_OUT
-) {
+): Promise<ContractTransaction> {
   // Balancer V2 vault allows userData as a way to pass props through to pool contracts.  In this
   // case we need to pass the joinKind, maxAmountsIn and minBPTOut.
   const userData = defaultAbiCoder.encode(

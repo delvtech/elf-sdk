@@ -17,14 +17,11 @@
 import { ethers } from "hardhat";
 import {
   getElementDeploymentAddresses,
-  getElementTermFactoryAddresses,
   getElementTermAddresses,
-  getElementPtPoolAddresses,
   getPoolIdByTermAddress,
   PoolType,
 } from "../src/helpers/getElementAddresses";
-import { swap, SingleSwap, SwapKind } from "../src/swap";
-import { getTerms } from "../src/helpers/getTerms";
+import { swap, SwapKind } from "../src/swap";
 import { getTermByTokenSymbol } from "../src/helpers/getTermByTokenSymbol";
 import { DeploymentAddresses } from "../typechain/DeploymentAddresses";
 import { BigNumber } from "ethers";

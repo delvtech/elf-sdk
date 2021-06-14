@@ -19,7 +19,7 @@ import * as fs from "fs";
 
 // this url should point to either a goerli.json or a mainnet.json.
 // ideally, they would both be checked against a schema to ensure they are the same
-let url =
+const url =
   "https://raw.githubusercontent.com/element-fi/elf-deploy/main/addresses/goerli.json";
 https
   .get(url, (res) => {
@@ -31,7 +31,7 @@ https
 
     res.on("end", () => {
       try {
-        let json = JSON.parse(body);
+        const json = JSON.parse(body);
         fs.appendFileSync("typechain/DeploymentAddresses.d.ts", " ", "utf8");
         fs.truncateSync("typechain/DeploymentAddresses.d.ts");
         JsonToTS(json, { rootName: "DeploymentAddresses" }).forEach(
