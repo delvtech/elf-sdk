@@ -6,8 +6,8 @@
         "build": "npx hardhat compile && rm ./typechain/index.ts",
         "test": "npx hardhat compile && rm ./typechain/index.ts && npx hardhat test --config hardhat.config.test.ts ./test/*.ts",
         "style-check": "npx prettier --check .",
-        "prettier": "npx prettier --write .",
-        "lint": "eslint .",
+        "style-fix": "npx prettier --write .",
+        "lint-check": "eslint .",
         "lint-fix": "eslint --fix .",
         "generate-interfaces": "npx hardhat run scripts/generate-interfaces.ts",
         "load-contracts": "sh scripts/load-element.sh && sh scripts/load-balancer.sh"

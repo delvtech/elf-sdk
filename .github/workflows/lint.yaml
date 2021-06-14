@@ -24,3 +24,6 @@ jobs:
       
       - name: Style Check
         run: npm run style-check
+      
+      - name: Lint Check
+        run: npm run lint-check
