@@ -18,7 +18,7 @@ import { ethers } from "hardhat";
 import { ERC20Permit__factory } from "../typechain/factories/ERC20Permit__factory";
 import {
   getElementDeploymentAddresses,
-  getElementTermAddresses
+  getElementTermAddresses,
 } from "../src/helpers/getElementAddresses";
 import {
   mintWithUserProxy,
