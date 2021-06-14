@@ -25,7 +25,8 @@ import { Vault__factory } from "../typechain/factories/Vault__factory";
 
 import { ONE_DAY_IN_SECONDS } from "../src/constants/time";
 
-const BALANCER_ETH_SENTINEL = "0x0000000000000000000000000000000000000000";
+export const BALANCER_ETH_SENTINEL =
+  "0x0000000000000000000000000000000000000000";
 
 export enum SwapKind {
   GIVEN_IN,
@@ -70,7 +71,7 @@ export async function swap(
   amount: BigNumber,
   kind: SwapKind,
   limit: BigNumber,
-  gasPrice: BigNumber,
+  overrides: PayableOverrides | undefined,
   expirationInSeconds: number = ONE_DAY_IN_SECONDS,
   useETH = false,
   wethAddress?: string,
@@ -105,20 +106,12 @@ export async function swap(
   };
 
   const deadline = Math.round(Date.now() / 1000) + expirationInSeconds;
-
-  const overrides: PayableOverrides | undefined =
-    tokenInAddress === BALANCER_ETH_SENTINEL
-      ? { value: amount, gasPrice: gasPrice }
-      : { gasPrice: gasPrice };
-
   const vaultContract = Vault__factory.connect(balancerVaultAddress, signer);
-  const swapReceipt = await vaultContract.swap(
-    swap,
-    funds,
-    limit,
-    deadline,
-    overrides
-  );
+
+  const swapReceipt =
+    overrides == undefined
+      ? await vaultContract.swap(swap, funds, limit, deadline)
+      : await vaultContract.swap(swap, funds, limit, deadline, overrides);
 
   return swapReceipt;
 }
