@@ -24,6 +24,7 @@ import {
   mintWithUserProxy,
   getTermExpiration,
   getTermPosition,
+  ETH_SENTINEL_ADDRESS,
 } from "../src/mint";
 import { getTermByTokenSymbol } from "../src/helpers/getTermByTokenSymbol";
 import { DeploymentAddresses } from "../typechain/DeploymentAddresses";
@@ -60,6 +61,10 @@ async function main() {
   console.log(await approval.wait(1));
   const tokenDecimals = await tokenContract.decimals();
   const gasPrice = BigNumber.from("999000000000");
+  const overrides =
+    baseAssetAddress === ETH_SENTINEL_ADDRESS
+      ? { value: baseAssetAmount, gasPrice: gasPrice }
+      : { gasPrice: gasPrice };
   const result = await mintWithUserProxy(
     userProxyAddress,
     termExpiration.toNumber(),
@@ -67,7 +72,7 @@ async function main() {
     baseAssetAmount,
     baseAssetAddress,
     tokenDecimals,
-    gasPrice,
+    overrides,
     signer
   );
   console.log(await result.wait(1));
