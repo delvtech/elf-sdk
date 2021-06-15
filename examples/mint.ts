@@ -72,8 +72,8 @@ async function main() {
     baseAssetAmount,
     baseAssetAddress,
     tokenDecimals,
-    overrides,
-    signer
+    signer,
+    overrides
   );
   console.log(await result.wait(1));
 }

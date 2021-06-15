@@ -48,8 +48,8 @@ export async function mintWithUserProxy(
   baseAssetAmount: string,
   baseAssetAddress: string,
   baseAssetDecimals: number,
-  overrides: PayableOverrides | undefined,
-  signerOrProvider: Signer | Provider
+  signerOrProvider: Signer | Provider,
+  overrides?: PayableOverrides
 ): Promise<ContractTransaction> {
   const userProxyContract = UserProxy__factory.connect(
     userProxyContractAddress,
@@ -59,7 +59,7 @@ export async function mintWithUserProxy(
   const value = parseUnits(baseAssetAmount, baseAssetDecimals);
 
   const mintTx =
-    overrides == undefined
+    overrides === undefined
       ? await userProxyContract.mint(
           value,
           baseAssetAddress,

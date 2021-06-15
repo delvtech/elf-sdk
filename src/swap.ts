@@ -71,7 +71,7 @@ export async function swap(
   amount: BigNumber,
   kind: SwapKind,
   limit: BigNumber,
-  overrides: PayableOverrides | undefined,
+  overrides?: PayableOverrides,
   expirationInSeconds: number = ONE_DAY_IN_SECONDS,
   useETH = false,
   wethAddress?: string,
@@ -109,7 +109,7 @@ export async function swap(
   const vaultContract = Vault__factory.connect(balancerVaultAddress, signer);
 
   const swapReceipt =
-    overrides == undefined
+    overrides === undefined
       ? await vaultContract.swap(swap, funds, limit, deadline)
       : await vaultContract.swap(swap, funds, limit, deadline, overrides);
 
