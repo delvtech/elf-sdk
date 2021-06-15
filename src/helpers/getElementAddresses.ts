@@ -29,19 +29,19 @@ export enum PoolType {
 export async function getElementDeploymentAddresses(
   url: string
 ): Promise<DeploymentAddresses> {
-  var params = {
+  const params = {
     host: new URL(url).hostname,
     method: "GET",
     path: new URL(url).pathname,
   };
 
   return new Promise(function (resolve, reject) {
-    var req = https.request(params, function (res) {
+    const req = https.request(params, function (res) {
       let result: DeploymentAddresses;
       if (res.statusCode < 200 || res.statusCode >= 300) {
         return reject(new Error("statusCode=" + res.statusCode));
       }
-      var body = [];
+      const body = [];
       res.on("data", function (chunk) {
         body.push(chunk);
       });
@@ -72,7 +72,7 @@ export function getElementTermFactoryAddresses(
   deploymentAddresses: DeploymentAddresses
 ): string[] {
   // get TermFactories listed in each Term
-  let termFactories = [];
+  const termFactories = [];
   for (const trancheListKey in deploymentAddresses.tranches) {
     const trancheList = deploymentAddresses.tranches[trancheListKey];
     for (const tranche of trancheList) {
@@ -92,7 +92,7 @@ export function getElementTermAddresses(
   deploymentAddresses: DeploymentAddresses
 ): string[] {
   // get each Term
-  let terms = [];
+  const terms = [];
   for (const trancheListKey in deploymentAddresses.tranches) {
     const trancheList = deploymentAddresses.tranches[trancheListKey];
     for (const tranche of trancheList) {
@@ -111,7 +111,7 @@ export function getElementPtPoolAddresses(
   deploymentAddresses: DeploymentAddresses
 ): string[] {
   // get PTPools listed in each Term
-  let pools = [];
+  const pools = [];
   for (const trancheListKey in deploymentAddresses.tranches) {
     const trancheList = deploymentAddresses.tranches[trancheListKey];
     for (const tranche of trancheList) {
@@ -130,7 +130,7 @@ export function getElementYtPoolAddresses(
   deploymentAddresses: DeploymentAddresses
 ): string[] {
   // get get YTPools listed in each Term
-  let pools = [];
+  const pools = [];
   for (const trancheListKey in deploymentAddresses.tranches) {
     const trancheList = deploymentAddresses.tranches[trancheListKey];
     for (const tranche of trancheList) {

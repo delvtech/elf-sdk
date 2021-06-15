@@ -72,10 +72,10 @@ export async function swap(
   limit: BigNumber,
   gasPrice: BigNumber,
   expirationInSeconds: number = ONE_DAY_IN_SECONDS,
-  useETH: boolean = false,
+  useETH = false,
   wethAddress?: string,
-  fromInternalBalance: boolean = false,
-  toInternalBalance: boolean = false
+  fromInternalBalance = false,
+  toInternalBalance = false
 ): Promise<ContractTransaction> {
   const assetIn =
     useETH && tokenInAddress === wethAddress

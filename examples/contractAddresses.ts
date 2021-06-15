@@ -32,7 +32,7 @@ async function main() {
   const [signer] = await ethers.getSigners();
 
   // get the official list of Element deployed addresses.
-  let deploymentAddresses: DeploymentAddresses = <DeploymentAddresses>(
+  const deploymentAddresses: DeploymentAddresses = <DeploymentAddresses>(
     await getElementDeploymentAddresses(
       "https://raw.githubusercontent.com/element-fi/elf-deploy/main/addresses/goerli.json"
     )
@@ -42,18 +42,18 @@ async function main() {
   // get the factories used to deploy each term
   // Note: because not every term is necessarily deployed from the same TermFactory (e.g. if the sc code was upgraded)
   // it is better to use this method to iterate through all terms and collect the associated factories.
-  let elementTermFactoryAddresses =
+  const elementTermFactoryAddresses =
     getElementTermFactoryAddresses(deploymentAddresses);
   console.log("Element TermFactories: " + elementTermFactoryAddresses);
 
   // get all official element term addresses
-  let elementTermAddresses = getElementTermAddresses(deploymentAddresses);
+  const elementTermAddresses = getElementTermAddresses(deploymentAddresses);
   console.log("\nElement Terms: " + elementTermAddresses);
 
   // get all terms emitted by all officially deployed Element TermFactories
   // Note: this will include terms that were not "officially" deployed by
   // Element so they could be misconfigured
-  let termAddresses = [];
+  const termAddresses = [];
   await Promise.all(
     elementTermFactoryAddresses.map(async (termFactoryAddress) => {
       termAddresses.push(await getTerms(termFactoryAddress, null, signer));
@@ -62,15 +62,15 @@ async function main() {
   console.log("\nAll Terms: " + termAddresses);
 
   // get all official element PTPool addresses
-  let elementPtPoolAddresses = getElementPtPoolAddresses(deploymentAddresses);
+  const elementPtPoolAddresses = getElementPtPoolAddresses(deploymentAddresses);
   console.log("\nElement PT Pools: " + elementPtPoolAddresses);
 
   // get all official element YTPool addresses
-  let elementYtPoolAddresses = getElementPtPoolAddresses(deploymentAddresses);
+  const elementYtPoolAddresses = getElementPtPoolAddresses(deploymentAddresses);
   console.log("\nElement YT Pools: " + elementYtPoolAddresses);
 
   // get the symbols of a particular term address
-  let termTokenSymbols: TermTokenSymbolsResult = await getTermTokenSymbols(
+  const termTokenSymbols: TermTokenSymbolsResult = await getTermTokenSymbols(
     elementTermAddresses[0],
     signer
   );
