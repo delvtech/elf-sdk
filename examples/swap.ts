@@ -21,10 +21,10 @@ import {
   getPoolIdByTermAddress,
   PoolType,
 } from "../src/helpers/getElementAddresses";
-import { swap, SwapKind } from "../src/swap";
+import { swap, SwapKind, BALANCER_ETH_SENTINEL } from "../src/swap";
 import { getTermByTokenSymbol } from "../src/helpers/getTermByTokenSymbol";
 import { DeploymentAddresses } from "../typechain/DeploymentAddresses";
-import { BigNumber } from "ethers";
+import { BigNumber, PayableOverrides } from "ethers";
 
 async function main() {
   const [signer] = await ethers.getSigners();
@@ -56,7 +56,11 @@ async function main() {
   const amount = BigNumber.from("1000000"); // 1 USDC
   const kind = SwapKind.GIVEN_IN;
   const limit = BigNumber.from("990000");
-  const gasPrice = BigNumber.from("99000000000");
+  const gasPrice = BigNumber.from("999000000000");
+  const overrides: PayableOverrides | undefined =
+    tokenInAddress === BALANCER_ETH_SENTINEL
+      ? { value: amount, gasPrice: gasPrice }
+      : { gasPrice: gasPrice };
   const result = await swap(
     signer,
     sender,
@@ -68,7 +72,7 @@ async function main() {
     amount,
     kind,
     limit,
-    gasPrice
+    overrides
   );
   console.log(await result.wait(1));
 }

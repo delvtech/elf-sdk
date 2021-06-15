@@ -15,7 +15,12 @@
  */
 
 import { Provider } from "@ethersproject/providers";
-import { BigNumber, ContractTransaction, Signer } from "ethers";
+import {
+  BigNumber,
+  ContractTransaction,
+  Signer,
+  PayableOverrides,
+} from "ethers";
 import { parseUnits } from "ethers/lib/utils";
 import { Tranche__factory } from "../typechain/factories/Tranche__factory";
 
@@ -43,8 +48,8 @@ export async function mintWithUserProxy(
   baseAssetAmount: string,
   baseAssetAddress: string,
   baseAssetDecimals: number,
-  gasPrice: BigNumber,
-  signerOrProvider: Signer | Provider
+  signerOrProvider: Signer | Provider,
+  overrides?: PayableOverrides
 ): Promise<ContractTransaction> {
   const userProxyContract = UserProxy__factory.connect(
     userProxyContractAddress,
@@ -53,19 +58,23 @@ export async function mintWithUserProxy(
 
   const value = parseUnits(baseAssetAmount, baseAssetDecimals);
 
-  const overrides =
-    baseAssetAddress === ETH_SENTINEL_ADDRESS
-      ? { value: baseAssetAmount, gasPrice: gasPrice }
-      : { gasPrice: gasPrice };
-
-  const mintTx = await userProxyContract.mint(
-    value,
-    baseAssetAddress,
-    termExpiration,
-    termPosition,
-    [],
-    overrides
-  );
+  const mintTx =
+    overrides === undefined
+      ? await userProxyContract.mint(
+          value,
+          baseAssetAddress,
+          termExpiration,
+          termPosition,
+          []
+        )
+      : await userProxyContract.mint(
+          value,
+          baseAssetAddress,
+          termExpiration,
+          termPosition,
+          [],
+          overrides
+        );
 
   return mintTx;
 }
