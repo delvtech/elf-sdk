@@ -50,7 +50,7 @@ async function main() {
   );
   const termExpiration = await getTermExpiration(termAddress, signer);
   const termPosition = await getTermPosition(termAddress, signer);
-  const baseAssetAmount = "1000000"; // 1 USDC
+  const baseAssetAmount = "1"; // 1 USDC
   const baseAssetAddress = deploymentAddresses.tokens.usdc;
   const tokenContract = ERC20Permit__factory.connect(baseAssetAddress, signer);
   const approval = await tokenContract.approve(
