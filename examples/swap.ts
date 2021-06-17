@@ -15,6 +15,7 @@
  */
 
 import { ethers } from "hardhat";
+import { ERC20Permit__factory } from "../typechain/factories/ERC20Permit__factory";
 import {
   getElementDeploymentAddresses,
   getElementTermAddresses,
@@ -53,9 +54,16 @@ async function main() {
   const tokenInAddress = deploymentAddresses.tokens.usdc;
   const tokenOutAddress = termAddress;
   const balancerVaultAddress = deploymentAddresses.balancerVault;
-  const amount = BigNumber.from("1000000"); // 1 USDC
+  const tokenContract = ERC20Permit__factory.connect(tokenInAddress, signer);
+  const approval = await tokenContract.approve(
+    balancerVaultAddress,
+    ethers.utils.parseUnits("1000000", 6),
+    { gasPrice: BigNumber.from("999000000000") }
+  );
+  console.log(await approval.wait(1));
+  const amount = BigNumber.from("100000"); // .1 USDC
   const kind = SwapKind.GIVEN_IN;
-  const limit = BigNumber.from("990000");
+  const limit = BigNumber.from("99000");
   const gasPrice = BigNumber.from("999000000000");
   const overrides: PayableOverrides | undefined =
     tokenInAddress === BALANCER_ETH_SENTINEL
