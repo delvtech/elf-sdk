@@ -2,8 +2,10 @@
     "name": "elf-sdk",
     "version": "1.0.0",
     "description": "",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "scripts": {
-        "build": "npx hardhat compile && rm ./typechain/index.ts",
+        "build": "npx hardhat compile && rm ./typechain/index.ts && tsc",
         "test": "npx hardhat compile && rm ./typechain/index.ts && npx hardhat test --config hardhat.config.test.ts ./test/*.ts",
         "style-check": "npx prettier --check .",
         "style-fix": "npx prettier --write .",
