@@ -15,8 +15,8 @@
  */
 
 export function calcFixedAPR(
-    spotPrice: number,
-    timeUntilMaturity: number,
-  ): number {
-    return (1 - spotPrice) / timeUntilMaturity * 100;
-  }
+  spotPrice: number,
+  timeUntilMaturity: number
+): number {
+  return ((1 - spotPrice) / timeUntilMaturity) * 100;
+}

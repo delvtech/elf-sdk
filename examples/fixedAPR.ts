@@ -51,7 +51,7 @@ async function main() {
     unitSeconds
   );
 
-  const fixedAPR = calcFixedAPR(ptSpotPrice, timeRemainingSeconds)
+  const fixedAPR = calcFixedAPR(ptSpotPrice, timeRemainingSeconds);
 
   console.log("\nPrincipal Token");
   console.log(`totalSupply: ${totalSupply}`);

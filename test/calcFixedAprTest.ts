@@ -25,10 +25,9 @@ import { BigNumber } from "ethers";
 
 describe("calcFixedAPR", () => {
   it("should properly calculate fixed APR", () => {
-    const spotPrice = .9280;
-    const timeUntilMaturity = 89/365;
+    const spotPrice = 0.982;
+    const timeUntilMaturity = 89 / 365;
     const result = calcFixedAPR(spotPrice, timeUntilMaturity);
     expect(result).to.equal(7.382022471910118);
   });
-
 });
