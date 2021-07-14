@@ -17,7 +17,7 @@
 import { ethers } from "hardhat";
 import { getTotalSupply } from "../src/helpers/getTotalSupply";
 import { getReserves } from "../src/helpers/getReserves";
-import { calcSpotPricePt, calcSpotPriceYt } from "../src/helpers/calcSpotPrice";
+import { calcSpotPricePt } from "../src/helpers/calcSpotPrice";
 import { getTimeUntilExpiration } from "../src/helpers/getTimeUntilExpiration";
 import { getLatestBlockTimestamp } from "../src/helpers/getLatestBlockTimestamp";
 import { getUnitSeconds } from "../src/helpers/getUnitSeconds";
@@ -31,11 +31,11 @@ async function main() {
   // calculate principal token spot price
   const ptPool = "0x9eB7F54C0eCc4d0D2dfF28a1276e36d598F2B0D1"; // principal token Pool address
   const totalSupply = await getTotalSupply(ptPool, signer);
-  let reserves = await getReserves(ptPool, balVault, signer);
+  const reserves = await getReserves(ptPool, balVault, signer);
   const ptIndex = reserves.tokens[0].toLowerCase() == base ? 1 : 0;
-  let baseIndex = reserves.tokens[0].toLowerCase() == base ? 0 : 1;
+  const baseIndex = reserves.tokens[0].toLowerCase() == base ? 0 : 1;
   const ptReserves = reserves.balances[ptIndex];
-  let baseReserves = reserves.balances[baseIndex];
+  const baseReserves = reserves.balances[baseIndex];
   const blockTimestamp = await getLatestBlockTimestamp();
   const timeRemainingSeconds = await getTimeUntilExpiration(
     ptPool,
