@@ -21,6 +21,7 @@ import { calcSpotPricePt, calcSpotPriceYt } from "../src/helpers/calcSpotPrice";
 import { getTimeUntilExpiration } from "../src/helpers/getTimeUntilExpiration";
 import { getLatestBlockTimestamp } from "../src/helpers/getLatestBlockTimestamp";
 import { getUnitSeconds } from "../src/helpers/getUnitSeconds";
+import { calcFixedAPR } from "../src/helpers/calcFixedAPR";
 
 async function main() {
   const balVault = "0x65748E8287Ce4B9E6D83EE853431958851550311"; // balancer vault address
@@ -72,6 +73,11 @@ async function main() {
   console.log(`ytReserves: ${ytReserves}`);
   console.log(`baseReserves: ${baseReserves}`);
   console.log(`ytSpotPrice: ${ytSpotPrice}`);
+
+  // calculate fixed APR
+  const fixedAPR = calcFixedAPR(ptSpotPrice, timeRemainingSeconds);
+  console.log("\nFixed APR");
+  console.log(`fixedAPR: ${fixedAPR}`);
 }
 
 main();

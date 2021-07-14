@@ -15,11 +15,6 @@
  */
 
 import { calcFixedAPR } from "../src/helpers/calcFixedAPR";
-// import {
-//   THIRTY_DAYS_IN_SECONDS,
-//   ONE_YEAR_IN_SECONDS,
-// } from "../src/constants/time";
-
 import { expect } from "chai";
 import { BigNumber } from "ethers";
 
