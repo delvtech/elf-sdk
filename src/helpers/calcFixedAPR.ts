@@ -14,9 +14,19 @@
  * limitations under the License.
  */
 
+import {
+  ONE_YEAR_IN_SECONDS,
+} from "../../src/constants/time";
+
 export function calcFixedAPR(
   spotPrice: number,
-  timeUntilMaturity: number
+  secondsUntilMaturity: number
 ): number {
-  return ((1 - spotPrice) / timeUntilMaturity) * 100;
+  if ( secondsUntilMaturity > 0) {
+    const timeRemaining = secondsUntilMaturity / ONE_YEAR_IN_SECONDS;
+    return ((1 - spotPrice) / timeRemaining) * 100;
+  }
+  else {
+    return 0;
+  }
 }
