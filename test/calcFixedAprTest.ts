@@ -21,8 +21,26 @@ import { BigNumber } from "ethers";
 describe("calcFixedAPR", () => {
   it("should properly calculate fixed APR", () => {
     const spotPrice = 0.982;
-    const timeUntilMaturity = 89 / 365;
+    const timeUntilMaturity = 7689600;
     const result = calcFixedAPR(spotPrice, timeUntilMaturity);
     expect(result).to.equal(7.382022471910118);
+  });
+});
+
+describe("calcFixedAPRTimeZero", () => {
+  it("should return fixed APR of 0%", () => {
+    const spotPrice = 0.982;
+    const timeUntilMaturity = 0;
+    const result = calcFixedAPR(spotPrice, timeUntilMaturity);
+    expect(result).to.equal(0);
+  });
+});
+
+describe("calcFixedAPRTimeNegative", () => {
+  it("should return fixed APR of 0%", () => {
+    const spotPrice = 0.982;
+    const timeUntilMaturity = -4;
+    const result = calcFixedAPR(spotPrice, timeUntilMaturity);
+    expect(result).to.equal(0);
   });
 });
