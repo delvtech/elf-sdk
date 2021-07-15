@@ -47,5 +47,5 @@ source elf.env
 ## Run Example Script:
 
 ```bash
-npx hardhat run examples/spotPrice.ts --network goerli
+npx hardhat run examples/poolDetails.ts --network goerli
 ```
