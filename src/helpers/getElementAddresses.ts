@@ -103,6 +103,24 @@ export function getElementTermAddresses(
 }
 
 /**
+ * Get base address for a given token
+ * @param deploymentAddresses The Deployment Addresses object
+ * @param tokenKey 
+ * @returns The base address 
+ */
+export function getBaseTokenAddress(
+  deploymentAddresses: DeploymentAddresses,
+  tokenKey: string
+): string {
+  for (const token in deploymentAddresses.tokens) {
+    if (token == tokenKey) {
+      return deploymentAddresses.tokens[token];
+    }
+  }
+  return "";
+}
+
+/**
  * Get PtPool addresses associated with each term
  * @param deploymentAddresses The DeploymentAddresses object
  * @returns An array of PT Pool addresses
