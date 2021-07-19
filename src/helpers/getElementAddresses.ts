@@ -171,10 +171,10 @@ export async function getPoolIdByTermAddress(
 /**
  * Get base address for a given token
  * @param deploymentAddresses The Deployment Addresses object
- * @param tokenKey 
- * @returns The base address 
+ * @param tokenKey
+ * @returns The base address
  */
- export function getBaseTokenAddress(
+export function getBaseTokenAddress(
   deploymentAddresses: DeploymentAddresses,
   tokenKey: string
 ): string {
