@@ -36,7 +36,8 @@ describe("calcSpotPrices", () => {
       ptReserves.toString(),
       totalSupply.toString(),
       timeRemainingSeconds,
-      tParamSeconds
+      tParamSeconds,
+      18
     );
     expect(result).to.equal(0.9835616438356164);
   });
