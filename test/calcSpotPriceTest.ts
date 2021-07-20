@@ -36,7 +36,8 @@ describe("calcSpotPrices", () => {
       ptReserves.toString(),
       totalSupply.toString(),
       timeRemainingSeconds,
-      tParamSeconds
+      tParamSeconds,
+      18
     );
     expect(result).to.equal(0.9835616438356164);
   });
@@ -47,4 +48,25 @@ describe("calcSpotPrices", () => {
     const result = calcSpotPriceYt(baseReserves, ytReserves);
     expect(result).to.equal(0.0019499512512187196);
   });
+});
+
+describe("calcSpotPricesBadDecimal", () => {
+  it("should return spot price of 0"),
+    () => {
+      const ptReserves = BigNumber.from("1000000000000000");
+      const baseReserves = BigNumber.from("1612400925773352");
+      const totalSupply = baseReserves.add(ptReserves);
+      const timeRemainingSeconds = THIRTY_DAYS_IN_SECONDS;
+      const timeStretch = 4;
+      const tParamSeconds = timeStretch * ONE_YEAR_IN_SECONDS;
+      const result = calcSpotPricePt(
+        baseReserves.toString(),
+        ptReserves.toString(),
+        totalSupply.toString(),
+        timeRemainingSeconds,
+        tParamSeconds,
+        42
+      );
+      expect(result).to.equal(0);
+    };
 });

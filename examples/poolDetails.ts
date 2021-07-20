@@ -36,6 +36,7 @@ async function main() {
   let baseIndex = reserves.tokens[0].toLowerCase() == base ? 0 : 1;
   const ptReserves = reserves.balances[ptIndex];
   let baseReserves = reserves.balances[baseIndex];
+  const baseDecimals = reserves.decimals[baseIndex];
   const blockTimestamp = await getLatestBlockTimestamp();
   const timeRemainingSeconds = await getTimeUntilExpiration(
     ptPool,
@@ -48,7 +49,8 @@ async function main() {
     ptReserves.toString(),
     totalSupply.toString(),
     timeRemainingSeconds,
-    unitSeconds
+    unitSeconds,
+    baseDecimals
   );
   console.log("\nPrincipal Token");
   console.log(`totalSupply: ${totalSupply}`);

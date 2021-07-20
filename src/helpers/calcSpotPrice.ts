@@ -19,10 +19,20 @@ export function calcSpotPricePt(
   ptReserves: string,
   totalSupply: string,
   timeRemainingSeconds: number,
-  tParamSeconds: number
+  tParamSeconds: number,
+  decimals: number
 ): number {
+  // normalize decimal places of precision to 18
+  if (decimals < 0 || decimals > 18) {
+    // return 0 if decimals fall outside the range between 0 and 18
+    return 0;
+  }
+  const diff = 18 - decimals;
+  const normalizedBaseReserves = +baseReserves * 10 ** diff;
+  const normalizedPtReserves = +ptReserves * 10 ** diff;
+
   const t = timeRemainingSeconds / tParamSeconds;
-  return (+baseReserves / (+ptReserves + +totalSupply)) ** t;
+  return (normalizedBaseReserves / (normalizedPtReserves + +totalSupply)) ** t;
 }
 
 export function calcSpotPriceYt(
