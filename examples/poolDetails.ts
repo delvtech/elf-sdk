@@ -36,7 +36,7 @@ async function main() {
   let baseIndex = reserves.tokens[0].toLowerCase() == base ? 0 : 1;
   const ptReserves = reserves.balances[ptIndex];
   let baseReserves = reserves.balances[baseIndex];
-  const ptDecimals = reserves.decimals;
+  const baseDecimals = reserves.decimals[baseIndex];
   const blockTimestamp = await getLatestBlockTimestamp();
   const timeRemainingSeconds = await getTimeUntilExpiration(
     ptPool,
