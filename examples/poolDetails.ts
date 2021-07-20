@@ -50,7 +50,7 @@ async function main() {
     totalSupply.toString(),
     timeRemainingSeconds,
     unitSeconds,
-    ptDecimals[ptIndex]
+   baseDecimals
   );
   console.log("\nPrincipal Token");
   console.log(`totalSupply: ${totalSupply}`);
