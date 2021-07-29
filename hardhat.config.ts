@@ -1,6 +1,4 @@
 import "@nomiclabs/hardhat-waffle";
-import "hardhat-typechain";
-import "hardhat-gas-reporter";
 
 import { HardhatUserConfig } from "hardhat/config";
 
@@ -33,26 +31,6 @@ const config: HardhatUserConfig = {
         },
       },
     ],
-    overrides: {
-      "contracts/balancer-core-v2/vault/Vault.sol": {
-        version: "0.7.1",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 400,
-          },
-        },
-      },
-      "contracts/balancer-core-v2/pools/weighted/WeightedPoolFactory.sol": {
-        version: "0.7.1",
-        settings: {
-          optimizer: {
-            enabled: true,
-            runs: 800,
-          },
-        },
-      },
-    },
   },
   mocha: { timeout: 0 },
   networks: {
