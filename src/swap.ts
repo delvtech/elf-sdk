@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
+import { Vault__factory } from "elf-contracts-typechain";
 import {
   BigNumber,
   ContractTransaction,
   PayableOverrides,
   Signer,
 } from "ethers";
-
-import { Vault__factory } from "../typechain/factories/Vault__factory";
 
 import { ONE_DAY_IN_SECONDS } from "../src/constants/time";
 

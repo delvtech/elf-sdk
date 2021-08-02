@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import { BigNumber, Signer, ContractTransaction } from "ethers";
+import { Vault__factory } from "elf-contracts-typechain";
+import { BigNumber, ContractTransaction, Signer } from "ethers";
 import { defaultAbiCoder } from "ethers/lib/utils";
-
-import { Vault__factory } from "../typechain/factories/Vault__factory";
 
 /**
  * Add liquidity to a ConvergentCurvePool.

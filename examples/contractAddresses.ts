@@ -53,7 +53,7 @@ async function main() {
   // get all terms emitted by all officially deployed Element TermFactories
   // Note: this will include terms that were not "officially" deployed by
   // Element so they could be misconfigured
-  const termAddresses = [];
+  const termAddresses: string[][] = [];
   await Promise.all(
     elementTermFactoryAddresses.map(async (termFactoryAddress) => {
       termAddresses.push(await getTerms(termFactoryAddress, null, signer));

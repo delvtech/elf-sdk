@@ -15,10 +15,11 @@
  */
 
 import { Provider } from "@ethersproject/providers";
+import {
+  Tranche__factory,
+  InterestToken__factory,
+} from "elf-contracts-typechain";
 import { Signer } from "ethers";
-
-import { Tranche__factory } from "../../typechain/factories/Tranche__factory";
-import { InterestToken__factory } from "../../typechain/factories/InterestToken__factory";
 
 export interface TermTokenSymbolsResult {
   /**

@@ -15,11 +15,12 @@
  */
 
 import { Provider } from "@ethersproject/providers";
+import {
+  Vault__factory,
+  BasePool__factory,
+  ERC20__factory,
+} from "elf-contracts-typechain";
 import { BigNumber, Signer } from "ethers";
-
-import { BasePool__factory } from "../../typechain/factories/BasePool__factory";
-import { Vault__factory } from "../../typechain/factories/Vault__factory";
-import { ERC20__factory } from "../../typechain/factories/ERC20__factory";
 
 export interface ReservesResult {
   /**

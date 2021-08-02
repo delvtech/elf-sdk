@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import * as https from "https";
-import { DeploymentAddresses } from "../../typechain/DeploymentAddresses";
+import { DeploymentAddresses } from "typechain/DeploymentAddresses";
 
 export enum PoolType {
   PT,
@@ -36,13 +36,13 @@ export async function getElementDeploymentAddresses(
   };
 
   return new Promise(function (resolve, reject) {
-    const req = https.request(params, function (res) {
+    const req = https.request(params, function (res: any) {
       let result: DeploymentAddresses;
       if (res.statusCode < 200 || res.statusCode >= 300) {
         return reject(new Error("statusCode=" + res.statusCode));
       }
-      const body = [];
-      res.on("data", function (chunk) {
+      const body: any[] = [];
+      res.on("data", function (chunk: any) {
         body.push(chunk);
       });
       res.on("end", function () {
@@ -74,7 +74,7 @@ export function getElementTermFactoryAddresses(
   // get TermFactories listed in each Term
   const termFactories = [];
   for (const trancheListKey in deploymentAddresses.tranches) {
-    const trancheList = deploymentAddresses.tranches[trancheListKey];
+    const trancheList = (deploymentAddresses.tranches as any)[trancheListKey];
     for (const tranche of trancheList) {
       termFactories.push(tranche.trancheFactory);
     }
@@ -94,7 +94,7 @@ export function getElementTermAddresses(
   // get each Term
   const terms = [];
   for (const trancheListKey in deploymentAddresses.tranches) {
-    const trancheList = deploymentAddresses.tranches[trancheListKey];
+    const trancheList = (deploymentAddresses.tranches as any)[trancheListKey];
     for (const tranche of trancheList) {
       terms.push(tranche.address);
     }
@@ -113,7 +113,7 @@ export function getElementPtPoolAddresses(
   // get PTPools listed in each Term
   const pools = [];
   for (const trancheListKey in deploymentAddresses.tranches) {
-    const trancheList = deploymentAddresses.tranches[trancheListKey];
+    const trancheList = (deploymentAddresses.tranches as any)[trancheListKey];
     for (const tranche of trancheList) {
       pools.push(tranche.ptPool.address);
     }
@@ -132,7 +132,7 @@ export function getElementYtPoolAddresses(
   // get get YTPools listed in each Term
   const pools = [];
   for (const trancheListKey in deploymentAddresses.tranches) {
-    const trancheList = deploymentAddresses.tranches[trancheListKey];
+    const trancheList = (deploymentAddresses.tranches as any)[trancheListKey];
     for (const tranche of trancheList) {
       pools.push(tranche.ytPool.address);
     }
@@ -154,7 +154,7 @@ export async function getPoolIdByTermAddress(
 ): Promise<string> {
   let poolId = "";
   for (const trancheListKey in deploymentAddresses.tranches) {
-    const trancheList = deploymentAddresses.tranches[trancheListKey];
+    const trancheList = (deploymentAddresses.tranches as any)[trancheListKey];
     for (const tranche of trancheList) {
       if (termAddress == tranche.address) {
         if (poolType == PoolType.PT) {
@@ -180,7 +180,7 @@ export function getBaseTokenAddress(
 ): string {
   for (const token in deploymentAddresses.tokens) {
     if (token == tokenKey) {
-      return deploymentAddresses.tokens[token];
+      return (deploymentAddresses.tokens as any)[token];
     }
   }
   return "";

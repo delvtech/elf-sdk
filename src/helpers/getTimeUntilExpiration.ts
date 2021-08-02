@@ -15,9 +15,8 @@
  */
 
 import { Provider } from "@ethersproject/providers";
+import { ConvergentCurvePool__factory } from "elf-contracts-typechain";
 import { BigNumber, Signer } from "ethers";
-
-import { ConvergentCurvePool__factory } from "../../typechain/factories/ConvergentCurvePool__factory";
 
 /**
  * Get the time until expiration for a given pool

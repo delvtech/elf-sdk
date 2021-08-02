@@ -15,7 +15,6 @@
  */
 
 import { ethers } from "hardhat";
-import { ERC20Permit__factory } from "../typechain/factories/ERC20Permit__factory";
 import {
   getElementDeploymentAddresses,
   getElementTermAddresses,
@@ -29,6 +28,7 @@ import {
 import { getTermByTokenSymbol } from "../src/helpers/getTermByTokenSymbol";
 import { DeploymentAddresses } from "../typechain/DeploymentAddresses";
 import { BigNumber } from "ethers";
+import { ERC20Permit__factory } from "elf-contracts-typechain";
 
 async function main() {
   const [signer] = await ethers.getSigners();

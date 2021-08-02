@@ -1,0 +1,27 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"module": "commonjs",
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"strict": true,
+		"resolveJsonModule": true,
+		"declaration": true,
+		"outDir": "compiled/",
+		"baseUrl": ".",
+		"paths": {
+			"src/*": [
+				"./src/*"
+			]
+		}
+	},
+	// Include/Exclude is for collections or groups of files or folders, etc..
+	"include": [
+		"src/**/*.ts",
+		"examples/**/*.ts"
+	],
+	// Specify separate files directly by their path
+	"files": [
+		"./hardhat.config.ts"
+	]
+}
