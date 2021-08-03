@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 1
 
       - name: init
-        run: npm ci && npm run load-contracts
+        run: npm ci 
       
       - name: Style Check
         run: npm run style-check
