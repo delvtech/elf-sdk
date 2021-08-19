@@ -40,5 +40,5 @@ export async function getTermByTokenSymbol(
     );
     termTokenSymbols.principalTokenSymbol == tokenSymbol ||
       termTokenSymbols.yieldTokenSymbol == tokenSymbol;
-  });
+  }) as string;
 }

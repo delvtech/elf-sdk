@@ -15,9 +15,8 @@
  */
 
 import { Provider } from "@ethersproject/providers";
+import { TrancheFactory__factory } from "elf-contracts-typechain";
 import { Signer } from "ethers";
-
-import { TrancheFactory__factory } from "../../typechain/factories/TrancheFactory__factory";
 
 /**
  * Returns an array of tranche addresses for a given tranche factory.  filterable by wrapped position.

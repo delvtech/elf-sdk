@@ -15,9 +15,8 @@
  */
 
 import { Provider } from "@ethersproject/providers";
+import { ConvergentCurvePool__factory } from "elf-contracts-typechain";
 import { Signer } from "ethers";
-
-import { ConvergentCurvePool__factory } from "../../typechain/factories/ConvergentCurvePool__factory";
 
 /**
  * Get the unit seconds for a given pool

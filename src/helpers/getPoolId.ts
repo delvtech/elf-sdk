@@ -16,7 +16,7 @@
 
 import { Signer } from "ethers";
 import { Provider } from "@ethersproject/providers";
-import { BasePool__factory } from "../../typechain/factories/BasePool__factory";
+import { BasePool__factory } from "elf-contracts-typechain";
 
 /**
  * Returns the PoolId for a given pool.

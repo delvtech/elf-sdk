@@ -32,6 +32,7 @@ https
     res.on("end", () => {
       try {
         const json = JSON.parse(body);
+        fs.mkdirSync("typechain", { recursive: true });
         fs.appendFileSync("typechain/DeploymentAddresses.d.ts", " ", "utf8");
         fs.truncateSync("typechain/DeploymentAddresses.d.ts");
         JsonToTS(json, { rootName: "DeploymentAddresses" }).forEach(

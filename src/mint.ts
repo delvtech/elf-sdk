@@ -15,16 +15,14 @@
  */
 
 import { Provider } from "@ethersproject/providers";
+import { Tranche__factory, UserProxy__factory } from "elf-contracts-typechain";
 import {
   BigNumber,
   ContractTransaction,
-  Signer,
   PayableOverrides,
+  Signer,
 } from "ethers";
 import { parseUnits } from "ethers/lib/utils";
-import { Tranche__factory } from "../typechain/factories/Tranche__factory";
-
-import { UserProxy__factory } from "../typechain/factories/UserProxy__factory";
 
 export const ETH_SENTINEL_ADDRESS =
   "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
