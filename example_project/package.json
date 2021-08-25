@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "update-elf-sdk":"npm install git+https://github.com/element-fi/elf-sdk.git",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
