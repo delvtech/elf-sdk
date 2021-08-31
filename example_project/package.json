@@ -1,15 +1,16 @@
 {
   "name": "example_project",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "update-elf-sdk":"npm install git+https://github.com/element-fi/elf-sdk.git",
+    "update-elf-sdk": "npm install git+https://github.com/element-fi/elf-sdk.git#sdk-work",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "elf-sdk": "git+https://github.com/element-fi/elf-sdk.git"
+    "elf-sdk": "git+https://github.com/element-fi/elf-sdk.git#sdk-work"
   }
 }
