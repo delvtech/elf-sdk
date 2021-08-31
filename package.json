@@ -2,7 +2,7 @@
     "name": "elf-sdk",
     "version": "1.0.0",
     "description": "",
-    "main":"dist/index.js",
+    "main": "index.js",
     "scripts": {
         "update-elf-contracts-typechain": "npm install git+https://github.com/element-fi/elf-contracts-typechain.git",
         "build": "npx hardhat compile && rm ./typechain/index.ts",
@@ -41,7 +41,7 @@
         "ts-generator": "^0.1.1",
         "ts-node": "^9.1.1",
         "typechain": "^4.0.1",
-        "typescript": "^4.1.3"
+        "typescript": "^4.4.2"
     },
     "dependencies": {
         "elf-contracts-typechain": "git+https://github.com/element-fi/elf-contracts-typechain.git"
