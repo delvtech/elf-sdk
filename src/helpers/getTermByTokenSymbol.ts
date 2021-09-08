@@ -32,13 +32,25 @@ export async function getTermByTokenSymbol(
   tokenSymbol: string,
   signerOrProvider: Signer | Provider
 ): Promise<string> {
-  return termAddresses.find(async (termAddress) => {
+  const symbolsList = await Promise.all(
+    termAddresses.map(async (termAddress) => {
+      const { principalTokenSymbol, yieldTokenSymbol }: TermTokenSymbolsResult =
+        await getTermTokenSymbols(termAddress, signerOrProvider);
+
+      return {
+        termAddress: termAddress,
+        principalTokenSymbol: principalTokenSymbol,
+        yieldTokenSymbol: yieldTokenSymbol,
+      };
+    })
+  );
+  return termAddresses.find((t) => {
     // get the symbols of a particular term address
-    const termTokenSymbols: TermTokenSymbolsResult = await getTermTokenSymbols(
-      termAddress,
-      signerOrProvider
+    const term = symbolsList.find(({ termAddress }) => termAddress == t)!;
+
+    return (
+      term.principalTokenSymbol == tokenSymbol ||
+      term.yieldTokenSymbol == tokenSymbol
     );
-    termTokenSymbols.principalTokenSymbol == tokenSymbol ||
-      termTokenSymbols.yieldTokenSymbol == tokenSymbol;
   }) as string;
 }
