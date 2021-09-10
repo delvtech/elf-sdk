@@ -29,10 +29,7 @@ export async function getOpenTerms(
   const timestamp = await getLatestBlockTimestamp();
 
   const notExpiredTranches: string[] = trancheEvents
-    .filter((event) => {
-      console.log(timestamp + " " + event.args?.expiration);
-      return event.args?.expiration.toNumber() > timestamp;
-    })
+    .filter((event) => event.args?.expiration.toNumber() > timestamp)
     .map((event) => event.args?.trancheAddress);  
 
   return notExpiredTranches;
