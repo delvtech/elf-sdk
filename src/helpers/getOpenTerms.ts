@@ -30,7 +30,7 @@ export async function getOpenTerms(
 
   const notExpiredTranches: string[] = trancheEvents
     .filter((event) => event.args?.expiration.toNumber() > timestamp)
-    .map((event) => event.args?.trancheAddress);  
+    .map((event) => event.args?.trancheAddress);
 
   return notExpiredTranches;
 }
