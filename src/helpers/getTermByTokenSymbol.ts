@@ -21,9 +21,9 @@ import {
 } from "./getTermTokenSymbols";
 
 interface TermAddressSymbols {
-  termAddress: string,
-  principalTokenSymbol: string,
-  yieldTokenSymbol: string
+  termAddress: string;
+  principalTokenSymbol: string;
+  yieldTokenSymbol: string;
 }
 
 /**
