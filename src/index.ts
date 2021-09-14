@@ -13,9 +13,9 @@ export type { exitWeightedPool } from "../compiled/src/exitPool";
 
 export type { calcFixedAPR } from "../compiled/src/helpers/calcFixedAPR";
 export type { calcSwapOutGivenInCCPoolUnsafe } from "../compiled/src/helpers/calcPoolSwap";
-export type { calcSwapInGivenOutCCPoolUnsafe} from "../compiled/src/helpers/calcPoolSwap";
+export type { calcSwapInGivenOutCCPoolUnsafe } from "../compiled/src/helpers/calcPoolSwap";
 export type { calcSwapOutGivenInWeightedPoolUnsafe } from "../compiled/src/helpers/calcPoolSwap";
-export type {calcSwapInGivenOutWeightedPoolUnsafe } from "../compiled/src/helpers/calcPoolSwap";
+export type { calcSwapInGivenOutWeightedPoolUnsafe } from "../compiled/src/helpers/calcPoolSwap";
 export type { calcSpotPricePt } from "../compiled/src/helpers/calcSpotPrice";
 export type { calcSpotPriceYt } from "../compiled/src/helpers/calcSpotPrice";
 export type { PoolType } from "../compiled/src/helpers/getElementAddresses";

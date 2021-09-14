@@ -7,4 +7,8 @@ import { Signer } from "ethers";
  * @param signerOrProvider
  * @returns a promise for a term address
  */
-export declare function getTermByTokenSymbol(termAddresses: string[], tokenSymbol: string, signerOrProvider: Signer | Provider): Promise<string>;
+export declare function getTermByTokenSymbol(
+  termAddresses: string[],
+  tokenSymbol: string,
+  signerOrProvider: Signer | Provider
+): Promise<string>;

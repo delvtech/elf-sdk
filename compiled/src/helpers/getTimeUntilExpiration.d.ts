@@ -7,4 +7,8 @@ import { Signer } from "ethers";
  * @param timestamp timestamp of the latest block
  * @returns the time until expiration
  */
-export declare function getTimeUntilExpiration(poolAddress: string, signerOrProvider: Signer | Provider, timestamp: number): Promise<number>;
+export declare function getTimeUntilExpiration(
+  poolAddress: string,
+  signerOrProvider: Signer | Provider,
+  timestamp: number
+): Promise<number>;
