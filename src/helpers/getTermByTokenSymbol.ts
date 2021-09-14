@@ -20,6 +20,12 @@ import {
   TermTokenSymbolsResult,
 } from "./getTermTokenSymbols";
 
+interface TermAddressSymbols {
+  termAddress: string;
+  principalTokenSymbol: string;
+  yieldTokenSymbol: string;
+}
+
 /**
  * returns the term matching a token symbol
  * @param termAddresses array of terms addresses
@@ -32,13 +38,25 @@ export async function getTermByTokenSymbol(
   tokenSymbol: string,
   signerOrProvider: Signer | Provider
 ): Promise<string> {
-  return termAddresses.find(async (termAddress) => {
+  const symbolsList: TermAddressSymbols[] = await Promise.all(
+    termAddresses.map(async (termAddress): Promise<TermAddressSymbols> => {
+      const { principalTokenSymbol, yieldTokenSymbol }: TermTokenSymbolsResult =
+        await getTermTokenSymbols(termAddress, signerOrProvider);
+
+      return {
+        termAddress,
+        principalTokenSymbol,
+        yieldTokenSymbol,
+      };
+    })
+  );
+  return termAddresses.find((t) => {
     // get the symbols of a particular term address
-    const termTokenSymbols: TermTokenSymbolsResult = await getTermTokenSymbols(
-      termAddress,
-      signerOrProvider
+    const term = symbolsList.find(({ termAddress }) => termAddress == t);
+
+    return (
+      term?.principalTokenSymbol == tokenSymbol ||
+      term?.yieldTokenSymbol == tokenSymbol
     );
-    termTokenSymbols.principalTokenSymbol == tokenSymbol ||
-      termTokenSymbols.yieldTokenSymbol == tokenSymbol;
   }) as string;
 }
