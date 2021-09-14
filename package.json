@@ -2,7 +2,8 @@
     "name": "elf-sdk",
     "version": "1.0.0",
     "description": "",
-    "main": "lib/index.js",
+    "main": "compiled/index.js",
+    "types": "compiled/index.d.ts",
     "scripts": {
         "update-elf-contracts-typechain": "npm install git+https://github.com/element-fi/elf-contracts-typechain.git",
         "build": "npx hardhat compile && rm ./typechain/index.ts",
