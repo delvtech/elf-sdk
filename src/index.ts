@@ -1,6 +1,6 @@
-/* 
- * This is a handwritten root file used to re-export the public and 
- * importable function, interfaces, etc. for consumers of the SDK 
+/*
+ * This is a handwritten root file used to re-export the public and
+ * importable function, interfaces, etc. for consumers of the SDK
  */
 export type { mintWithUserProxy } from "src/mint";
 export type { getTermExpiration } from "src/mint";
