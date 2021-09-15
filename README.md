@@ -9,9 +9,17 @@ This repo provides an SDK for developers to use when interacting with and buildi
 ## Install
 
 ```bash
-npm install
+npm install git+https://github.com/element-fi/elf-sdk.git
 npm run generate-interfaces
 ```
+
+Since this repo is not an npm package, it can be helpful to include this simple script to upgrade your project to the latest commit:
+
+```
+ "scripts": {
+    "update-elf-sdk": "npm install git+https://github.com/element-fi/elf-sdk.git"
+  },
+  ```
 
 ## Build
 
