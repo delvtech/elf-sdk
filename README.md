@@ -17,7 +17,7 @@ Since this repo is not an npm package, it can be helpful to include this simple 
 
 ```
  "scripts": {
-    "update-elf-contracts-typechain": "npm install git+https://github.com/element-fi/elf-contracts-typechain.git"
+    "update-elf-sdk": "npm install git+https://github.com/element-fi/elf-sdk.git"
   },
   ```
 
