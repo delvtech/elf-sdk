@@ -1,5 +1,3 @@
-import { Fragment } from "@ethersproject/abi";
-
 export type { mintWithUserProxy } from "../compiled/src/mint";
 export type { getTermExpiration } from "../compiled/src/mint";
 export type { getTermPosition } from "../compiled/src/mint";
