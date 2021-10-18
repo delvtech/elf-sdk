@@ -36,49 +36,35 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTermByTokenSymbol = void 0;
-var getTermTokenSymbols_1 = require("./getTermTokenSymbols");
+exports.getOpenTerms = void 0;
+var elf_contracts_typechain_1 = require("elf-contracts-typechain");
+var getLatestBlockTimestamp_1 = require("./getLatestBlockTimestamp");
 /**
- * returns the term matching a token symbol
- * @param termAddresses array of terms addresses
- * @param tokenSymbol the token symbol to filter on
- * @param signerOrProvider
- * @returns a promise for a term address
+ * Returns an array of not expired tranche addresses.
+ *
+ * @param trancheFactoryAddress The TrancheFactory that deployed the tranches
+ * @returns a promise of an array of tranche addresses
  */
-function getTermByTokenSymbol(termAddresses, tokenSymbol, signerOrProvider) {
+function getOpenTerms(trancheFactoryAddress, signerOrProvider) {
     return __awaiter(this, void 0, void 0, function () {
-        var symbolsList;
-        var _this = this;
+        var trancheFactoryContract, queryFilter, trancheEvents, timestamp, notExpiredTranches;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, Promise.all(termAddresses.map(function (termAddress) { return __awaiter(_this, void 0, void 0, function () {
-                        var _a, principalTokenSymbol, yieldTokenSymbol;
-                        return __generator(this, function (_b) {
-                            switch (_b.label) {
-                                case 0: return [4 /*yield*/, (0, getTermTokenSymbols_1.getTermTokenSymbols)(termAddress, signerOrProvider)];
-                                case 1:
-                                    _a = _b.sent(), principalTokenSymbol = _a.principalTokenSymbol, yieldTokenSymbol = _a.yieldTokenSymbol;
-                                    return [2 /*return*/, {
-                                            termAddress: termAddress,
-                                            principalTokenSymbol: principalTokenSymbol,
-                                            yieldTokenSymbol: yieldTokenSymbol,
-                                        }];
-                            }
-                        });
-                    }); }))];
+                case 0:
+                    trancheFactoryContract = elf_contracts_typechain_1.TrancheFactory__factory.connect(trancheFactoryAddress, signerOrProvider);
+                    queryFilter = trancheFactoryContract.filters.TrancheCreated(null, null, null);
+                    return [4 /*yield*/, trancheFactoryContract.queryFilter(queryFilter)];
                 case 1:
-                    symbolsList = _a.sent();
-                    return [2 /*return*/, termAddresses.find(function (t) {
-                            // get the symbols of a particular term address
-                            var term = symbolsList.find(function (_a) {
-                                var termAddress = _a.termAddress;
-                                return termAddress == t;
-                            });
-                            return ((term === null || term === void 0 ? void 0 : term.principalTokenSymbol) == tokenSymbol ||
-                                (term === null || term === void 0 ? void 0 : term.yieldTokenSymbol) == tokenSymbol);
-                        })];
+                    trancheEvents = _a.sent();
+                    return [4 /*yield*/, (0, getLatestBlockTimestamp_1.getLatestBlockTimestamp)()];
+                case 2:
+                    timestamp = _a.sent();
+                    notExpiredTranches = trancheEvents
+                        .filter(function (event) { var _a; return ((_a = event.args) === null || _a === void 0 ? void 0 : _a.expiration.toNumber()) > timestamp; })
+                        .map(function (event) { var _a; return (_a = event.args) === null || _a === void 0 ? void 0 : _a.trancheAddress; });
+                    return [2 /*return*/, notExpiredTranches];
             }
         });
     });
 }
-exports.getTermByTokenSymbol = getTermByTokenSymbol;
+exports.getOpenTerms = getOpenTerms;
