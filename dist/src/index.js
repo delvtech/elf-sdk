@@ -22,7 +22,7 @@ exports.THIRTY_DAYS_IN_MILLISECONDS = exports.ONE_YEAR_IN_MILLISECONDS = exports
  */
 var mint_1 = require("./mint");
 Object.defineProperty(exports, "mintWithUserProxy", { enumerable: true, get: function () { return mint_1.mintWithUserProxy; } });
-var mint_2 = require("src/mint");
+var mint_2 = require("./mint");
 Object.defineProperty(exports, "getTermExpiration", { enumerable: true, get: function () { return mint_2.getTermExpiration; } });
 var mint_3 = require("./mint");
 Object.defineProperty(exports, "getTermPosition", { enumerable: true, get: function () { return mint_3.getTermPosition; } });
