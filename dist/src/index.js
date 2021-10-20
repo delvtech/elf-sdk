@@ -20,11 +20,11 @@ exports.THIRTY_DAYS_IN_MILLISECONDS = exports.ONE_YEAR_IN_MILLISECONDS = exports
  * This is a handwritten root file used to re-export the public and
  * importable function, interfaces, etc. for consumers of the SDK
  */
-var mint_1 = require("src/mint");
+var mint_1 = require("../src/mint");
 Object.defineProperty(exports, "mintWithUserProxy", { enumerable: true, get: function () { return mint_1.mintWithUserProxy; } });
-var mint_2 = require("src/mint");
+var mint_2 = require("../src/mint");
 Object.defineProperty(exports, "getTermExpiration", { enumerable: true, get: function () { return mint_2.getTermExpiration; } });
-var mint_3 = require("src/mint");
+var mint_3 = require("../src/mint");
 Object.defineProperty(exports, "getTermPosition", { enumerable: true, get: function () { return mint_3.getTermPosition; } });
 var swap_1 = require("src/swap");
 Object.defineProperty(exports, "swap", { enumerable: true, get: function () { return swap_1.swap; } });
