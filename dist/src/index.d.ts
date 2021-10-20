@@ -1,6 +1,7 @@
-export { mintWithUserProxy } from "src/mint";
-export { getTermExpiration } from "src/mint";
-export { getTermPosition } from "src/mint";
+// export { mintWithUserProxy } from "src/mint";
+export { mintWithUserProxy } from "../src/mint";
+export { getTermExpiration } from "../src/mint";
+export { getTermPosition } from "../src/mint";
 export { SingleSwap } from "src/swap";
 export { swap } from "src/swap";
 export { joinConvergentPool } from "src/joinPool";
