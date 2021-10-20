@@ -27,6 +27,7 @@ export { getLatestBlockTimestamp } from "src/helpers/getLatestBlockTimestamp";
 export { getPoolId } from "src/helpers/getPoolId";
 export { ReservesResult } from "src/helpers/getReserves";
 export { getReserves } from "src/helpers/getReserves";
+export { TermTokenSymbolsResult } from "src/helpers/getTermTokenSymbols";
 export { getTermByTokenSymbol } from "src/helpers/getTermByTokenSymbol";
 export { getTerms } from "src/helpers/getTerms";
 export { getTermTokenSymbols } from "src/helpers/getTermTokenSymbols";

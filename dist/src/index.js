@@ -1,6 +1,25 @@
 "use strict";
+/*
+ * Copyright 2021 Element Finance, Inc
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.THIRTY_DAYS_IN_MILLISECONDS = exports.ONE_YEAR_IN_MILLISECONDS = exports.ONE_WEEK_IN_MILLISECONDS = exports.ONE_DAY_IN_MILLISECONDS = exports.ONE_HOUR_IN_MILLISECONDS = exports.ONE_MINUTE_IN_MILLISECONDS = exports.ONE_YEAR_IN_SECONDS = exports.SIX_MONTHS_IN_SECONDS = exports.THIRTY_DAYS_IN_SECONDS = exports.ONE_WEEK_IN_SECONDS = exports.ONE_DAY_IN_SECONDS = exports.ONE_HOUR_IN_SECONDS = exports.ONE_MINUTE_IN_SECONDS = exports.getUnitSeconds = exports.getTotalSupply = exports.getTimeUntilExpiration = exports.getTermTokenSymbols = exports.getTerms = exports.getTermByTokenSymbol = exports.getReserves = exports.getPoolId = exports.getLatestBlockTimestamp = exports.getBaseTokenAddress = exports.getPoolIdByTermAddress = exports.getElementYtPoolAddresses = exports.getElementPtPoolAddresses = exports.getElementTermAddresses = exports.getElementTermFactoryAddresses = exports.getElementDeploymentAddresses = exports.PoolType = exports.calcSpotPriceYt = exports.calcSpotPricePt = exports.calcSwapInGivenOutWeightedPoolUnsafe = exports.calcSwapOutGivenInWeightedPoolUnsafe = exports.calcSwapInGivenOutCCPoolUnsafe = exports.calcSwapOutGivenInCCPoolUnsafe = exports.calcFixedAPR = exports.exitWeightedPool = exports.WeightedPoolExitKind = exports.exitConvergentPool = exports.joinWeightedPool = exports.joinConvergentPool = exports.swap = exports.getTermPosition = exports.getTermExpiration = exports.mintWithUserProxy = void 0;
+/*
+ * This is a handwritten root file used to re-export the public and
+ * importable function, interfaces, etc. for consumers of the SDK
+ */
 var mint_1 = require("src/mint");
 Object.defineProperty(exports, "mintWithUserProxy", { enumerable: true, get: function () { return mint_1.mintWithUserProxy; } });
 var mint_2 = require("src/mint");
