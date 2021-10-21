@@ -6,6 +6,7 @@
     "types": "dist/src/index.d.ts",
     "scripts": {
         "update-elf-contracts-typechain": "npm install git+https://github.com/element-fi/elf-contracts-typechain.git",
+        "update-elf-tokenlist": "npm install git+https://github.com/element-fi/elf-tokenlist.git",
         "build": "sh scripts/build.sh",
         "test": "npx hardhat compile && rm ./typechain/index.ts && npx hardhat test --config hardhat.config.test.ts ./test/*.ts",
         "style-check": "npx prettier --check .",
@@ -46,6 +47,7 @@
     },
     "dependencies": {
         "elf-contracts-typechain": "git+https://github.com/element-fi/elf-contracts-typechain.git",
+        "elf-tokenlist": "github:element-fi/elf-tokenlist",
         "tsc": "^2.0.3"
     }
 }
