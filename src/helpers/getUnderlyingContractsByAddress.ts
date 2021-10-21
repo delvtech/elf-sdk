@@ -21,6 +21,10 @@ import {
   DAI__factory,
   ERC20__factory,
   ERC20Permit__factory,
+  ERC20,
+  ERC20Permit,
+  WETH,
+  DAI
 } from "elf-contracts-typechain/dist/types";
 import { WETH__factory } from "elf-contracts-typechain/dist/types/factories/WETH__factory";
 import { AddressesJsonFile } from "elf-tokenlist/dist/AddressesJsonFile";
@@ -28,7 +32,8 @@ import { AddressesJsonFile } from "elf-tokenlist/dist/AddressesJsonFile";
 export function getUnderlyingContractsByAddress(
   addressesJsonId: string, // mainnet or goerli
   signerOrProvider: Signer | Provider
-): Object {
+): Record<string, ERC20 | WETH | DAI | ERC20Permit> {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const AddressesJson: AddressesJsonFile = require(`elf-tokenlist/dist/${addressesJsonId}.addresses.json`);
   const {
     addresses: {
