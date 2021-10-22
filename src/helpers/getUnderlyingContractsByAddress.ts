@@ -24,7 +24,7 @@ import {
   ERC20,
   ERC20Permit,
   WETH,
-  DAI
+  DAI,
 } from "elf-contracts-typechain/dist/types";
 import { WETH__factory } from "elf-contracts-typechain/dist/types/factories/WETH__factory";
 import { AddressesJsonFile } from "elf-tokenlist/dist/AddressesJsonFile";
