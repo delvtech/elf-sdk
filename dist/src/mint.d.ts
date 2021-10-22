@@ -1,12 +1,6 @@
 import { Provider } from "@ethersproject/providers";
-import {
-  BigNumber,
-  ContractTransaction,
-  PayableOverrides,
-  Signer,
-} from "ethers";
-export declare const ETH_SENTINEL_ADDRESS =
-  "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
+import { BigNumber, ContractTransaction, PayableOverrides, Signer } from "ethers";
+export declare const ETH_SENTINEL_ADDRESS = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 /**
  * Mints new principal and yield tokens for a given amount of base asset.  The base asset must match
  * the term's underlying.  For terms that accept WETH, ETH can also be used by supplying the ETH_SENTINEL_ADDRESS.
@@ -19,16 +13,7 @@ export declare const ETH_SENTINEL_ADDRESS =
  * @param baseAssetDecimals the decimal precision of the asset, i.e. 18 for Ether
  * @param signerOrProvider
  */
-export declare function mintWithUserProxy(
-  userProxyContractAddress: string,
-  termExpiration: number,
-  termPosition: string,
-  baseAssetAmount: string,
-  baseAssetAddress: string,
-  baseAssetDecimals: number,
-  signerOrProvider: Signer | Provider,
-  overrides?: PayableOverrides
-): Promise<ContractTransaction>;
+export declare function mintWithUserProxy(userProxyContractAddress: string, termExpiration: number, termPosition: string, baseAssetAmount: string, baseAssetAddress: string, baseAssetDecimals: number, signerOrProvider: Signer | Provider, overrides?: PayableOverrides): Promise<ContractTransaction>;
 /**
  * get the expiration time in unix seconds for a term.  returns a BigNumber that can be converted
  * to a number with BigNumber.toNumber()
@@ -36,17 +21,11 @@ export declare function mintWithUserProxy(
  * @param signerOrProvider
  * @returns
  */
-export declare function getTermExpiration(
-  termAddress: string,
-  signerOrProvider: Signer | Provider
-): Promise<BigNumber>;
+export declare function getTermExpiration(termAddress: string, signerOrProvider: Signer | Provider): Promise<BigNumber>;
 /**
  * returns the wrapped position address for a given term
  * @param termAddress the address of the term
  * @param signerOrProvider
  * @returns
  */
-export declare function getTermPosition(
-  termAddress: string,
-  signerOrProvider: Signer | Provider
-): Promise<string>;
+export declare function getTermPosition(termAddress: string, signerOrProvider: Signer | Provider): Promise<string>;

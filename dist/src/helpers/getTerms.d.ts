@@ -7,8 +7,4 @@ import { Signer } from "ethers";
  * @param wrappedPositionAddress The wrapped position to filter by
  * @returns a promise of an array of tranche addresses
  */
-export declare function getTerms(
-  trancheFactoryAddress: string,
-  wrappedPositionAddress: string | null,
-  signerOrProvider: Signer | Provider
-): Promise<string[]>;
+export declare function getTerms(trancheFactoryAddress: string, wrappedPositionAddress: string | null, signerOrProvider: Signer | Provider): Promise<string[]>;

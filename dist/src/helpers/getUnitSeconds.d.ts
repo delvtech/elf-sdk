@@ -6,7 +6,4 @@ import { Signer } from "ethers";
  * @param signerOrProvider
  * @returns the unit seconds
  */
-export declare function getUnitSeconds(
-  poolAddress: string,
-  signerOrProvider: Signer | Provider
-): Promise<number>;
+export declare function getUnitSeconds(poolAddress: string, signerOrProvider: Signer | Provider): Promise<number>;
