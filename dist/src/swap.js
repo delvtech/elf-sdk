@@ -51,7 +51,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.swap = exports.SingleSwap = exports.SwapKind = exports.BALANCER_ETH_SENTINEL = void 0;
+exports.swap = exports.SwapKind = exports.BALANCER_ETH_SENTINEL = void 0;
 var elf_contracts_typechain_1 = require("elf-contracts-typechain");
 var time_1 = require("../src/constants/time");
 exports.BALANCER_ETH_SENTINEL = "0x0000000000000000000000000000000000000000";
@@ -60,7 +60,6 @@ var SwapKind;
     SwapKind[SwapKind["GIVEN_IN"] = 0] = "GIVEN_IN";
     SwapKind[SwapKind["GIVEN_OUT"] = 1] = "GIVEN_OUT";
 })(SwapKind = exports.SwapKind || (exports.SwapKind = {}));
-exports.SingleSwap = undefined;
 /**
  *
  * @param signer

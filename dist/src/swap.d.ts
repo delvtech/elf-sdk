@@ -18,7 +18,6 @@ export interface SingleSwap {
   amount: BigNumber;
   userData: string;
 }
-export declare const SingleSwap: undefined;
 /**
  *
  * @param signer
