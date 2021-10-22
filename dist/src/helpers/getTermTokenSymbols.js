@@ -51,9 +51,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTermTokenSymbols = exports.TermTokenSymbolsResult = void 0;
+exports.getTermTokenSymbols = void 0;
 var elf_contracts_typechain_1 = require("elf-contracts-typechain");
-exports.TermTokenSymbolsResult = undefined;
 /**
  * returns the token symbols for a given term
  * @param termAddress the address of the term

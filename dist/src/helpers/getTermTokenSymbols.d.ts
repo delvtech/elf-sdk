@@ -10,7 +10,6 @@ export interface TermTokenSymbolsResult {
    */
   yieldTokenSymbol: string;
 }
-export declare const TermTokenSymbolsResult: undefined;
 /**
  * returns the token symbols for a given term
  * @param termAddress the address of the term

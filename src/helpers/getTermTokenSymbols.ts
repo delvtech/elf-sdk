@@ -31,7 +31,6 @@ export interface TermTokenSymbolsResult {
    */
   yieldTokenSymbol: string;
 }
-export const TermTokenSymbolsResult = undefined;
 
 /**
  * returns the token symbols for a given term
