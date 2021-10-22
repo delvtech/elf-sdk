@@ -13,11 +13,20 @@ import { BigNumber, ContractTransaction, Signer } from "ethers";
  * @param fromInternalBalance Use the sender's Balancer V2 internal balance first, if available.
  * @returns returns the contract transaction.
  */
-export declare function exitConvergentPool(signer: Signer, poolId: string, senderAddress: string, receipientAddress: string, vaultAddress: string, tokens: string[], minAmountsOut: BigNumber[], toInternalBalance?: boolean): Promise<ContractTransaction>;
+export declare function exitConvergentPool(
+  signer: Signer,
+  poolId: string,
+  senderAddress: string,
+  receipientAddress: string,
+  vaultAddress: string,
+  tokens: string[],
+  minAmountsOut: BigNumber[],
+  toInternalBalance?: boolean
+): Promise<ContractTransaction>;
 export declare enum WeightedPoolExitKind {
-    EXACT_BPT_IN_FOR_ONE_TOKEN_OUT = 0,
-    EXACT_BPT_IN_FOR_TOKENS_OUT = 1,
-    BPT_IN_FOR_EXACT_TOKENS_OUT = 2
+  EXACT_BPT_IN_FOR_ONE_TOKEN_OUT = 0,
+  EXACT_BPT_IN_FOR_TOKENS_OUT = 1,
+  BPT_IN_FOR_EXACT_TOKENS_OUT = 2,
 }
 /**
  * Remove liquidity from a WeightedPool.
@@ -36,4 +45,16 @@ export declare enum WeightedPoolExitKind {
  * @param tokenIndex If withdrawing a single token, the index of the token in tokens
  * @returns returns the contract transaction.
  */
-export declare function exitWeightedPool(signer: Signer, poolId: string, senderAddress: string, receipientAddress: string, vaultAddress: string, tokens: string[], minAmountsOut: BigNumber[], toInternalBalance: boolean | undefined, exitKind: WeightedPoolExitKind | undefined, maxBPTIn: BigNumber, tokenIndex?: number): Promise<ContractTransaction>;
+export declare function exitWeightedPool(
+  signer: Signer,
+  poolId: string,
+  senderAddress: string,
+  receipientAddress: string,
+  vaultAddress: string,
+  tokens: string[],
+  minAmountsOut: BigNumber[],
+  toInternalBalance: boolean | undefined,
+  exitKind: WeightedPoolExitKind | undefined,
+  maxBPTIn: BigNumber,
+  tokenIndex?: number
+): Promise<ContractTransaction>;

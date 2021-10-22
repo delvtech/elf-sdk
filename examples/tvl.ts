@@ -15,40 +15,49 @@
  */
 
 import { ethers } from "hardhat";
-import { useTotalValueLockedForPlatform, principalTokenInfos, fetchTotalValueLockedForTerm } from "../src/helpers/calcTvl"
+import {
+  useTotalValueLockedForPlatform,
+  principalTokenInfos,
+  fetchTotalValueLockedForTerm,
+} from "../src/helpers/calcTvl";
 
 import { Currencies, Money } from "ts-money";
 import { ERC20 } from "elf-contracts-typechain/dist/types/ERC20";
-import { getUnderlyingContractsByAddress }  from "../src/helpers/getUnderlyingContractsByAddress";
-import { getTokenPrice } from "../src/helpers/getTokenPrice"
+import { getUnderlyingContractsByAddress } from "../src/helpers/getUnderlyingContractsByAddress";
+import { getTokenPrice } from "../src/helpers/getTokenPrice";
 
 async function main() {
-    const [signer] = await ethers.getSigners();
-    const tvl = await useTotalValueLockedForPlatform(signer);
-    console.log(tvl);
+  const [signer] = await ethers.getSigners();
+  const tvl = await useTotalValueLockedForPlatform(signer);
+  console.log(tvl);
 
-    const chainName = "mainnet";
-    const currency = Currencies.USD;
-    const results = await Promise.all(
-        principalTokenInfos.map(async (tokenInfo) => {
-            const underlyingContractsByAddress = getUnderlyingContractsByAddress(chainName, signer);
-            const baseAssetContract =
-            underlyingContractsByAddress[tokenInfo.extensions.underlying];
-            const baseAssetPrice = await getTokenPrice(
-            baseAssetContract as ERC20,
-            currency
-            );
-            const termTvl = await fetchTotalValueLockedForTerm(tokenInfo, baseAssetPrice, signer);
-            return [await (baseAssetContract as ERC20).name(), termTvl];
-        })
-    );
-
-  results.forEach(
-    (result) => {
-        console.log(result[0]);
-        console.log(result[1]);
-    }
+  const chainName = "mainnet";
+  const currency = Currencies.USD;
+  const results = await Promise.all(
+    principalTokenInfos.map(async (tokenInfo) => {
+      const underlyingContractsByAddress = getUnderlyingContractsByAddress(
+        chainName,
+        signer
+      );
+      const baseAssetContract =
+        underlyingContractsByAddress[tokenInfo.extensions.underlying];
+      const baseAssetPrice = await getTokenPrice(
+        baseAssetContract as ERC20,
+        currency
+      );
+      const termTvl = await fetchTotalValueLockedForTerm(
+        tokenInfo,
+        baseAssetPrice,
+        signer
+      );
+      return [await (baseAssetContract as ERC20).name(), termTvl];
+    })
   );
+
+  results.forEach((result) => {
+    console.log(result[0]);
+    console.log(result[1]);
+  });
 }
 
 main();
