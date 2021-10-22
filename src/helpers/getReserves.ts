@@ -36,7 +36,6 @@ export interface ReservesResult {
    */
   decimals: number[];
 }
-export const ReservesResult = undefined;
 /**
  * Returns the reserves for a given pool.
  * @param poolAddress any pool with a getPoolId method
