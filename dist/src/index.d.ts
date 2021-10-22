@@ -1,4 +1,3 @@
-// export { mintWithUserProxy } from "./mint";
 export { mintWithUserProxy } from "./mint";
 export { getTermExpiration } from "./mint";
 export { getTermPosition } from "./mint";
