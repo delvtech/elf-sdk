@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.THIRTY_DAYS_IN_MILLISECONDS = exports.ONE_YEAR_IN_MILLISECONDS = exports.ONE_WEEK_IN_MILLISECONDS = exports.ONE_DAY_IN_MILLISECONDS = exports.ONE_HOUR_IN_MILLISECONDS = exports.ONE_MINUTE_IN_MILLISECONDS = exports.ONE_YEAR_IN_SECONDS = exports.SIX_MONTHS_IN_SECONDS = exports.THIRTY_DAYS_IN_SECONDS = exports.ONE_WEEK_IN_SECONDS = exports.ONE_DAY_IN_SECONDS = exports.ONE_HOUR_IN_SECONDS = exports.ONE_MINUTE_IN_SECONDS = exports.getUnitSeconds = exports.getTotalSupply = exports.getTimeUntilExpiration = exports.getTermTokenSymbols = exports.getTerms = exports.getTermByTokenSymbol = exports.TermTokenSymbolsResult = exports.getReserves = exports.getPoolId = exports.getLatestBlockTimestamp = exports.getBaseTokenAddress = exports.getPoolIdByTermAddress = exports.getElementYtPoolAddresses = exports.getElementPtPoolAddresses = exports.getElementTermAddresses = exports.getElementTermFactoryAddresses = exports.getElementDeploymentAddresses = exports.PoolType = exports.calcSpotPriceYt = exports.calcSpotPricePt = exports.calcSwapInGivenOutWeightedPoolUnsafe = exports.calcSwapOutGivenInWeightedPoolUnsafe = exports.calcSwapInGivenOutCCPoolUnsafe = exports.calcSwapOutGivenInCCPoolUnsafe = exports.calcFixedAPR = exports.exitWeightedPool = exports.WeightedPoolExitKind = exports.exitConvergentPool = exports.joinWeightedPool = exports.joinConvergentPool = exports.swap = exports.getTermPosition = exports.getTermExpiration = exports.mintWithUserProxy = void 0;
+exports.THIRTY_DAYS_IN_MILLISECONDS = exports.ONE_YEAR_IN_MILLISECONDS = exports.ONE_WEEK_IN_MILLISECONDS = exports.ONE_DAY_IN_MILLISECONDS = exports.ONE_HOUR_IN_MILLISECONDS = exports.ONE_MINUTE_IN_MILLISECONDS = exports.ONE_YEAR_IN_SECONDS = exports.SIX_MONTHS_IN_SECONDS = exports.THIRTY_DAYS_IN_SECONDS = exports.ONE_WEEK_IN_SECONDS = exports.ONE_DAY_IN_SECONDS = exports.ONE_HOUR_IN_SECONDS = exports.ONE_MINUTE_IN_SECONDS = exports.getUnitSeconds = exports.getTotalSupply = exports.getTimeUntilExpiration = exports.getTermTokenSymbols = exports.getTerms = exports.getTermByTokenSymbol = exports.TermTokenSymbolsResult = exports.getReserves = exports.ReservesResult = exports.getPoolId = exports.getLatestBlockTimestamp = exports.getBaseTokenAddress = exports.getPoolIdByTermAddress = exports.getElementYtPoolAddresses = exports.getElementPtPoolAddresses = exports.getElementTermAddresses = exports.getElementTermFactoryAddresses = exports.getElementDeploymentAddresses = exports.PoolType = exports.calcSpotPriceYt = exports.calcSpotPricePt = exports.calcSwapInGivenOutWeightedPoolUnsafe = exports.calcSwapOutGivenInWeightedPoolUnsafe = exports.calcSwapInGivenOutCCPoolUnsafe = exports.calcSwapOutGivenInCCPoolUnsafe = exports.calcFixedAPR = exports.exitWeightedPool = exports.WeightedPoolExitKind = exports.exitConvergentPool = exports.joinWeightedPool = exports.joinConvergentPool = exports.swap = exports.SingleSwap = exports.getTermPosition = exports.getTermExpiration = exports.mintWithUserProxy = void 0;
 /*
  * This is a handwritten root file used to re-export the public and
  * importable function, interfaces, etc. for consumers of the SDK
@@ -27,7 +27,9 @@ Object.defineProperty(exports, "getTermExpiration", { enumerable: true, get: fun
 var mint_3 = require("./mint");
 Object.defineProperty(exports, "getTermPosition", { enumerable: true, get: function () { return mint_3.getTermPosition; } });
 var swap_1 = require("./swap");
-Object.defineProperty(exports, "swap", { enumerable: true, get: function () { return swap_1.swap; } });
+Object.defineProperty(exports, "SingleSwap", { enumerable: true, get: function () { return swap_1.SingleSwap; } });
+var swap_2 = require("./swap");
+Object.defineProperty(exports, "swap", { enumerable: true, get: function () { return swap_2.swap; } });
 var joinPool_1 = require("./joinPool");
 Object.defineProperty(exports, "joinConvergentPool", { enumerable: true, get: function () { return joinPool_1.joinConvergentPool; } });
 var joinPool_2 = require("./joinPool");
@@ -73,7 +75,9 @@ Object.defineProperty(exports, "getLatestBlockTimestamp", { enumerable: true, ge
 var getPoolId_1 = require("./helpers/getPoolId");
 Object.defineProperty(exports, "getPoolId", { enumerable: true, get: function () { return getPoolId_1.getPoolId; } });
 var getReserves_1 = require("./helpers/getReserves");
-Object.defineProperty(exports, "getReserves", { enumerable: true, get: function () { return getReserves_1.getReserves; } });
+Object.defineProperty(exports, "ReservesResult", { enumerable: true, get: function () { return getReserves_1.ReservesResult; } });
+var getReserves_2 = require("./helpers/getReserves");
+Object.defineProperty(exports, "getReserves", { enumerable: true, get: function () { return getReserves_2.getReserves; } });
 var getTermTokenSymbols_1 = require("./helpers/getTermTokenSymbols");
 Object.defineProperty(exports, "TermTokenSymbolsResult", { enumerable: true, get: function () { return getTermTokenSymbols_1.TermTokenSymbolsResult; } });
 var getTermByTokenSymbol_1 = require("./helpers/getTermByTokenSymbol");

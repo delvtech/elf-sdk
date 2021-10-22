@@ -40,6 +40,7 @@ export interface SingleSwap {
   amount: BigNumber;
   userData: string;
 }
+export const SingleSwap = undefined;
 
 /**
  *
