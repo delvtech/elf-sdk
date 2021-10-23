@@ -15,13 +15,14 @@
  */
 
 import { expect } from "chai";
+//eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { ethers } from "hardhat";
 
 import {
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
   getTimeUntilExpiration,
   getTimeUntilExpirationByTokenInfo,
 } from "../src/helpers/getTimeUntilExpiration";
-import { getLatestBlockTimestamp } from "../src/helpers/getLatestBlockTimestamp";
 import { initTokenInfo, getTokenInfo } from "../src/helpers/getTokenInfo";
 import { PrincipalPoolTokenInfo } from "../src/types/tokenlists/types";
 

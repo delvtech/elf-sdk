@@ -15,7 +15,7 @@
  */
 
 import { TokenInfo, TokenList } from "@uniswap/token-lists";
-import keyBy from "lodash/keyby";
+import keyBy from "lodash.keyby";
 import { AnyTokenListInfo } from "elf-tokenlist/dist/types";
 
 /**

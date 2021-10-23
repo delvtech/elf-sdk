@@ -26,6 +26,7 @@
         "@nomiclabs/hardhat-waffle": "^2.0.1",
         "@typechain/ethers-v5": "^5.0.0",
         "@types/chai-almost": "^1.0.1",
+        "@types/lodash.keyby": "^4.6.6",
         "@types/mocha": "^8.2.0",
         "@types/node": "^10.17.60",
         "@typescript-eslint/eslint-plugin": "^4.27.0",
@@ -48,6 +49,7 @@
     "dependencies": {
         "elf-contracts-typechain": "github:element-fi/elf-contracts-typechain",
         "elf-tokenlist": "github:element-fi/elf-tokenlist",
+        "lodash.keyby": "^4.6.0",
         "tsc": "^2.0.3"
     }
 }

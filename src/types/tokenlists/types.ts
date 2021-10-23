@@ -62,6 +62,8 @@ export interface AssetProxyTokenInfo extends TokenInfo {
     vault: string;
   };
 }
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface VaultTokenInfo extends TokenInfo {}
 
 export interface YieldTokenInfo extends TokenInfo {
