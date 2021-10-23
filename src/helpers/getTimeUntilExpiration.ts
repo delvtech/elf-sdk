@@ -15,8 +15,11 @@
  */
 
 import { Provider } from "@ethersproject/providers";
-import { ConvergentCurvePool__factory } from "elf-contracts-typechain";
 import { BigNumber, Signer } from "ethers";
+import { PrincipalPoolTokenInfo, YieldPoolTokenInfo,  } from '../types/tokenlists/types'
+
+import { ConvergentCurvePool__factory } from "elf-contracts-typechain";
+
 
 /**
  * Get the time until expiration for a given pool
@@ -40,4 +43,23 @@ export async function getTimeUntilExpiration(
       ? expiration.sub(BigNumber.from(timestamp))
       : BigNumber.from(0);
   return timeUntilExpiration.toNumber();
+}
+
+/**
+ * Get the time until expiration for a given pool using tokenlist.
+ * @param poolTokenInfo PoolTokenInfo with extension property expiration
+ * @param timestamp timestamp of the latest block
+ * @returns the time until expiration
+ */
+ export function getTimeUntilExpirationByTokenInfo(
+  poolTokenInfo: PrincipalPoolTokenInfo | YieldPoolTokenInfo,
+  timestamp: number
+): number {
+
+  const expiration = poolTokenInfo.extensions.expiration;
+  const timeUntilExpiration =
+    timestamp < expiration
+      ? expiration - timestamp
+      : 0;
+  return timeUntilExpiration;
 }
