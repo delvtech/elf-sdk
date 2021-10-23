@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 import { TokenInfo } from "@uniswap/token-lists";
 
 export enum TokenListTag {

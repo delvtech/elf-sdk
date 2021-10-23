@@ -23,7 +23,9 @@ import { AnyTokenListInfo } from "elf-tokenlist/dist/types";
  * @param chainName name of the chain that the tokenlist represents
  * @returns mapping of TokenInfos by address
  */
-export function initTokenInfo(chainName: string): Record<string, AnyTokenListInfo> {
+export function initTokenInfo(
+  chainName: string
+): Record<string, AnyTokenListInfo> {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const tokenListJson: TokenList = require(`elf-tokenlist/dist/${chainName}.tokenlist.json`);
   const tokenInfos = tokenListJson.tokens;
@@ -41,9 +43,8 @@ export function initTokenInfo(chainName: string): Record<string, AnyTokenListInf
  * @returns Mapping of TokenInfos by address
  */
 export function getTokenInfo<T extends TokenInfo>(
-    address: string,
-    tokenInfoByAddress: Record<string, AnyTokenListInfo>): T {
+  address: string,
+  tokenInfoByAddress: Record<string, AnyTokenListInfo>
+): T {
   return tokenInfoByAddress[address] as T;
 }
-
-

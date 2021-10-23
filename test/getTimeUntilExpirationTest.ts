@@ -17,20 +17,27 @@
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-import { getTimeUntilExpiration, getTimeUntilExpirationByTokenInfo } from "../src/helpers/getTimeUntilExpiration";
+import {
+  getTimeUntilExpiration,
+  getTimeUntilExpirationByTokenInfo,
+} from "../src/helpers/getTimeUntilExpiration";
 import { getLatestBlockTimestamp } from "../src/helpers/getLatestBlockTimestamp";
 import { initTokenInfo, getTokenInfo } from "../src/helpers/getTokenInfo";
-import { PrincipalPoolTokenInfo } from '../src/types/tokenlists/types'
+import { PrincipalPoolTokenInfo } from "../src/types/tokenlists/types";
 
 describe("getTimeUntilExpiration", async () => {
-    it("getTimeUntilExpirationByTokenInfo() should return the correct time until expiration", async () => {
-      const blockTimestamp = 1635000391;
-      const tokenInfoByAddress = initTokenInfo("mainnet");
-      const poolAddress = "0x893B30574BF183d69413717f30b17062eC9DFD8b";
-      const poolTokenInfo = getTokenInfo(poolAddress,tokenInfoByAddress)
-      const getTimeUntilExpirationByTokenInfoResult = getTimeUntilExpirationByTokenInfo(poolTokenInfo as PrincipalPoolTokenInfo, blockTimestamp);
-      expect(getTimeUntilExpirationByTokenInfoResult).to.equal(5619867);
-    });
+  it("getTimeUntilExpirationByTokenInfo() should return the correct time until expiration", async () => {
+    const blockTimestamp = 1635000391;
+    const tokenInfoByAddress = initTokenInfo("mainnet");
+    const poolAddress = "0x893B30574BF183d69413717f30b17062eC9DFD8b";
+    const poolTokenInfo = getTokenInfo(poolAddress, tokenInfoByAddress);
+    const getTimeUntilExpirationByTokenInfoResult =
+      getTimeUntilExpirationByTokenInfo(
+        poolTokenInfo as PrincipalPoolTokenInfo,
+        blockTimestamp
+      );
+    expect(getTimeUntilExpirationByTokenInfoResult).to.equal(5619867);
+  });
 
   /*it("getTimeUntilExpiration() should match getTimeUntilExpirationByTokenInfo()", async () => {
     const [signer] = await ethers.getSigners();
@@ -47,6 +54,4 @@ describe("getTimeUntilExpiration", async () => {
     );
     expect(getTimeUntilExpirationByTokenInfoResult).to.equal(getTimeUntilExpirationResult);
   });*/
-
 });
-
