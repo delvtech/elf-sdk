@@ -12,11 +12,20 @@ import { BigNumber, ContractTransaction, Signer } from "ethers";
  * @param fromInternalBalance Use the sender's Balancer V2 internal balance first, if available.
  * @returns returns the contract transaction.
  */
-export declare function joinConvergentPool(signer: Signer, poolId: string, senderAddress: string, receipientAddress: string, vaultAddress: string, tokens: string[], maxAmountsIn: BigNumber[], fromInternalBalance?: boolean): Promise<ContractTransaction>;
+export declare function joinConvergentPool(
+  signer: Signer,
+  poolId: string,
+  senderAddress: string,
+  receipientAddress: string,
+  vaultAddress: string,
+  tokens: string[],
+  maxAmountsIn: BigNumber[],
+  fromInternalBalance?: boolean
+): Promise<ContractTransaction>;
 declare enum WeightedPoolJoinKind {
-    INIT = 0,
-    EXACT_TOKENS_IN_FOR_BPT_OUT = 1,
-    TOKEN_IN_FOR_EXACT_BPT_OUT = 2
+  INIT = 0,
+  EXACT_TOKENS_IN_FOR_BPT_OUT = 1,
+  TOKEN_IN_FOR_EXACT_BPT_OUT = 2,
 }
 /**
  * Add liquidity to a WeightedPool.
@@ -33,5 +42,16 @@ declare enum WeightedPoolJoinKind {
  * @param joinKind
  * @returns returns the contract transaction.
  */
-export declare function joinWeightedPool(signer: Signer, poolId: string, senderAddress: string, receipientAddress: string, vaultAddress: string, tokens: string[], maxAmountsIn: BigNumber[], minBPTOut?: BigNumber, fromInternalBalance?: boolean, joinKind?: WeightedPoolJoinKind): Promise<ContractTransaction>;
+export declare function joinWeightedPool(
+  signer: Signer,
+  poolId: string,
+  senderAddress: string,
+  receipientAddress: string,
+  vaultAddress: string,
+  tokens: string[],
+  maxAmountsIn: BigNumber[],
+  minBPTOut?: BigNumber,
+  fromInternalBalance?: boolean,
+  joinKind?: WeightedPoolJoinKind
+): Promise<ContractTransaction>;
 export {};

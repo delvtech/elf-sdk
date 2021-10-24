@@ -16,10 +16,7 @@
 
 import { Provider } from "@ethersproject/providers";
 import { BigNumber, Signer } from "ethers";
-import {
-  PrincipalPoolTokenInfo,
-  YieldPoolTokenInfo,
-} from "elf-tokenlist";
+import { PrincipalPoolTokenInfo, YieldPoolTokenInfo } from "elf-tokenlist";
 
 import { ConvergentCurvePool__factory } from "elf-contracts-typechain";
 
