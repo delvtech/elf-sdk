@@ -20,20 +20,20 @@ import { ethers } from "hardhat";
 
 import {
   //eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getTimeUntilExpiration,
-  getTimeUntilExpirationByTokenInfo,
-} from "../src/helpers/getTimeUntilExpiration";
+  getSecondsUntilExpiration,
+  getSecondsUntilExpirationByTokenInfo,
+} from "../src/helpers/getSecondsUntilExpiration";
 import { initTokenInfo, getTokenInfo } from "../src/helpers/getTokenInfo";
-import { PrincipalPoolTokenInfo } from "../src/types/tokenlists/types";
+import { PrincipalPoolTokenInfo } from "elf-tokenlist";
 
-describe("getTimeUntilExpiration", async () => {
-  it("getTimeUntilExpirationByTokenInfo() should return the correct time until expiration", async () => {
+describe("getSecondsUntilExpiration", async () => {
+  it("getsecondsUntilExpirationByTokenInfo() should return the correct time until expiration", async () => {
     const blockTimestamp = 1635000391;
     const tokenInfoByAddress = initTokenInfo("mainnet");
     const poolAddress = "0x893B30574BF183d69413717f30b17062eC9DFD8b";
     const poolTokenInfo = getTokenInfo(poolAddress, tokenInfoByAddress);
     const getTimeUntilExpirationByTokenInfoResult =
-      getTimeUntilExpirationByTokenInfo(
+      getSecondsUntilExpirationByTokenInfo(
         poolTokenInfo as PrincipalPoolTokenInfo,
         blockTimestamp
       );

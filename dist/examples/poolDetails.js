@@ -55,7 +55,7 @@ var hardhat_1 = require("hardhat");
 var getTotalSupply_1 = require("../src/helpers/getTotalSupply");
 var getReserves_1 = require("../src/helpers/getReserves");
 var calcSpotPrice_1 = require("../src/helpers/calcSpotPrice");
-var getTimeUntilExpiration_1 = require("../src/helpers/getTimeUntilExpiration");
+var getSecondsUntilExpiration_1 = require("../src/helpers/getSecondsUntilExpiration");
 var getLatestBlockTimestamp_1 = require("../src/helpers/getLatestBlockTimestamp");
 var getUnitSeconds_1 = require("../src/helpers/getUnitSeconds");
 var calcFixedAPR_1 = require("../src/helpers/calcFixedAPR");
@@ -85,7 +85,7 @@ function main() {
                     return [4 /*yield*/, (0, getLatestBlockTimestamp_1.getLatestBlockTimestamp)()];
                 case 4:
                     blockTimestamp = _a.sent();
-                    return [4 /*yield*/, (0, getTimeUntilExpiration_1.getTimeUntilExpiration)(ptPool, signer, blockTimestamp)];
+                    return [4 /*yield*/, (0, getSecondsUntilExpiration_1.getSecondsUntilExpiration)(ptPool, signer, blockTimestamp)];
                 case 5:
                     timeRemainingSeconds = _a.sent();
                     return [4 /*yield*/, (0, getUnitSeconds_1.getUnitSeconds)(ptPool, signer)];

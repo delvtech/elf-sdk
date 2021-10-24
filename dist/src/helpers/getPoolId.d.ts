@@ -6,7 +6,4 @@ import { Provider } from "@ethersproject/providers";
  * @param signerOrProvider
  * @returns a promise for a poolId
  */
-export declare function getPoolId(
-  poolAddress: string,
-  signerOrProvider: Signer | Provider
-): Promise<string>;
+export declare function getPoolId(poolAddress: string, signerOrProvider: Signer | Provider): Promise<string>;

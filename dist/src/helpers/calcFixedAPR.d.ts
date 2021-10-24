@@ -1,4 +1,1 @@
-export declare function calcFixedAPR(
-  spotPrice: number,
-  secondsUntilMaturity: number
-): number;
+export declare function calcFixedAPR(spotPrice: number, secondsUntilMaturity: number): number;

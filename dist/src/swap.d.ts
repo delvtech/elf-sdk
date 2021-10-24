@@ -1,22 +1,16 @@
-import {
-  BigNumber,
-  ContractTransaction,
-  PayableOverrides,
-  Signer,
-} from "ethers";
-export declare const BALANCER_ETH_SENTINEL =
-  "0x0000000000000000000000000000000000000000";
+import { BigNumber, ContractTransaction, PayableOverrides, Signer } from "ethers";
+export declare const BALANCER_ETH_SENTINEL = "0x0000000000000000000000000000000000000000";
 export declare enum SwapKind {
-  GIVEN_IN = 0,
-  GIVEN_OUT = 1,
+    GIVEN_IN = 0,
+    GIVEN_OUT = 1
 }
 export interface SingleSwap {
-  poolId: string;
-  kind: SwapKind;
-  assetIn: string;
-  assetOut: string;
-  amount: BigNumber;
-  userData: string;
+    poolId: string;
+    kind: SwapKind;
+    assetIn: string;
+    assetOut: string;
+    amount: BigNumber;
+    userData: string;
 }
 /**
  *
@@ -36,21 +30,4 @@ export interface SingleSwap {
  * @param fromInternalBalance
  * @param toInternalBalance
  */
-export declare function swap(
-  signer: Signer,
-  sender: string,
-  recipient: string,
-  poolId: string,
-  tokenInAddress: string,
-  tokenOutAddress: string,
-  balancerVaultAddress: string,
-  amount: BigNumber,
-  kind: SwapKind,
-  limit: BigNumber,
-  overrides?: PayableOverrides,
-  expirationInSeconds?: number,
-  useETH?: boolean,
-  wethAddress?: string,
-  fromInternalBalance?: boolean,
-  toInternalBalance?: boolean
-): Promise<ContractTransaction>;
+export declare function swap(signer: Signer, sender: string, recipient: string, poolId: string, tokenInAddress: string, tokenOutAddress: string, balancerVaultAddress: string, amount: BigNumber, kind: SwapKind, limit: BigNumber, overrides?: PayableOverrides, expirationInSeconds?: number, useETH?: boolean, wethAddress?: string, fromInternalBalance?: boolean, toInternalBalance?: boolean): Promise<ContractTransaction>;

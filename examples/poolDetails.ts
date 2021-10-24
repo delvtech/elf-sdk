@@ -18,7 +18,7 @@ import { ethers } from "hardhat";
 import { getTotalSupply } from "../src/helpers/getTotalSupply";
 import { getReserves } from "../src/helpers/getReserves";
 import { calcSpotPricePt, calcSpotPriceYt } from "../src/helpers/calcSpotPrice";
-import { getTimeUntilExpiration } from "../src/helpers/getTimeUntilExpiration";
+import { getSecondsUntilExpiration } from "../src/helpers/getSecondsUntilExpiration";
 import { getLatestBlockTimestamp } from "../src/helpers/getLatestBlockTimestamp";
 import { getUnitSeconds } from "../src/helpers/getUnitSeconds";
 import { calcFixedAPR } from "../src/helpers/calcFixedAPR";
@@ -38,7 +38,7 @@ async function main() {
   let baseReserves = reserves.balances[baseIndex];
   const baseDecimals = reserves.decimals[baseIndex];
   const blockTimestamp = await getLatestBlockTimestamp();
-  const timeRemainingSeconds = await getTimeUntilExpiration(
+  const timeRemainingSeconds = await getSecondsUntilExpiration(
     ptPool,
     signer,
     blockTimestamp

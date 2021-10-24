@@ -19,18 +19,18 @@ import { BigNumber, Signer } from "ethers";
 import {
   PrincipalPoolTokenInfo,
   YieldPoolTokenInfo,
-} from "../types/tokenlists/types";
+} from "elf-tokenlist";
 
 import { ConvergentCurvePool__factory } from "elf-contracts-typechain";
 
 /**
- * Get the time until expiration for a given pool
+ * Get the seconds until expiration for a given pool
  * @param poolAddress any pool with a getPoolId method
  * @param signerOrProvider
  * @param timestamp timestamp of the latest block
- * @returns the time until expiration
+ * @returns the seconds until expiration
  */
-export async function getTimeUntilExpiration(
+export async function getSecondsUntilExpiration(
   poolAddress: string,
   signerOrProvider: Signer | Provider,
   timestamp: number
@@ -48,12 +48,12 @@ export async function getTimeUntilExpiration(
 }
 
 /**
- * Get the time until expiration for a given pool using tokenlist.
+ * Get the seconds until expiration for a given pool using tokenlist.
  * @param poolTokenInfo PoolTokenInfo with extension property expiration
  * @param timestamp timestamp of the latest block
- * @returns the time until expiration
+ * @returns the seconds until expiration
  */
-export function getTimeUntilExpirationByTokenInfo(
+export function getSecondsUntilExpirationByTokenInfo(
   poolTokenInfo: PrincipalPoolTokenInfo | YieldPoolTokenInfo,
   timestamp: number
 ): number {
