@@ -31,7 +31,7 @@ export { TermTokenSymbolsResult } from "./helpers/getTermTokenSymbols";
 export { getTermByTokenSymbol } from "./helpers/getTermByTokenSymbol";
 export { getTerms } from "./helpers/getTerms";
 export { getTermTokenSymbols } from "./helpers/getTermTokenSymbols";
-export { getTimeUntilExpiration } from "./helpers/getTimeUntilExpiration";
+export { getSecondsUntilExpiration } from "./helpers/getSecondsUntilExpiration";
 export { getTotalSupply } from "./helpers/getTotalSupply";
 export { getUnitSeconds } from "./helpers/getUnitSeconds";
 export { ONE_MINUTE_IN_SECONDS } from "./constants/time";

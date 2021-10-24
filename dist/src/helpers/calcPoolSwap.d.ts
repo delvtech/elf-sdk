@@ -1,21 +1,5 @@
-export declare function calcSwapOutGivenInCCPoolUnsafe(
-  xAmount: string,
-  xReserves: string,
-  yReserves: string,
-  totalSupply: string,
-  timeRemainingSeconds: number,
-  tParamSeconds: number,
-  baseAssetIn: boolean
-): number;
-export declare function calcSwapInGivenOutCCPoolUnsafe(
-  xAmount: string,
-  xReserves: string,
-  yReserves: string,
-  totalSupply: string,
-  timeRemainingSeconds: number,
-  tParamSeconds: number,
-  baseAssetIn: boolean
-): number;
+export declare function calcSwapOutGivenInCCPoolUnsafe(xAmount: string, xReserves: string, yReserves: string, totalSupply: string, timeRemainingSeconds: number, tParamSeconds: number, baseAssetIn: boolean): number;
+export declare function calcSwapInGivenOutCCPoolUnsafe(xAmount: string, xReserves: string, yReserves: string, totalSupply: string, timeRemainingSeconds: number, tParamSeconds: number, baseAssetIn: boolean): number;
 /**********************************************************************************************
 // outGivenIn                                                                                //
 // aO = amountOut                                                                            //
@@ -25,11 +9,7 @@ export declare function calcSwapInGivenOutCCPoolUnsafe(
 // wI = weightIn               \      \       ( bI + aI )         /              /           //
 // wO = weightOut                                                                            //
 **********************************************************************************************/
-export declare function calcSwapOutGivenInWeightedPoolUnsafe(
-  amountIn: string,
-  balanceOut: string,
-  balanceIn: string
-): number;
+export declare function calcSwapOutGivenInWeightedPoolUnsafe(amountIn: string, balanceOut: string, balanceIn: string): number;
 /**********************************************************************************************
 // inGivenOut                                                                                //
 // aO = amountOut                                                                            //
@@ -39,8 +19,4 @@ export declare function calcSwapOutGivenInWeightedPoolUnsafe(
 // wI = weightIn               \  \       ( bO - aO )         /                   /          //
 // wO = weightOut                                                                            //
 **********************************************************************************************/
-export declare function calcSwapInGivenOutWeightedPoolUnsafe(
-  amountOut: string,
-  balanceOut: string,
-  balanceIn: string
-): number;
+export declare function calcSwapInGivenOutWeightedPoolUnsafe(amountOut: string, balanceOut: string, balanceIn: string): number;

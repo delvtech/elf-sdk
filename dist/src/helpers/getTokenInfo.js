@@ -18,21 +18,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTokenInfo = exports.initTokenInfo = void 0;
+exports.getTokenInfo = exports.initTokenList = void 0;
 var lodash_keyby_1 = __importDefault(require("lodash.keyby"));
 /**
  * Init the tokenlist for given chain
  * @param chainName name of the chain that the tokenlist represents
  * @returns mapping of TokenInfos by address
  */
-function initTokenInfo(chainName) {
+function initTokenList(chainName) {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     var tokenListJson = require("elf-tokenlist/dist/" + chainName + ".tokenlist.json");
     var tokenInfos = tokenListJson.tokens;
     var tokenInfoByAddress = (0, lodash_keyby_1.default)(tokenInfos, "address");
     return tokenInfoByAddress;
 }
-exports.initTokenInfo = initTokenInfo;
+exports.initTokenList = initTokenList;
 /**
  * Helper function for looking up a tokenlist info
  * @param address address of the token

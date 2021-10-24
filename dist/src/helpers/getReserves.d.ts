@@ -1,18 +1,18 @@
 import { Provider } from "@ethersproject/providers";
 import { BigNumber, Signer } from "ethers";
 export interface ReservesResult {
-  /**
-   * addresses of tokens
-   */
-  tokens: string[];
-  /**
-   * balances of tokens in same order as tokens
-   */
-  balances: BigNumber[];
-  /**
-   * decimals of tokens in same order as tokens
-   */
-  decimals: number[];
+    /**
+     * addresses of tokens
+     */
+    tokens: string[];
+    /**
+     * balances of tokens in same order as tokens
+     */
+    balances: BigNumber[];
+    /**
+     * decimals of tokens in same order as tokens
+     */
+    decimals: number[];
 }
 /**
  * Returns the reserves for a given pool.
@@ -20,8 +20,4 @@ export interface ReservesResult {
  * @param balancerVaultAddress the address of the balancer v2 vault
  * @param signerOrProvider
  */
-export declare function getReserves(
-  poolAddress: string,
-  balancerVaultAddress: string,
-  signerOrProvider: Signer | Provider
-): Promise<ReservesResult>;
+export declare function getReserves(poolAddress: string, balancerVaultAddress: string, signerOrProvider: Signer | Provider): Promise<ReservesResult>;

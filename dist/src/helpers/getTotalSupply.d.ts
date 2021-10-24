@@ -6,7 +6,4 @@ import { BigNumber, Signer } from "ethers";
  * @param poolAddress any pool with a totalSupply method
  * @param signerOrProvider
  */
-export declare function getTotalSupply(
-  poolAddress: string,
-  signerOrProvider: Signer | Provider
-): Promise<BigNumber>;
+export declare function getTotalSupply(poolAddress: string, signerOrProvider: Signer | Provider): Promise<BigNumber>;

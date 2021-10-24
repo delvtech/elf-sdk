@@ -6,7 +6,4 @@ import { Signer } from "ethers";
  * @param trancheFactoryAddress The TrancheFactory that deployed the tranches
  * @returns a promise of an array of tranche addresses
  */
-export declare function getOpenTerms(
-  trancheFactoryAddress: string,
-  signerOrProvider: Signer | Provider
-): Promise<string[]>;
+export declare function getOpenTerms(trancheFactoryAddress: string, signerOrProvider: Signer | Provider): Promise<string[]>;
