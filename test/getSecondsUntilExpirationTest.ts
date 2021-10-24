@@ -40,18 +40,24 @@ describe("getSecondsUntilExpiration", async () => {
     expect(getSecondsUntilExpirationByTokenInfoResult).to.equal(5619867);
   });
 
-  /*it("getSecondsUntilExpiration() should match getSecondsUntilExpirationByTokenInfo()", async () => {
+  it("getSecondsUntilExpiration() should match getSecondsUntilExpirationByTokenInfo()", async () => {
     const [signer] = await ethers.getSigners();
     const blockTimestamp = 1635000391;
     const tokenInfoByAddress = initTokenList("mainnet");
     const poolAddress = "0x893B30574BF183d69413717f30b17062eC9DFD8b";
-    const poolTokenInfo = getTokenInfo(poolAddress,tokenInfoByAddress)
-    const getSecondsUntilExpirationByTokenInfoResult = getSecondsUntilExpirationByTokenInfo(poolTokenInfo as PrincipalPoolTokenInfo, blockTimestamp);
+    const poolTokenInfo = getTokenInfo(poolAddress, tokenInfoByAddress);
+    const getSecondsUntilExpirationByTokenInfoResult =
+      getSecondsUntilExpirationByTokenInfo(
+        poolTokenInfo as PrincipalPoolTokenInfo,
+        blockTimestamp
+      );
     const getSecondsUntilExpirationResult = await getSecondsUntilExpiration(
       poolAddress,
       signer,
       blockTimestamp
     );
-    expect(getSecondsUntilExpirationByTokenInfoResult).to.equal(getSecondsUntilExpirationResult);
-  });*/
+    expect(getSecondsUntilExpirationByTokenInfoResult).to.equal(
+      getSecondsUntilExpirationResult
+    );
+  });
 });
