@@ -51,8 +51,7 @@ describe("calcSpotPrices", () => {
 });
 
 describe("calcSpotPricesBadDecimal", () => {
-  it("should return spot price of 0"),
-    () => {
+  it("should return spot price of 0", () => {
       const ptReserves = BigNumber.from("1000000000000000");
       const baseReserves = BigNumber.from("1612400925773352");
       const totalSupply = baseReserves.add(ptReserves);
@@ -68,5 +67,5 @@ describe("calcSpotPricesBadDecimal", () => {
         42
       );
       expect(result).to.equal(0);
-    };
+    });
 });
