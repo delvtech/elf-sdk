@@ -68,8 +68,8 @@ const config: HardhatUserConfig = {
       forking: {
         url: `${MAINNET_PROVIDER_URL}`,
         blockNumber: 13475006,
-      }
-    }
+      },
+    },
   },
 };
 
