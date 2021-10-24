@@ -23,36 +23,35 @@ import {
   getSecondsUntilExpiration,
   getSecondsUntilExpirationByTokenInfo,
 } from "../src/helpers/getSecondsUntilExpiration";
-import { initTokenInfo, getTokenInfo } from "../src/helpers/getTokenInfo";
+import { initTokenList, getTokenInfo } from "../src/helpers/getTokenInfo";
 import { PrincipalPoolTokenInfo } from "elf-tokenlist";
 
 describe("getSecondsUntilExpiration", async () => {
   it("getsecondsUntilExpirationByTokenInfo() should return the correct time until expiration", async () => {
     const blockTimestamp = 1635000391;
-    const tokenInfoByAddress = initTokenInfo("mainnet");
+    const tokenInfoByAddress = initTokenList("mainnet");
     const poolAddress = "0x893B30574BF183d69413717f30b17062eC9DFD8b";
     const poolTokenInfo = getTokenInfo(poolAddress, tokenInfoByAddress);
-    const getTimeUntilExpirationByTokenInfoResult =
+    const getSecondsUntilExpirationByTokenInfoResult =
       getSecondsUntilExpirationByTokenInfo(
         poolTokenInfo as PrincipalPoolTokenInfo,
         blockTimestamp
       );
-    expect(getTimeUntilExpirationByTokenInfoResult).to.equal(5619867);
+    expect(getSecondsUntilExpirationByTokenInfoResult).to.equal(5619867);
   });
 
-  /*it("getTimeUntilExpiration() should match getTimeUntilExpirationByTokenInfo()", async () => {
+  /*it("getSecondsUntilExpiration() should match getSecondsUntilExpirationByTokenInfo()", async () => {
     const [signer] = await ethers.getSigners();
     const blockTimestamp = 1635000391;
-    const tokenInfoByAddress = initTokenInfo("mainnet");
+    const tokenInfoByAddress = initTokenList("mainnet");
     const poolAddress = "0x893B30574BF183d69413717f30b17062eC9DFD8b";
     const poolTokenInfo = getTokenInfo(poolAddress,tokenInfoByAddress)
-    const getTimeUntilExpirationByTokenInfoResult = getTimeUntilExpirationByTokenInfo(poolTokenInfo as PrincipalPoolTokenInfo, blockTimestamp);
-    console.log(getTimeUntilExpirationByTokenInfoResult);
-    const getTimeUntilExpirationResult = await getTimeUntilExpiration(
+    const getSecondsUntilExpirationByTokenInfoResult = getSecondsUntilExpirationByTokenInfo(poolTokenInfo as PrincipalPoolTokenInfo, blockTimestamp);
+    const getSecondsUntilExpirationResult = await getSecondsUntilExpiration(
       poolAddress,
       signer,
       blockTimestamp
     );
-    expect(getTimeUntilExpirationByTokenInfoResult).to.equal(getTimeUntilExpirationResult);
+    expect(getSecondsUntilExpirationByTokenInfoResult).to.equal(getSecondsUntilExpirationResult);
   });*/
 });

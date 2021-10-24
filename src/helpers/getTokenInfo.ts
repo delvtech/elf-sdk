@@ -23,7 +23,7 @@ import { AnyTokenListInfo } from "elf-tokenlist/dist/types";
  * @param chainName name of the chain that the tokenlist represents
  * @returns mapping of TokenInfos by address
  */
-export function initTokenInfo(
+export function initTokenList(
   chainName: string
 ): Record<string, AnyTokenListInfo> {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
