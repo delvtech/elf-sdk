@@ -64,6 +64,12 @@ const config: HardhatUserConfig = {
       url: `${MAINNET_PROVIDER_URL}`,
       accounts: [`0x${PRIVATE_KEY}`],
     },
+    hardhat: {
+      forking: {
+        url: `${MAINNET_PROVIDER_URL}`,
+        blockNumber: 13475006,
+      }
+    }
   },
 };
 

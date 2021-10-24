@@ -35,7 +35,7 @@
         "eslint": "^7.28.0",
         "ethereum-waffle": "^3.2.2",
         "ethers": "^5.0.29",
-        "hardhat": "^2.1.2",
+        "hardhat": "^2.6.4",
         "hardhat-gas-reporter": "^1.0.4",
         "hardhat-typechain": "^0.3.4",
         "json-to-ts": "^1.7.0",
