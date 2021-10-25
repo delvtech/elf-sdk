@@ -59,7 +59,7 @@ var getUnderlyingContractsByAddress_1 = require("../src/helpers/getUnderlyingCon
 var getTokenPrice_1 = require("../src/helpers/getTokenPrice");
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var signer, chainName, tvl, currency, _a, tokenInfoJson, AddressesJson, tokenInfoByAddress, assetProxyTokenInfos, principalTokenInfos, results;
+        var signer, chainName, tvl, currency, _a, tokenList, addressesJson, tokenInfoByAddress, assetProxyTokenInfos, principalTokenInfos, results;
         var _this = this;
         return __generator(this, function (_b) {
             switch (_b.label) {
@@ -72,9 +72,9 @@ function main() {
                     tvl = _b.sent();
                     console.log(tvl);
                     currency = ts_money_1.Currencies.USD;
-                    _a = (0, getTokenInfo_1.initTokenList)(chainName), tokenInfoJson = _a[0], AddressesJson = _a[1], tokenInfoByAddress = _a[2];
-                    assetProxyTokenInfos = (0, getTokenInfo_1.getAssetProxyTokenInfos)(tokenInfoJson.tokens);
-                    principalTokenInfos = (0, getTokenInfo_1.getPrincipalTokenInfos)(tokenInfoJson.tokens);
+                    _a = (0, getTokenInfo_1.initTokenList)(chainName), tokenList = _a.tokenList, addressesJson = _a.addressesJson, tokenInfoByAddress = _a.tokenInfoByAddress;
+                    assetProxyTokenInfos = (0, getTokenInfo_1.getAssetProxyTokenInfos)(tokenList.tokens);
+                    principalTokenInfos = (0, getTokenInfo_1.getPrincipalTokenInfos)(tokenList.tokens);
                     return [4 /*yield*/, Promise.all(principalTokenInfos.map(function (tokenInfo) { return __awaiter(_this, void 0, void 0, function () {
                             var underlyingContractsByAddress, baseAssetContract, baseAssetPrice, termTvl;
                             return __generator(this, function (_a) {
@@ -85,7 +85,7 @@ function main() {
                                         return [4 /*yield*/, (0, getTokenPrice_1.getTokenPrice)(baseAssetContract, currency)];
                                     case 1:
                                         baseAssetPrice = _a.sent();
-                                        return [4 /*yield*/, (0, calcTvl_1.fetchTotalValueLockedForTerm)(tokenInfo, AddressesJson.addresses.balancerVaultAddress, underlyingContractsByAddress, assetProxyTokenInfos, tokenInfoJson.tokens, tokenInfoByAddress, baseAssetPrice, signer)];
+                                        return [4 /*yield*/, (0, calcTvl_1.fetchTotalValueLockedForTerm)(tokenInfo, addressesJson.addresses.balancerVaultAddress, underlyingContractsByAddress, assetProxyTokenInfos, tokenList.tokens, tokenInfoByAddress, baseAssetPrice, signer)];
                                     case 2:
                                         termTvl = _a.sent();
                                         return [4 /*yield*/, baseAssetContract.name()];

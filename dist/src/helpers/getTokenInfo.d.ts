@@ -7,23 +7,17 @@ import {
   AnyTokenListInfo,
 } from "elf-tokenlist";
 import { AddressesJsonFile } from "elf-tokenlist/dist/AddressesJsonFile";
-export declare enum TokenListTag {
-  VAULT = "vault",
-  ASSET_PROXY = "assetproxy",
-  CCPOOL = "ccpool",
-  PRINCIPAL = "eP",
-  UNDERLYING = "underlying",
-  WPOOL = "wpool",
-  YIELD = "eY",
+interface InitTokenListResult {
+  tokenList: TokenList;
+  addressesJson: AddressesJsonFile;
+  tokenInfoByAddress: Record<string, AnyTokenListInfo>;
 }
 /**
  * Init the tokenlist for given chain
  * @param chainName name of the chain that the tokenlist represents
- * @returns Tuple containing tokenlist and mapping of TokenInfos by address
+ * @returns InitTokenListResult
  */
-export declare function initTokenList(
-  chainName: string
-): [TokenList, AddressesJsonFile, Record<string, AnyTokenListInfo>];
+export declare function initTokenList(chainName: string): InitTokenListResult;
 /**
  * Helper function for looking up a tokenlist info
  * @param address address of the token
@@ -51,3 +45,4 @@ export declare function getPoolInfoForPrincipalToken(
 export declare function getYieldPoolTokenInfos(
   tokenInfos: TokenInfo[]
 ): YieldPoolTokenInfo[];
+export {};

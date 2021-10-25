@@ -57,19 +57,19 @@ export function getPoolForYieldToken(
   return yieldPoolContractsByAddress[yieldPool.address];
 }
 
-export async function useTotalValueLockedForPlatform(
+export async function calcTotalValueLocked(
   chainName: string,
   signerOrProvider: Signer | Provider
 ): Promise<Money> {
   const currency = Currencies.USD;
-  const [tokenInfoJson, AddressesJson, tokenInfoByAddress] =
+  const { tokenList, addressesJson, tokenInfoByAddress } =
     initTokenList(chainName);
   const underlyingContractsByAddress = getUnderlyingContractsByAddress(
     chainName,
     signerOrProvider
   );
-  const assetProxyTokenInfos = getAssetProxyTokenInfos(tokenInfoJson.tokens);
-  const principalTokenInfos = getPrincipalTokenInfos(tokenInfoJson.tokens);
+  const assetProxyTokenInfos = getAssetProxyTokenInfos(tokenList.tokens);
+  const principalTokenInfos = getPrincipalTokenInfos(tokenList.tokens);
   const results = await Promise.all(
     principalTokenInfos.map(async (tokenInfo) => {
       const baseAssetContract =
@@ -78,12 +78,12 @@ export async function useTotalValueLockedForPlatform(
         baseAssetContract as ERC20,
         currency
       );
-      return fetchTotalValueLockedForTerm(
+      return calcTotalValueLockedForTerm(
         tokenInfo,
-        AddressesJson.addresses.balancerVaultAddress,
+        addressesJson.addresses.balancerVaultAddress,
         underlyingContractsByAddress,
         assetProxyTokenInfos,
-        tokenInfoJson.tokens,
+        tokenList.tokens,
         tokenInfoByAddress,
         baseAssetPrice,
         signerOrProvider
@@ -99,7 +99,7 @@ export async function useTotalValueLockedForPlatform(
   return totalValueLocked;
 }
 
-export async function fetchTotalValueLockedForTerm(
+export async function calcTotalValueLockedForTerm(
   trancheInfo: PrincipalTokenInfo,
   balancerVaultAddress: string,
   underlyingContractsByAddress: Record<

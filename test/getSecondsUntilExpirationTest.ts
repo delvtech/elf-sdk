@@ -28,9 +28,9 @@ import { PrincipalPoolTokenInfo } from "elf-tokenlist";
 describe("getSecondsUntilExpiration", async () => {
   it("getsecondsUntilExpirationByTokenInfo() should return the correct time until expiration", async () => {
     const blockTimestamp = 1635000391;
-    const [, , tokenInfoByAddress] = initTokenList("mainnet");
+    const result = initTokenList("mainnet");
     const poolAddress = "0x893B30574BF183d69413717f30b17062eC9DFD8b";
-    const poolTokenInfo = getTokenInfo(poolAddress, tokenInfoByAddress);
+    const poolTokenInfo = getTokenInfo(poolAddress, result.tokenInfoByAddress);
     const getSecondsUntilExpirationByTokenInfoResult =
       getSecondsUntilExpirationByTokenInfo(
         poolTokenInfo as PrincipalPoolTokenInfo,
@@ -42,9 +42,9 @@ describe("getSecondsUntilExpiration", async () => {
   it("getSecondsUntilExpiration() should match getSecondsUntilExpirationByTokenInfo()", async () => {
     const [signer] = await ethers.getSigners();
     const blockTimestamp = 1635000391;
-    const [, , tokenInfoByAddress] = initTokenList("mainnet");
+    const result = initTokenList("mainnet");
     const poolAddress = "0x893B30574BF183d69413717f30b17062eC9DFD8b";
-    const poolTokenInfo = getTokenInfo(poolAddress, tokenInfoByAddress);
+    const poolTokenInfo = getTokenInfo(poolAddress, result.tokenInfoByAddress);
     const getSecondsUntilExpirationByTokenInfoResult =
       getSecondsUntilExpirationByTokenInfo(
         poolTokenInfo as PrincipalPoolTokenInfo,

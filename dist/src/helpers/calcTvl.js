@@ -66,16 +66,16 @@ function getPoolForYieldToken(yieldTokenAddress, YieldPoolTokenInfos, signerOrPr
 exports.getPoolForYieldToken = getPoolForYieldToken;
 function useTotalValueLockedForPlatform(chainName, signerOrProvider) {
     return __awaiter(this, void 0, void 0, function () {
-        var currency, _a, tokenInfoJson, AddressesJson, tokenInfoByAddress, underlyingContractsByAddress, assetProxyTokenInfos, principalTokenInfos, results, totalValueLocked;
+        var currency, _a, tokenList, addressesJson, tokenInfoByAddress, underlyingContractsByAddress, assetProxyTokenInfos, principalTokenInfos, results, totalValueLocked;
         var _this = this;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     currency = ts_money_1.Currencies.USD;
-                    _a = (0, getTokenInfo_1.initTokenList)(chainName), tokenInfoJson = _a[0], AddressesJson = _a[1], tokenInfoByAddress = _a[2];
+                    _a = (0, getTokenInfo_1.initTokenList)(chainName), tokenList = _a.tokenList, addressesJson = _a.addressesJson, tokenInfoByAddress = _a.tokenInfoByAddress;
                     underlyingContractsByAddress = (0, getUnderlyingContractsByAddress_1.getUnderlyingContractsByAddress)(chainName, signerOrProvider);
-                    assetProxyTokenInfos = (0, getTokenInfo_1.getAssetProxyTokenInfos)(tokenInfoJson.tokens);
-                    principalTokenInfos = (0, getTokenInfo_1.getPrincipalTokenInfos)(tokenInfoJson.tokens);
+                    assetProxyTokenInfos = (0, getTokenInfo_1.getAssetProxyTokenInfos)(tokenList.tokens);
+                    principalTokenInfos = (0, getTokenInfo_1.getPrincipalTokenInfos)(tokenList.tokens);
                     return [4 /*yield*/, Promise.all(principalTokenInfos.map(function (tokenInfo) { return __awaiter(_this, void 0, void 0, function () {
                             var baseAssetContract, baseAssetPrice;
                             return __generator(this, function (_a) {
@@ -85,7 +85,7 @@ function useTotalValueLockedForPlatform(chainName, signerOrProvider) {
                                         return [4 /*yield*/, (0, getTokenPrice_1.getTokenPrice)(baseAssetContract, currency)];
                                     case 1:
                                         baseAssetPrice = _a.sent();
-                                        return [2 /*return*/, fetchTotalValueLockedForTerm(tokenInfo, AddressesJson.addresses.balancerVaultAddress, underlyingContractsByAddress, assetProxyTokenInfos, tokenInfoJson.tokens, tokenInfoByAddress, baseAssetPrice, signerOrProvider)];
+                                        return [2 /*return*/, fetchTotalValueLockedForTerm(tokenInfo, addressesJson.addresses.balancerVaultAddress, underlyingContractsByAddress, assetProxyTokenInfos, tokenList.tokens, tokenInfoByAddress, baseAssetPrice, signerOrProvider)];
                                 }
                             });
                         }); }))];

@@ -22,36 +22,32 @@ import {
   PrincipalPoolTokenInfo,
   AssetProxyTokenInfo,
   AnyTokenListInfo,
+  TokenTag,
 } from "elf-tokenlist";
 import { AddressesJsonFile } from "elf-tokenlist/dist/AddressesJsonFile";
-export enum TokenListTag {
-  VAULT = "vault",
-  ASSET_PROXY = "assetproxy",
-  CCPOOL = "ccpool",
-  PRINCIPAL = "eP",
-  UNDERLYING = "underlying",
-  WPOOL = "wpool",
-  YIELD = "eY",
+
+interface InitTokenListResult {
+  tokenList: TokenList;
+  addressesJson: AddressesJsonFile;
+  tokenInfoByAddress: Record<string, AnyTokenListInfo>;
 }
 
 /**
  * Init the tokenlist for given chain
  * @param chainName name of the chain that the tokenlist represents
- * @returns Tuple containing tokenlist and mapping of TokenInfos by address
+ * @returns InitTokenListResult
  */
-export function initTokenList(
-  chainName: string
-): [TokenList, AddressesJsonFile, Record<string, AnyTokenListInfo>] {
+export function initTokenList(chainName: string): InitTokenListResult {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const tokenListJson: TokenList = require(`elf-tokenlist/dist/${chainName}.tokenlist.json`);
+  const tokenList: TokenList = require(`elf-tokenlist/dist/${chainName}.tokenlist.json`);
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const AddressesJson: AddressesJsonFile = require(`elf-tokenlist/dist/${chainName}.addresses.json`);
-  const tokenInfos = tokenListJson.tokens;
+  const addressesJson: AddressesJsonFile = require(`elf-tokenlist/dist/${chainName}.addresses.json`);
+  const tokenInfos = tokenList.tokens;
   const tokenInfoByAddress: Record<string, AnyTokenListInfo> = keyBy(
     tokenInfos,
     "address"
   );
-  return [tokenListJson, AddressesJson, tokenInfoByAddress];
+  return { tokenList, addressesJson, tokenInfoByAddress };
 }
 
 /**
@@ -68,7 +64,7 @@ export function getTokenInfo<T extends TokenInfo>(
 }
 
 function isAssetProxy(tokenInfo: TokenInfo): tokenInfo is PrincipalTokenInfo {
-  return !!tokenInfo.tags?.includes(TokenListTag.ASSET_PROXY);
+  return !!tokenInfo.tags?.includes(TokenTag.ASSET_PROXY);
 }
 
 export function getAssetProxyTokenInfos(
@@ -82,7 +78,7 @@ export function getAssetProxyTokenInfos(
 function isPrincipalToken(
   tokenInfo: TokenInfo
 ): tokenInfo is PrincipalTokenInfo {
-  return !!tokenInfo?.tags?.includes(TokenListTag.PRINCIPAL);
+  return !!tokenInfo?.tags?.includes(TokenTag.PRINCIPAL);
 }
 
 export function getPrincipalTokenInfos(
@@ -96,7 +92,7 @@ export function getPrincipalTokenInfos(
 function isPrincipalPool(
   tokenInfo: TokenInfo
 ): tokenInfo is PrincipalPoolTokenInfo {
-  return !!tokenInfo.tags?.includes(TokenListTag.CCPOOL);
+  return !!tokenInfo.tags?.includes(TokenTag.CCPOOL);
 }
 
 export function getPrincipalTokenInfoForPool(
@@ -133,7 +129,7 @@ export function getPoolInfoForPrincipalToken(
 }
 
 function isYieldPool(tokenInfo: TokenInfo): tokenInfo is YieldPoolTokenInfo {
-  return !!tokenInfo.tags?.includes(TokenListTag.WPOOL);
+  return !!tokenInfo.tags?.includes(TokenTag.WPOOL);
 }
 
 export function getYieldPoolTokenInfos(
