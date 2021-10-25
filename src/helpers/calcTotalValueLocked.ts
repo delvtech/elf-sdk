@@ -37,26 +37,12 @@ import {
   getAssetProxyTokenInfos,
 } from "./getTokenInfo";
 
-export function getPoolForYieldToken(
-  yieldTokenAddress: string,
-  YieldPoolTokenInfos: YieldPoolTokenInfo[],
-  signerOrProvider: Signer | Provider
-): WeightedPool {
-  const yieldPool = YieldPoolTokenInfos.find(
-    ({ extensions: { interestToken } }) => interestToken === yieldTokenAddress
-  ) as YieldPoolTokenInfo;
-
-  const yieldPoolContracts = YieldPoolTokenInfos.map(({ address }) =>
-    WeightedPool__factory.connect(address, signerOrProvider)
-  );
-
-  const yieldPoolContractsByAddress = keyBy(
-    yieldPoolContracts,
-    (yieldPool) => yieldPool.address
-  );
-  return yieldPoolContractsByAddress[yieldPool.address];
-}
-
+/**
+ * Calculate the TVL
+ * @param chainName
+ * @param signerOrProvider
+ * @returns TVL
+ */
 export async function calcTotalValueLocked(
   chainName: string,
   signerOrProvider: Signer | Provider
@@ -99,6 +85,18 @@ export async function calcTotalValueLocked(
   return totalValueLocked;
 }
 
+/**
+ * Calculate the TVL for a term
+ * @param trancheInfo
+ * @param balancerVaultAddress
+ * @param underlyingContractsByAddress
+ * @param assetProxyTokenInfos
+ * @param tokenInfos
+ * @param tokenInfoByAddress
+ * @param baseAssetPrice
+ * @param signerOrProvider
+ * @returns TVL for term
+ */
 export async function calcTotalValueLockedForTerm(
   trancheInfo: PrincipalTokenInfo,
   balancerVaultAddress: string,
@@ -139,20 +137,20 @@ export async function calcTotalValueLockedForTerm(
   // get all components of TVL: base asset in tranche, base asset in pool, accumulated interest for
   // tranche
   const baseAssetLockedBNPromise = tranche.valueSupplied();
-  const accumulatedInterestBNPromise = fetchAccumulatedInterestForTranche(
+  const accumulatedInterestBNPromise = getAccumulatedInterestForTranche(
     poolInfo,
     assetProxyTokenInfos,
     tokenInfos,
     signerOrProvider
   );
-  const baseReservesInPrincipalPoolBNPromise = fetchBaseAssetReservesInPool(
+  const baseReservesInPrincipalPoolBNPromise = getBaseAssetReservesInPool(
     poolInfo,
     balancerVaultAddress,
     tokenInfoByAddress,
     underlyingContractsByAddress,
     signerOrProvider
   );
-  const baseReservesInYieldPoolBNPromise = fetchBaseAssetReservesInPool(
+  const baseReservesInYieldPoolBNPromise = getBaseAssetReservesInPool(
     yieldPoolInfo,
     balancerVaultAddress,
     tokenInfoByAddress,
@@ -199,7 +197,15 @@ export async function calcTotalValueLockedForTerm(
   return totalFiatValueLocked;
 }
 
-export async function fetchAccumulatedInterestForTranche(
+/**
+ * Return the accumulated interest for a term
+ * @param poolInfo
+ * @param assetProxyTokenInfos
+ * @param tokenInfos
+ * @param signerOrProvider
+ * @returns accumulated interest
+ */
+export async function getAccumulatedInterestForTranche(
   poolInfo: YieldPoolTokenInfo | PrincipalPoolTokenInfo,
   assetProxyTokenInfos: AssetProxyTokenInfo[],
   tokenInfos: TokenInfo[],
@@ -243,7 +249,16 @@ export async function fetchAccumulatedInterestForTranche(
   return valueOfSharesInUnderlying.sub(balanceOfUnderlying);
 }
 
-export async function fetchBaseAssetReservesInPool(
+/**
+ * Return the base asset reserves in a pool
+ * @param poolInfo
+ * @param balancerVaultAddress
+ * @param tokenInfoByAddress
+ * @param underlyingContractsByAddress
+ * @param signerOrProvider
+ * @returns number representing the base assets
+ */
+export async function getBaseAssetReservesInPool(
   poolInfo: YieldPoolTokenInfo | PrincipalPoolTokenInfo,
   balancerVaultAddress: string,
   tokenInfoByAddress: Record<string, AnyTokenListInfo>,
@@ -270,6 +285,26 @@ export async function fetchBaseAssetReservesInPool(
   return balances?.[baseAssetIndex];
 }
 
+function getPoolForYieldToken(
+  yieldTokenAddress: string,
+  YieldPoolTokenInfos: YieldPoolTokenInfo[],
+  signerOrProvider: Signer | Provider
+): WeightedPool {
+  const yieldPool = YieldPoolTokenInfos.find(
+    ({ extensions: { interestToken } }) => interestToken === yieldTokenAddress
+  ) as YieldPoolTokenInfo;
+
+  const yieldPoolContracts = YieldPoolTokenInfos.map(({ address }) =>
+    WeightedPool__factory.connect(address, signerOrProvider)
+  );
+
+  const yieldPoolContractsByAddress = keyBy(
+    yieldPoolContracts,
+    (yieldPool) => yieldPool.address
+  );
+  return yieldPoolContractsByAddress[yieldPool.address];
+}
+
 interface PoolTokens {
   baseAssetInfo: TokenInfo;
   termAssetInfo: TokenInfo;
@@ -280,6 +315,14 @@ interface PoolTokens {
   sortedAddresses: [string, string];
 }
 
+/**
+ * Get the tokens in the pool corresponding to ther poolInfo
+ * @param poolInfo
+ * @param tokenInfoByAddress
+ * @param underlyingContractsByAddress
+ * @param signerOrProvider
+ * @returns PoolTokens
+ */
 export function getPoolTokens(
   poolInfo: YieldPoolTokenInfo | PrincipalPoolTokenInfo,
   tokenInfoByAddress: Record<string, AnyTokenListInfo>,

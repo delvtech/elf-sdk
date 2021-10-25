@@ -67,6 +67,11 @@ function isAssetProxy(tokenInfo: TokenInfo): tokenInfo is PrincipalTokenInfo {
   return !!tokenInfo.tags?.includes(TokenTag.ASSET_PROXY);
 }
 
+/**
+ * Finds tokenInfos for AssetProxies.
+ * @param tokenInfos
+ * @returns list of AssetProxyTokenInfo
+ */
 export function getAssetProxyTokenInfos(
   tokenInfos: TokenInfo[]
 ): AssetProxyTokenInfo[] {
@@ -81,6 +86,11 @@ function isPrincipalToken(
   return !!tokenInfo?.tags?.includes(TokenTag.PRINCIPAL);
 }
 
+/**
+ * Finds tokenInfos for Principal Tokens
+ * @param tokenInfos
+ * @returns list of PrincipalTokenInfo
+ */
 export function getPrincipalTokenInfos(
   tokenInfos: TokenInfo[]
 ): PrincipalTokenInfo[] {
@@ -95,6 +105,12 @@ function isPrincipalPool(
   return !!tokenInfo.tags?.includes(TokenTag.CCPOOL);
 }
 
+/**
+ * Returns a PrincipalTokenInfo given a TokenInfo for a pool
+ * @param poolInfo
+ * @param tokenInfos
+ * @returns PrincipalTokenInfo
+ */
 export function getPrincipalTokenInfoForPool(
   poolInfo: YieldPoolTokenInfo | PrincipalPoolTokenInfo,
   tokenInfos: TokenInfo[]
@@ -115,6 +131,12 @@ export function getPrincipalTokenInfoForPool(
   return trancheInfo;
 }
 
+/**
+ * Returns the TokenInfo of the pool corresponding to a Principal Token
+ * @param principalTokenAddress
+ * @param tokenInfos
+ * @returns PrincipalPoolTokenInfo
+ */
 export function getPoolInfoForPrincipalToken(
   principalTokenAddress: string,
   tokenInfos: TokenInfo[]
@@ -132,6 +154,11 @@ function isYieldPool(tokenInfo: TokenInfo): tokenInfo is YieldPoolTokenInfo {
   return !!tokenInfo.tags?.includes(TokenTag.WPOOL);
 }
 
+/**
+ * Returns the TokenInfos for the Yield Pools
+ * @param tokenInfos
+ * @returns a list of YieldPoolTokenInfo
+ */
 export function getYieldPoolTokenInfos(
   tokenInfos: TokenInfo[]
 ): YieldPoolTokenInfo[] {
