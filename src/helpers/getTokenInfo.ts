@@ -16,24 +16,42 @@
 
 import { TokenInfo, TokenList } from "@uniswap/token-lists";
 import keyBy from "lodash.keyby";
-import { AnyTokenListInfo } from "elf-tokenlist/dist/types";
+import {
+  PrincipalTokenInfo,
+  YieldPoolTokenInfo,
+  PrincipalPoolTokenInfo,
+  AssetProxyTokenInfo,
+  AnyTokenListInfo,
+} from "elf-tokenlist";
+import { AddressesJsonFile } from "elf-tokenlist/dist/AddressesJsonFile";
+export enum TokenListTag {
+  VAULT = "vault",
+  ASSET_PROXY = "assetproxy",
+  CCPOOL = "ccpool",
+  PRINCIPAL = "eP",
+  UNDERLYING = "underlying",
+  WPOOL = "wpool",
+  YIELD = "eY",
+}
 
 /**
  * Init the tokenlist for given chain
  * @param chainName name of the chain that the tokenlist represents
- * @returns mapping of TokenInfos by address
+ * @returns Tuple containing tokenlist and mapping of TokenInfos by address
  */
 export function initTokenList(
   chainName: string
-): Record<string, AnyTokenListInfo> {
+): [TokenList, AddressesJsonFile, Record<string, AnyTokenListInfo>] {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const tokenListJson: TokenList = require(`elf-tokenlist/dist/${chainName}.tokenlist.json`);
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const AddressesJson: AddressesJsonFile = require(`elf-tokenlist/dist/${chainName}.addresses.json`);
   const tokenInfos = tokenListJson.tokens;
   const tokenInfoByAddress: Record<string, AnyTokenListInfo> = keyBy(
     tokenInfos,
     "address"
   );
-  return tokenInfoByAddress;
+  return [tokenListJson, AddressesJson, tokenInfoByAddress];
 }
 
 /**
@@ -47,4 +65,81 @@ export function getTokenInfo<T extends TokenInfo>(
   tokenInfoByAddress: Record<string, AnyTokenListInfo>
 ): T {
   return tokenInfoByAddress[address] as T;
+}
+
+function isAssetProxy(tokenInfo: TokenInfo): tokenInfo is PrincipalTokenInfo {
+  return !!tokenInfo.tags?.includes(TokenListTag.ASSET_PROXY);
+}
+
+export function getAssetProxyTokenInfos(
+  tokenInfos: TokenInfo[]
+): AssetProxyTokenInfo[] {
+  return tokenInfos.filter((tokenInfo): tokenInfo is AssetProxyTokenInfo =>
+    isAssetProxy(tokenInfo)
+  );
+}
+
+function isPrincipalToken(
+  tokenInfo: TokenInfo
+): tokenInfo is PrincipalTokenInfo {
+  return !!tokenInfo?.tags?.includes(TokenListTag.PRINCIPAL);
+}
+
+export function getPrincipalTokenInfos(
+  tokenInfos: TokenInfo[]
+): PrincipalTokenInfo[] {
+  return tokenInfos.filter((tokenInfo): tokenInfo is PrincipalTokenInfo =>
+    isPrincipalToken(tokenInfo)
+  );
+}
+
+function isPrincipalPool(
+  tokenInfo: TokenInfo
+): tokenInfo is PrincipalPoolTokenInfo {
+  return !!tokenInfo.tags?.includes(TokenListTag.CCPOOL);
+}
+
+export function getPrincipalTokenInfoForPool(
+  poolInfo: YieldPoolTokenInfo | PrincipalPoolTokenInfo,
+  tokenInfos: TokenInfo[]
+): PrincipalTokenInfo {
+  const principalTokenInfos = getPrincipalTokenInfos(tokenInfos);
+  if (isPrincipalPool(poolInfo)) {
+    const trancheAddress = poolInfo.extensions.bond;
+    const trancheInfo = principalTokenInfos.find(
+      (info) => info.address === trancheAddress
+    ) as PrincipalTokenInfo;
+    return trancheInfo;
+  }
+
+  const interestTokenAddress = poolInfo.extensions.interestToken;
+  const trancheInfo = principalTokenInfos.find(
+    (info) => info.extensions.interestToken === interestTokenAddress
+  ) as PrincipalTokenInfo;
+  return trancheInfo;
+}
+
+export function getPoolInfoForPrincipalToken(
+  principalTokenAddress: string,
+  tokenInfos: TokenInfo[]
+): PrincipalPoolTokenInfo {
+  const principalPools: PrincipalPoolTokenInfo[] = tokenInfos.filter(
+    (tokenInfo): tokenInfo is PrincipalPoolTokenInfo =>
+      isPrincipalPool(tokenInfo)
+  );
+  return principalPools.find(
+    ({ extensions: { bond } }) => bond === principalTokenAddress
+  ) as PrincipalPoolTokenInfo;
+}
+
+function isYieldPool(tokenInfo: TokenInfo): tokenInfo is YieldPoolTokenInfo {
+  return !!tokenInfo.tags?.includes(TokenListTag.WPOOL);
+}
+
+export function getYieldPoolTokenInfos(
+  tokenInfos: TokenInfo[]
+): YieldPoolTokenInfo[] {
+  return tokenInfos.filter((tokenInfo): tokenInfo is YieldPoolTokenInfo =>
+    isYieldPool(tokenInfo)
+  );
 }

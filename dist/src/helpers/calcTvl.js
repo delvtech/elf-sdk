@@ -39,7 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getPoolTokens = exports.fetchBaseAssetReservesInPool = exports.getPrincipalTokenInfoForPool = exports.fetchAccumulatedInterestForTranche = exports.fetchTotalValueLockedForTerm = exports.useTotalValueLockedForPlatform = exports.isYieldPool = exports.getPoolForYieldToken = exports.getPoolInfoForPrincipalToken = exports.isPrincipalPool = exports.isPrincipalToken = exports.getTokenInfo = exports.AddressesJson = void 0;
+exports.getPoolTokens = exports.fetchBaseAssetReservesInPool = exports.fetchAccumulatedInterestForTranche = exports.fetchTotalValueLockedForTerm = exports.useTotalValueLockedForPlatform = exports.getPoolForYieldToken = void 0;
 var ts_money_1 = require("ts-money");
 var utils_1 = require("ethers/lib/utils");
 var keyby_1 = __importDefault(require("lodash/keyby"));
@@ -48,70 +48,15 @@ var YVaultAssetProxy__factory_1 = require("elf-contracts-typechain/dist/types/fa
 var Vault__factory_1 = require("elf-contracts-typechain/dist/types/factories/Vault__factory");
 var WeightedPool__factory_1 = require("elf-contracts-typechain/dist/types/factories/WeightedPool__factory");
 var ERC20__factory_1 = require("elf-contracts-typechain/dist/types/factories/ERC20__factory");
-var getUnderlyingContractsByAddress_1 = require("src/helpers/getUnderlyingContractsByAddress");
-var getTokenPrice_1 = require("src/helpers/getTokenPrice");
-var TokenListTag;
-(function (TokenListTag) {
-    TokenListTag["VAULT"] = "vault";
-    TokenListTag["ASSET_PROXY"] = "assetproxy";
-    TokenListTag["CCPOOL"] = "ccpool";
-    TokenListTag["PRINCIPAL"] = "eP";
-    TokenListTag["UNDERLYING"] = "underlying";
-    TokenListTag["WPOOL"] = "wpool";
-    TokenListTag["YIELD"] = "eY";
-})(TokenListTag || (TokenListTag = {}));
-// TODO: make dynamic?
-var chainName = "mainnet";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-var tokenListJson = require("elf-tokenlist/dist/" + chainName + ".tokenlist.json");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-exports.AddressesJson = require("elf-tokenlist/dist/" + chainName + ".addresses.json");
-var principalTokenInfos = tokenListJson.tokens.filter(function (tokenInfo) {
-    return isPrincipalToken(tokenInfo);
-});
-var yieldPools = tokenListJson.tokens.filter(function (tokenInfo) { return isYieldPool(tokenInfo); });
-var assetProxyTokenInfos = tokenListJson.tokens.filter(function (tokenInfo) {
-    return isAssetProxy(tokenInfo);
-});
-/**
- * Helper function for looking up a tokenlist info when you know the type of TokenInfo you want.
- * This is useful when you want strongly-typed properties for `extensions`, eg:
- *
- * const principalToken = getTokenInfo<PrincipalTokenInfo>('0xdeadbeef')
- * const { extensions: { underlying, ... } } = principalToken;
- */
-function getTokenInfo(address) {
-    var tokenInfos = tokenListJson.tokens;
-    var TokenMetadata = (0, keyby_1.default)(tokenInfos, "address");
-    return TokenMetadata[address];
-}
-exports.getTokenInfo = getTokenInfo;
-function isPrincipalToken(tokenInfo) {
-    var _a;
-    return !!((_a = tokenInfo === null || tokenInfo === void 0 ? void 0 : tokenInfo.tags) === null || _a === void 0 ? void 0 : _a.includes(TokenListTag.PRINCIPAL));
-}
-exports.isPrincipalToken = isPrincipalToken;
-function isPrincipalPool(tokenInfo) {
-    var _a;
-    return !!((_a = tokenInfo.tags) === null || _a === void 0 ? void 0 : _a.includes(TokenListTag.CCPOOL));
-}
-exports.isPrincipalPool = isPrincipalPool;
-function getPoolInfoForPrincipalToken(principalTokenAddress) {
-    var principalPools = tokenListJson.tokens.filter(function (tokenInfo) {
-        return isPrincipalPool(tokenInfo);
-    });
-    return principalPools.find(function (_a) {
-        var bond = _a.extensions.bond;
-        return bond === principalTokenAddress;
-    });
-}
-exports.getPoolInfoForPrincipalToken = getPoolInfoForPrincipalToken;
-function getPoolForYieldToken(yieldTokenAddress, signerOrProvider) {
-    var yieldPool = yieldPools.find(function (_a) {
+var getUnderlyingContractsByAddress_1 = require("./getUnderlyingContractsByAddress");
+var getTokenPrice_1 = require("./getTokenPrice");
+var getTokenInfo_1 = require("./getTokenInfo");
+function getPoolForYieldToken(yieldTokenAddress, YieldPoolTokenInfos, signerOrProvider) {
+    var yieldPool = YieldPoolTokenInfos.find(function (_a) {
         var interestToken = _a.extensions.interestToken;
         return interestToken === yieldTokenAddress;
     });
-    var yieldPoolContracts = yieldPools.map(function (_a) {
+    var yieldPoolContracts = YieldPoolTokenInfos.map(function (_a) {
         var address = _a.address;
         return WeightedPool__factory_1.WeightedPool__factory.connect(address, signerOrProvider);
     });
@@ -119,39 +64,33 @@ function getPoolForYieldToken(yieldTokenAddress, signerOrProvider) {
     return yieldPoolContractsByAddress[yieldPool.address];
 }
 exports.getPoolForYieldToken = getPoolForYieldToken;
-function isYieldPool(tokenInfo) {
-    var _a;
-    return !!((_a = tokenInfo.tags) === null || _a === void 0 ? void 0 : _a.includes(TokenListTag.WPOOL));
-}
-exports.isYieldPool = isYieldPool;
-function isAssetProxy(tokenInfo) {
-    var _a;
-    return !!((_a = tokenInfo.tags) === null || _a === void 0 ? void 0 : _a.includes(TokenListTag.ASSET_PROXY));
-}
-function useTotalValueLockedForPlatform(signerOrProvider) {
+function useTotalValueLockedForPlatform(chainName, signerOrProvider) {
     return __awaiter(this, void 0, void 0, function () {
-        var currency, results, totalValueLocked;
+        var currency, _a, tokenInfoJson, AddressesJson, tokenInfoByAddress, underlyingContractsByAddress, assetProxyTokenInfos, principalTokenInfos, results, totalValueLocked;
         var _this = this;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
                     currency = ts_money_1.Currencies.USD;
+                    _a = (0, getTokenInfo_1.initTokenList)(chainName), tokenInfoJson = _a[0], AddressesJson = _a[1], tokenInfoByAddress = _a[2];
+                    underlyingContractsByAddress = (0, getUnderlyingContractsByAddress_1.getUnderlyingContractsByAddress)(chainName, signerOrProvider);
+                    assetProxyTokenInfos = (0, getTokenInfo_1.getAssetProxyTokenInfos)(tokenInfoJson.tokens);
+                    principalTokenInfos = (0, getTokenInfo_1.getPrincipalTokenInfos)(tokenInfoJson.tokens);
                     return [4 /*yield*/, Promise.all(principalTokenInfos.map(function (tokenInfo) { return __awaiter(_this, void 0, void 0, function () {
-                            var underlyingContractsByAddress, baseAssetContract, baseAssetPrice;
+                            var baseAssetContract, baseAssetPrice;
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0:
-                                        underlyingContractsByAddress = (0, getUnderlyingContractsByAddress_1.getUnderlyingContractsByAddress)(chainName, signerOrProvider);
                                         baseAssetContract = underlyingContractsByAddress[tokenInfo.extensions.underlying];
                                         return [4 /*yield*/, (0, getTokenPrice_1.getTokenPrice)(baseAssetContract, currency)];
                                     case 1:
                                         baseAssetPrice = _a.sent();
-                                        return [2 /*return*/, fetchTotalValueLockedForTerm(tokenInfo, baseAssetPrice, signerOrProvider)];
+                                        return [2 /*return*/, fetchTotalValueLockedForTerm(tokenInfo, AddressesJson.addresses.balancerVaultAddress, underlyingContractsByAddress, assetProxyTokenInfos, tokenInfoJson.tokens, tokenInfoByAddress, baseAssetPrice, signerOrProvider)];
                                 }
                             });
                         }); }))];
                 case 1:
-                    results = _a.sent();
+                    results = _b.sent();
                     totalValueLocked = ts_money_1.Money.fromDecimal(0, currency);
                     results.forEach(function (result) { return (totalValueLocked = totalValueLocked.add(result)); });
                     return [2 /*return*/, totalValueLocked];
@@ -160,12 +99,13 @@ function useTotalValueLockedForPlatform(signerOrProvider) {
     });
 }
 exports.useTotalValueLockedForPlatform = useTotalValueLockedForPlatform;
-function fetchTotalValueLockedForTerm(trancheInfo, baseAssetPrice, signerOrProvider) {
+function fetchTotalValueLockedForTerm(trancheInfo, balancerVaultAddress, underlyingContractsByAddress, assetProxyTokenInfos, tokenInfos, tokenInfoByAddress, baseAssetPrice, signerOrProvider) {
     return __awaiter(this, void 0, void 0, function () {
-        var trancheContracts, trancheContractsByAddress, address, decimals, tranche, poolInfo, yieldPoolAddress, yieldPoolInfo, baseAssetLockedBNPromise, accumulatedInterestBNPromise, baseReservesInPrincipalPoolBNPromise, baseReservesInYieldPoolBNPromise, _a, baseAssetLockedBN, accumulatedInterestBN, baseReservesInPrincipalPoolBN, baseReservesInYieldPoolBN, baseAssetLocked, accumulatedInterest, baseReservesInPrincipalPool, baseReservesInYieldPool, totalFiatValueLocked;
+        var principalTokenInfos, trancheContracts, trancheContractsByAddress, address, decimals, tranche, poolInfo, yieldPoolTokenInfos, yieldPoolAddress, yieldPoolInfo, baseAssetLockedBNPromise, accumulatedInterestBNPromise, baseReservesInPrincipalPoolBNPromise, baseReservesInYieldPoolBNPromise, _a, baseAssetLockedBN, accumulatedInterestBN, baseReservesInPrincipalPoolBN, baseReservesInYieldPoolBN, baseAssetLocked, accumulatedInterest, baseReservesInPrincipalPool, baseReservesInYieldPool, totalFiatValueLocked;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
+                    principalTokenInfos = (0, getTokenInfo_1.getPrincipalTokenInfos)(tokenInfos);
                     trancheContracts = principalTokenInfos.map(function (_a) {
                         var address = _a.address;
                         return Tranche__factory_1.Tranche__factory.connect(address, signerOrProvider);
@@ -173,13 +113,14 @@ function fetchTotalValueLockedForTerm(trancheInfo, baseAssetPrice, signerOrProvi
                     trancheContractsByAddress = (0, keyby_1.default)(trancheContracts, function (tranche) { return tranche.address; });
                     address = trancheInfo.address, decimals = trancheInfo.decimals;
                     tranche = trancheContractsByAddress[address];
-                    poolInfo = getPoolInfoForPrincipalToken(address);
-                    yieldPoolAddress = getPoolForYieldToken(trancheInfo.extensions.interestToken, signerOrProvider).address;
-                    yieldPoolInfo = getTokenInfo(yieldPoolAddress);
+                    poolInfo = (0, getTokenInfo_1.getPoolInfoForPrincipalToken)(address, tokenInfos);
+                    yieldPoolTokenInfos = (0, getTokenInfo_1.getYieldPoolTokenInfos)(tokenInfos);
+                    yieldPoolAddress = getPoolForYieldToken(trancheInfo.extensions.interestToken, yieldPoolTokenInfos, signerOrProvider).address;
+                    yieldPoolInfo = (0, getTokenInfo_1.getTokenInfo)(yieldPoolAddress, tokenInfoByAddress);
                     baseAssetLockedBNPromise = tranche.valueSupplied();
-                    accumulatedInterestBNPromise = fetchAccumulatedInterestForTranche(poolInfo, signerOrProvider);
-                    baseReservesInPrincipalPoolBNPromise = fetchBaseAssetReservesInPool(poolInfo, signerOrProvider);
-                    baseReservesInYieldPoolBNPromise = fetchBaseAssetReservesInPool(yieldPoolInfo, signerOrProvider);
+                    accumulatedInterestBNPromise = fetchAccumulatedInterestForTranche(poolInfo, assetProxyTokenInfos, tokenInfos, signerOrProvider);
+                    baseReservesInPrincipalPoolBNPromise = fetchBaseAssetReservesInPool(poolInfo, balancerVaultAddress, tokenInfoByAddress, underlyingContractsByAddress, signerOrProvider);
+                    baseReservesInYieldPoolBNPromise = fetchBaseAssetReservesInPool(yieldPoolInfo, balancerVaultAddress, tokenInfoByAddress, underlyingContractsByAddress, signerOrProvider);
                     return [4 /*yield*/, Promise.all([
                             baseAssetLockedBNPromise,
                             accumulatedInterestBNPromise,
@@ -202,13 +143,14 @@ function fetchTotalValueLockedForTerm(trancheInfo, baseAssetPrice, signerOrProvi
     });
 }
 exports.fetchTotalValueLockedForTerm = fetchTotalValueLockedForTerm;
-function fetchAccumulatedInterestForTranche(poolInfo, signerOrProvider) {
+function fetchAccumulatedInterestForTranche(poolInfo, assetProxyTokenInfos, tokenInfos, signerOrProvider) {
     return __awaiter(this, void 0, void 0, function () {
-        var _a, trancheAddress, vaultAssetProxyAddress, trancheContracts, trancheContractsByAddress, trancheContract, assetProxyContracts, assetProxyContractsByAddress, yVaultAssetProxy, balanceOfUnderlying, valueOfSharesInUnderlying;
+        var _a, trancheAddress, vaultAssetProxyAddress, principalTokenInfos, trancheContracts, trancheContractsByAddress, trancheContract, assetProxyContracts, assetProxyContractsByAddress, yVaultAssetProxy, balanceOfUnderlying, valueOfSharesInUnderlying;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    _a = getPrincipalTokenInfoForPool(poolInfo), trancheAddress = _a.address, vaultAssetProxyAddress = _a.extensions.position;
+                    _a = (0, getTokenInfo_1.getPrincipalTokenInfoForPool)(poolInfo, tokenInfos), trancheAddress = _a.address, vaultAssetProxyAddress = _a.extensions.position;
+                    principalTokenInfos = (0, getTokenInfo_1.getPrincipalTokenInfos)(tokenInfos);
                     trancheContracts = principalTokenInfos.map(function (_a) {
                         var address = _a.address;
                         return Tranche__factory_1.Tranche__factory.connect(address, signerOrProvider);
@@ -233,41 +175,29 @@ function fetchAccumulatedInterestForTranche(poolInfo, signerOrProvider) {
     });
 }
 exports.fetchAccumulatedInterestForTranche = fetchAccumulatedInterestForTranche;
-function getPrincipalTokenInfoForPool(poolInfo) {
-    if (isPrincipalPool(poolInfo)) {
-        var trancheAddress_1 = poolInfo.extensions.bond;
-        var trancheInfo_1 = principalTokenInfos.find(function (info) { return info.address === trancheAddress_1; });
-        return trancheInfo_1;
-    }
-    var interestTokenAddress = poolInfo.extensions.interestToken;
-    var trancheInfo = principalTokenInfos.find(function (info) { return info.extensions.interestToken === interestTokenAddress; });
-    return trancheInfo;
-}
-exports.getPrincipalTokenInfoForPool = getPrincipalTokenInfoForPool;
-function fetchBaseAssetReservesInPool(poolInfo, signerOrProvider) {
+function fetchBaseAssetReservesInPool(poolInfo, balancerVaultAddress, tokenInfoByAddress, underlyingContractsByAddress, signerOrProvider) {
     return __awaiter(this, void 0, void 0, function () {
         var balancerVaultContract, _a, balances, baseAssetIndex;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    balancerVaultContract = Vault__factory_1.Vault__factory.connect(exports.AddressesJson.addresses.balancerVaultAddress, signerOrProvider);
+                    balancerVaultContract = Vault__factory_1.Vault__factory.connect(balancerVaultAddress, signerOrProvider);
                     return [4 /*yield*/, balancerVaultContract.getPoolTokens(poolInfo.extensions.poolId)];
                 case 1:
                     _a = _b.sent(), balances = _a[1];
-                    baseAssetIndex = getPoolTokens(poolInfo, signerOrProvider).baseAssetIndex;
+                    baseAssetIndex = getPoolTokens(poolInfo, tokenInfoByAddress, underlyingContractsByAddress, signerOrProvider).baseAssetIndex;
                     return [2 /*return*/, balances === null || balances === void 0 ? void 0 : balances[baseAssetIndex]];
             }
         });
     });
 }
 exports.fetchBaseAssetReservesInPool = fetchBaseAssetReservesInPool;
-function getPoolTokens(poolInfo, signerOrProvider) {
+function getPoolTokens(poolInfo, tokenInfoByAddress, underlyingContractsByAddress, signerOrProvider) {
     var _a, _b, _c, _d, _e;
     var baseAssetAddress = poolInfo === null || poolInfo === void 0 ? void 0 : poolInfo.extensions.underlying;
     var termAssetAddress = (_c = (_b = (_a = poolInfo) === null || _a === void 0 ? void 0 : _a.extensions) === null || _b === void 0 ? void 0 : _b.bond) !== null && _c !== void 0 ? _c : (_e = (_d = poolInfo) === null || _d === void 0 ? void 0 : _d.extensions) === null || _e === void 0 ? void 0 : _e.interestToken;
-    var baseAssetInfo = getTokenInfo(baseAssetAddress);
-    var termAssetInfo = getTokenInfo(termAssetAddress);
-    var underlyingContractsByAddress = (0, getUnderlyingContractsByAddress_1.getUnderlyingContractsByAddress)(chainName, signerOrProvider);
+    var baseAssetInfo = (0, getTokenInfo_1.getTokenInfo)(baseAssetAddress, tokenInfoByAddress);
+    var termAssetInfo = (0, getTokenInfo_1.getTokenInfo)(termAssetAddress, tokenInfoByAddress);
     var baseAssetContract = underlyingContractsByAddress[baseAssetAddress];
     var termAssetContract = getSmartContractFromRegistry(termAssetAddress, ERC20__factory_1.ERC20__factory.connect, signerOrProvider);
     var sortedAddresses = sortAddresses([

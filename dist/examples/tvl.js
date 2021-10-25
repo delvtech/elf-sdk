@@ -52,19 +52,53 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var hardhat_1 = require("hardhat");
-var calcTvl_1 = require("src/helpers/calcTvl");
+var calcTvl_1 = require("../src/helpers/calcTvl");
+var getTokenInfo_1 = require("../src/helpers/getTokenInfo");
+var ts_money_1 = require("ts-money");
+var getUnderlyingContractsByAddress_1 = require("../src/helpers/getUnderlyingContractsByAddress");
+var getTokenPrice_1 = require("../src/helpers/getTokenPrice");
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var signer, tvl;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var signer, chainName, tvl, currency, _a, tokenInfoJson, AddressesJson, tokenInfoByAddress, assetProxyTokenInfos, principalTokenInfos, results;
+        var _this = this;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0: return [4 /*yield*/, hardhat_1.ethers.getSigners()];
                 case 1:
-                    signer = (_a.sent())[0];
-                    return [4 /*yield*/, (0, calcTvl_1.useTotalValueLockedForPlatform)(signer)];
+                    signer = (_b.sent())[0];
+                    chainName = "mainnet";
+                    return [4 /*yield*/, (0, calcTvl_1.useTotalValueLockedForPlatform)(chainName, signer)];
                 case 2:
-                    tvl = _a.sent();
+                    tvl = _b.sent();
                     console.log(tvl);
+                    currency = ts_money_1.Currencies.USD;
+                    _a = (0, getTokenInfo_1.initTokenList)(chainName), tokenInfoJson = _a[0], AddressesJson = _a[1], tokenInfoByAddress = _a[2];
+                    assetProxyTokenInfos = (0, getTokenInfo_1.getAssetProxyTokenInfos)(tokenInfoJson.tokens);
+                    principalTokenInfos = (0, getTokenInfo_1.getPrincipalTokenInfos)(tokenInfoJson.tokens);
+                    return [4 /*yield*/, Promise.all(principalTokenInfos.map(function (tokenInfo) { return __awaiter(_this, void 0, void 0, function () {
+                            var underlyingContractsByAddress, baseAssetContract, baseAssetPrice, termTvl;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        underlyingContractsByAddress = (0, getUnderlyingContractsByAddress_1.getUnderlyingContractsByAddress)(chainName, signer);
+                                        baseAssetContract = underlyingContractsByAddress[tokenInfo.extensions.underlying];
+                                        return [4 /*yield*/, (0, getTokenPrice_1.getTokenPrice)(baseAssetContract, currency)];
+                                    case 1:
+                                        baseAssetPrice = _a.sent();
+                                        return [4 /*yield*/, (0, calcTvl_1.fetchTotalValueLockedForTerm)(tokenInfo, AddressesJson.addresses.balancerVaultAddress, underlyingContractsByAddress, assetProxyTokenInfos, tokenInfoJson.tokens, tokenInfoByAddress, baseAssetPrice, signer)];
+                                    case 2:
+                                        termTvl = _a.sent();
+                                        return [4 /*yield*/, baseAssetContract.name()];
+                                    case 3: return [2 /*return*/, [_a.sent(), termTvl]];
+                                }
+                            });
+                        }); }))];
+                case 3:
+                    results = _b.sent();
+                    results.forEach(function (result) {
+                        console.log(result[0]);
+                        console.log(result[1]);
+                    });
                     return [2 /*return*/];
             }
         });

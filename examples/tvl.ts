@@ -17,10 +17,13 @@
 import { ethers } from "hardhat";
 import {
   useTotalValueLockedForPlatform,
-  principalTokenInfos,
   fetchTotalValueLockedForTerm,
 } from "../src/helpers/calcTvl";
-
+import {
+  initTokenList,
+  getPrincipalTokenInfos,
+  getAssetProxyTokenInfos,
+} from "../src/helpers/getTokenInfo";
 import { Currencies, Money } from "ts-money";
 import { ERC20 } from "elf-contracts-typechain/dist/types/ERC20";
 import { getUnderlyingContractsByAddress } from "../src/helpers/getUnderlyingContractsByAddress";
@@ -28,11 +31,15 @@ import { getTokenPrice } from "../src/helpers/getTokenPrice";
 
 async function main() {
   const [signer] = await ethers.getSigners();
-  const tvl = await useTotalValueLockedForPlatform(signer);
+  const chainName = "mainnet";
+  const tvl = await useTotalValueLockedForPlatform(chainName, signer);
   console.log(tvl);
 
-  const chainName = "mainnet";
   const currency = Currencies.USD;
+  const [tokenInfoJson, AddressesJson, tokenInfoByAddress] =
+    initTokenList(chainName);
+  const assetProxyTokenInfos = getAssetProxyTokenInfos(tokenInfoJson.tokens);
+  const principalTokenInfos = getPrincipalTokenInfos(tokenInfoJson.tokens);
   const results = await Promise.all(
     principalTokenInfos.map(async (tokenInfo) => {
       const underlyingContractsByAddress = getUnderlyingContractsByAddress(
@@ -47,6 +54,11 @@ async function main() {
       );
       const termTvl = await fetchTotalValueLockedForTerm(
         tokenInfo,
+        AddressesJson.addresses.balancerVaultAddress,
+        underlyingContractsByAddress,
+        assetProxyTokenInfos,
+        tokenInfoJson.tokens,
+        tokenInfoByAddress,
         baseAssetPrice,
         signer
       );

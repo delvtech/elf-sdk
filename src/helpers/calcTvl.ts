@@ -11,7 +11,12 @@ import { Vault__factory } from "elf-contracts-typechain/dist/types/factories/Vau
 import { WeightedPool__factory } from "elf-contracts-typechain/dist/types/factories/WeightedPool__factory";
 import { ERC20__factory } from "elf-contracts-typechain/dist/types/factories/ERC20__factory";
 import { WeightedPool } from "elf-contracts-typechain/dist/types/WeightedPool";
-import { ERC20 } from "elf-contracts-typechain/dist/types/ERC20";
+import {
+  ERC20,
+  ERC20Permit,
+  WETH,
+  DAI,
+} from "elf-contracts-typechain/dist/types";
 import {
   PrincipalTokenInfo,
   YieldPoolTokenInfo,
@@ -19,92 +24,29 @@ import {
   AssetProxyTokenInfo,
   AnyTokenListInfo,
 } from "elf-tokenlist";
+import { AddressesJsonFile } from "elf-tokenlist/dist/AddressesJsonFile";
 import { getUnderlyingContractsByAddress } from "./getUnderlyingContractsByAddress";
 import { getTokenPrice } from "./getTokenPrice";
-type PoolInfo = YieldPoolTokenInfo | PrincipalPoolTokenInfo;
-
-enum TokenListTag {
-  VAULT = "vault",
-  ASSET_PROXY = "assetproxy",
-  CCPOOL = "ccpool",
-  PRINCIPAL = "eP",
-  UNDERLYING = "underlying",
-  WPOOL = "wpool",
-  YIELD = "eY",
-}
-
-// TODO: make dynamic?
-const chainName = "mainnet";
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const tokenListJson: TokenList = require(`elf-tokenlist/dist/${chainName}.tokenlist.json`);
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-export const AddressesJson = require(`elf-tokenlist/dist/${chainName}.addresses.json`);
-
-export const principalTokenInfos: PrincipalTokenInfo[] =
-  tokenListJson.tokens.filter((tokenInfo): tokenInfo is PrincipalTokenInfo =>
-    isPrincipalToken(tokenInfo)
-  );
-
-export const yieldPools: YieldPoolTokenInfo[] = tokenListJson.tokens.filter(
-  (tokenInfo): tokenInfo is YieldPoolTokenInfo => isYieldPool(tokenInfo)
-);
-
-export const assetProxyTokenInfos: AssetProxyTokenInfo[] =
-  tokenListJson.tokens.filter((tokenInfo): tokenInfo is AssetProxyTokenInfo =>
-    isAssetProxy(tokenInfo)
-  );
-
-/**
- * Helper function for looking up a tokenlist info when you know the type of TokenInfo you want.
- * This is useful when you want strongly-typed properties for `extensions`, eg:
- *
- * const principalToken = getTokenInfo<PrincipalTokenInfo>('0xdeadbeef')
- * const { extensions: { underlying, ... } } = principalToken;
- */
-export function getTokenInfo<T extends TokenInfo>(address: string): T {
-  const tokenInfos = tokenListJson.tokens;
-  const TokenMetadata: Record<string, AnyTokenListInfo> = keyBy(
-    tokenInfos,
-    "address"
-  );
-  return TokenMetadata[address] as T;
-}
-
-export function isPrincipalToken(
-  tokenInfo: TokenInfo
-): tokenInfo is PrincipalTokenInfo {
-  return !!tokenInfo?.tags?.includes(TokenListTag.PRINCIPAL);
-}
-
-export function isPrincipalPool(
-  tokenInfo: TokenInfo
-): tokenInfo is PrincipalPoolTokenInfo {
-  return !!tokenInfo.tags?.includes(TokenListTag.CCPOOL);
-}
-
-export function getPoolInfoForPrincipalToken(
-  principalTokenAddress: string
-): PrincipalPoolTokenInfo {
-  const principalPools: PrincipalPoolTokenInfo[] = tokenListJson.tokens.filter(
-    (tokenInfo): tokenInfo is PrincipalPoolTokenInfo =>
-      isPrincipalPool(tokenInfo)
-  );
-  return principalPools.find(
-    ({ extensions: { bond } }) => bond === principalTokenAddress
-  ) as PrincipalPoolTokenInfo;
-}
+import {
+  getTokenInfo,
+  initTokenList,
+  getPrincipalTokenInfos,
+  getYieldPoolTokenInfos,
+  getPoolInfoForPrincipalToken,
+  getPrincipalTokenInfoForPool,
+  getAssetProxyTokenInfos,
+} from "./getTokenInfo";
 
 export function getPoolForYieldToken(
   yieldTokenAddress: string,
+  YieldPoolTokenInfos: YieldPoolTokenInfo[],
   signerOrProvider: Signer | Provider
 ): WeightedPool {
-  const yieldPool = yieldPools.find(
+  const yieldPool = YieldPoolTokenInfos.find(
     ({ extensions: { interestToken } }) => interestToken === yieldTokenAddress
   ) as YieldPoolTokenInfo;
 
-  const yieldPoolContracts = yieldPools.map(({ address }) =>
+  const yieldPoolContracts = YieldPoolTokenInfos.map(({ address }) =>
     WeightedPool__factory.connect(address, signerOrProvider)
   );
 
@@ -115,26 +57,21 @@ export function getPoolForYieldToken(
   return yieldPoolContractsByAddress[yieldPool.address];
 }
 
-export function isYieldPool(
-  tokenInfo: TokenInfo
-): tokenInfo is YieldPoolTokenInfo {
-  return !!tokenInfo.tags?.includes(TokenListTag.WPOOL);
-}
-
-function isAssetProxy(tokenInfo: TokenInfo): tokenInfo is PrincipalTokenInfo {
-  return !!tokenInfo.tags?.includes(TokenListTag.ASSET_PROXY);
-}
-
 export async function useTotalValueLockedForPlatform(
+  chainName: string,
   signerOrProvider: Signer | Provider
 ): Promise<Money> {
   const currency = Currencies.USD;
+  const [tokenInfoJson, AddressesJson, tokenInfoByAddress] =
+    initTokenList(chainName);
+  const underlyingContractsByAddress = getUnderlyingContractsByAddress(
+    chainName,
+    signerOrProvider
+  );
+  const assetProxyTokenInfos = getAssetProxyTokenInfos(tokenInfoJson.tokens);
+  const principalTokenInfos = getPrincipalTokenInfos(tokenInfoJson.tokens);
   const results = await Promise.all(
     principalTokenInfos.map(async (tokenInfo) => {
-      const underlyingContractsByAddress = getUnderlyingContractsByAddress(
-        chainName,
-        signerOrProvider
-      );
       const baseAssetContract =
         underlyingContractsByAddress[tokenInfo.extensions.underlying];
       const baseAssetPrice = await getTokenPrice(
@@ -143,6 +80,11 @@ export async function useTotalValueLockedForPlatform(
       );
       return fetchTotalValueLockedForTerm(
         tokenInfo,
+        AddressesJson.addresses.balancerVaultAddress,
+        underlyingContractsByAddress,
+        assetProxyTokenInfos,
+        tokenInfoJson.tokens,
+        tokenInfoByAddress,
         baseAssetPrice,
         signerOrProvider
       );
@@ -159,9 +101,18 @@ export async function useTotalValueLockedForPlatform(
 
 export async function fetchTotalValueLockedForTerm(
   trancheInfo: PrincipalTokenInfo,
+  balancerVaultAddress: string,
+  underlyingContractsByAddress: Record<
+    string,
+    ERC20 | WETH | DAI | ERC20Permit
+  >,
+  assetProxyTokenInfos: AssetProxyTokenInfo[],
+  tokenInfos: TokenInfo[],
+  tokenInfoByAddress: Record<string, AnyTokenListInfo>,
   baseAssetPrice: Money,
   signerOrProvider: Signer | Provider
 ): Promise<Money> {
+  const principalTokenInfos = getPrincipalTokenInfos(tokenInfos);
   const trancheContracts = principalTokenInfos.map(({ address }) =>
     Tranche__factory.connect(address, signerOrProvider)
   );
@@ -173,26 +124,39 @@ export async function fetchTotalValueLockedForTerm(
 
   const { address, decimals } = trancheInfo;
   const tranche = trancheContractsByAddress[address];
-  const poolInfo = getPoolInfoForPrincipalToken(address);
+  const poolInfo = getPoolInfoForPrincipalToken(address, tokenInfos);
+  const yieldPoolTokenInfos = getYieldPoolTokenInfos(tokenInfos);
   const { address: yieldPoolAddress } = getPoolForYieldToken(
     trancheInfo.extensions.interestToken,
+    yieldPoolTokenInfos,
     signerOrProvider
   );
-  const yieldPoolInfo = getTokenInfo<YieldPoolTokenInfo>(yieldPoolAddress);
+  const yieldPoolInfo = getTokenInfo<YieldPoolTokenInfo>(
+    yieldPoolAddress,
+    tokenInfoByAddress
+  );
 
   // get all components of TVL: base asset in tranche, base asset in pool, accumulated interest for
   // tranche
   const baseAssetLockedBNPromise = tranche.valueSupplied();
   const accumulatedInterestBNPromise = fetchAccumulatedInterestForTranche(
     poolInfo,
+    assetProxyTokenInfos,
+    tokenInfos,
     signerOrProvider
   );
   const baseReservesInPrincipalPoolBNPromise = fetchBaseAssetReservesInPool(
     poolInfo,
+    balancerVaultAddress,
+    tokenInfoByAddress,
+    underlyingContractsByAddress,
     signerOrProvider
   );
   const baseReservesInYieldPoolBNPromise = fetchBaseAssetReservesInPool(
     yieldPoolInfo,
+    balancerVaultAddress,
+    tokenInfoByAddress,
+    underlyingContractsByAddress,
     signerOrProvider
   );
 
@@ -236,14 +200,16 @@ export async function fetchTotalValueLockedForTerm(
 }
 
 export async function fetchAccumulatedInterestForTranche(
-  poolInfo: PoolInfo,
+  poolInfo: YieldPoolTokenInfo | PrincipalPoolTokenInfo,
+  assetProxyTokenInfos: AssetProxyTokenInfo[],
+  tokenInfos: TokenInfo[],
   signerOrProvider: Signer | Provider
 ): Promise<BigNumber> {
   const {
     address: trancheAddress,
     extensions: { position: vaultAssetProxyAddress },
-  } = getPrincipalTokenInfoForPool(poolInfo);
-
+  } = getPrincipalTokenInfoForPool(poolInfo, tokenInfos);
+  const principalTokenInfos = getPrincipalTokenInfos(tokenInfos);
   const trancheContracts = principalTokenInfos.map(({ address }) =>
     Tranche__factory.connect(address, signerOrProvider)
   );
@@ -254,7 +220,6 @@ export async function fetchAccumulatedInterestForTranche(
   );
 
   const trancheContract = trancheContractsByAddress[trancheAddress];
-
   const assetProxyContracts = assetProxyTokenInfos.map(({ address }) =>
     YVaultAssetProxy__factory.connect(address, signerOrProvider)
   );
@@ -278,37 +243,30 @@ export async function fetchAccumulatedInterestForTranche(
   return valueOfSharesInUnderlying.sub(balanceOfUnderlying);
 }
 
-export function getPrincipalTokenInfoForPool(
-  poolInfo: PoolInfo
-): PrincipalTokenInfo {
-  if (isPrincipalPool(poolInfo)) {
-    const trancheAddress = poolInfo.extensions.bond;
-    const trancheInfo = principalTokenInfos.find(
-      (info) => info.address === trancheAddress
-    ) as PrincipalTokenInfo;
-    return trancheInfo;
-  }
-
-  const interestTokenAddress = poolInfo.extensions.interestToken;
-  const trancheInfo = principalTokenInfos.find(
-    (info) => info.extensions.interestToken === interestTokenAddress
-  ) as PrincipalTokenInfo;
-  return trancheInfo;
-}
-
 export async function fetchBaseAssetReservesInPool(
-  poolInfo: PoolInfo,
+  poolInfo: YieldPoolTokenInfo | PrincipalPoolTokenInfo,
+  balancerVaultAddress: string,
+  tokenInfoByAddress: Record<string, AnyTokenListInfo>,
+  underlyingContractsByAddress: Record<
+    string,
+    ERC20 | WETH | DAI | ERC20Permit
+  >,
   signerOrProvider: Signer | Provider
 ): Promise<BigNumber> {
   const balancerVaultContract = Vault__factory.connect(
-    AddressesJson.addresses.balancerVaultAddress,
+    balancerVaultAddress,
     signerOrProvider
   );
 
   const [, balances] = await balancerVaultContract.getPoolTokens(
     poolInfo.extensions.poolId
   );
-  const { baseAssetIndex } = getPoolTokens(poolInfo, signerOrProvider);
+  const { baseAssetIndex } = getPoolTokens(
+    poolInfo,
+    tokenInfoByAddress,
+    underlyingContractsByAddress,
+    signerOrProvider
+  );
   return balances?.[baseAssetIndex];
 }
 
@@ -323,19 +281,20 @@ interface PoolTokens {
 }
 
 export function getPoolTokens(
-  poolInfo: PoolInfo,
+  poolInfo: YieldPoolTokenInfo | PrincipalPoolTokenInfo,
+  tokenInfoByAddress: Record<string, AnyTokenListInfo>,
+  underlyingContractsByAddress: Record<
+    string,
+    ERC20 | WETH | DAI | ERC20Permit
+  >,
   signerOrProvider: Signer | Provider
 ): PoolTokens {
   const baseAssetAddress = poolInfo?.extensions.underlying;
   const termAssetAddress =
     (poolInfo as PrincipalPoolTokenInfo)?.extensions?.bond ??
     (poolInfo as YieldPoolTokenInfo)?.extensions?.interestToken;
-  const baseAssetInfo = getTokenInfo(baseAssetAddress);
-  const termAssetInfo = getTokenInfo(termAssetAddress);
-  const underlyingContractsByAddress = getUnderlyingContractsByAddress(
-    chainName,
-    signerOrProvider
-  );
+  const baseAssetInfo = getTokenInfo(baseAssetAddress, tokenInfoByAddress);
+  const termAssetInfo = getTokenInfo(termAssetAddress, tokenInfoByAddress);
   const baseAssetContract = underlyingContractsByAddress[
     baseAssetAddress
   ] as ERC20;

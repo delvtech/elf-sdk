@@ -3,55 +3,55 @@ import { TokenInfo } from "@uniswap/token-lists";
 import { Signer, BigNumber } from "ethers";
 import { Provider } from "@ethersproject/providers";
 import { WeightedPool } from "elf-contracts-typechain/dist/types/WeightedPool";
-import { ERC20 } from "elf-contracts-typechain/dist/types/ERC20";
+import {
+  ERC20,
+  ERC20Permit,
+  WETH,
+  DAI,
+} from "elf-contracts-typechain/dist/types";
 import {
   PrincipalTokenInfo,
   YieldPoolTokenInfo,
   PrincipalPoolTokenInfo,
+  AssetProxyTokenInfo,
+  AnyTokenListInfo,
 } from "elf-tokenlist";
-declare type PoolInfo = YieldPoolTokenInfo | PrincipalPoolTokenInfo;
-export declare const AddressesJson: any;
-/**
- * Helper function for looking up a tokenlist info when you know the type of TokenInfo you want.
- * This is useful when you want strongly-typed properties for `extensions`, eg:
- *
- * const principalToken = getTokenInfo<PrincipalTokenInfo>('0xdeadbeef')
- * const { extensions: { underlying, ... } } = principalToken;
- */
-export declare function getTokenInfo<T extends TokenInfo>(address: string): T;
-export declare function isPrincipalToken(
-  tokenInfo: TokenInfo
-): tokenInfo is PrincipalTokenInfo;
-export declare function isPrincipalPool(
-  tokenInfo: TokenInfo
-): tokenInfo is PrincipalPoolTokenInfo;
-export declare function getPoolInfoForPrincipalToken(
-  principalTokenAddress: string
-): PrincipalPoolTokenInfo;
 export declare function getPoolForYieldToken(
   yieldTokenAddress: string,
+  YieldPoolTokenInfos: YieldPoolTokenInfo[],
   signerOrProvider: Signer | Provider
 ): WeightedPool;
-export declare function isYieldPool(
-  tokenInfo: TokenInfo
-): tokenInfo is YieldPoolTokenInfo;
 export declare function useTotalValueLockedForPlatform(
+  chainName: string,
   signerOrProvider: Signer | Provider
 ): Promise<Money>;
 export declare function fetchTotalValueLockedForTerm(
   trancheInfo: PrincipalTokenInfo,
+  balancerVaultAddress: string,
+  underlyingContractsByAddress: Record<
+    string,
+    ERC20 | WETH | DAI | ERC20Permit
+  >,
+  assetProxyTokenInfos: AssetProxyTokenInfo[],
+  tokenInfos: TokenInfo[],
+  tokenInfoByAddress: Record<string, AnyTokenListInfo>,
   baseAssetPrice: Money,
   signerOrProvider: Signer | Provider
 ): Promise<Money>;
 export declare function fetchAccumulatedInterestForTranche(
-  poolInfo: PoolInfo,
+  poolInfo: YieldPoolTokenInfo | PrincipalPoolTokenInfo,
+  assetProxyTokenInfos: AssetProxyTokenInfo[],
+  tokenInfos: TokenInfo[],
   signerOrProvider: Signer | Provider
 ): Promise<BigNumber>;
-export declare function getPrincipalTokenInfoForPool(
-  poolInfo: PoolInfo
-): PrincipalTokenInfo;
 export declare function fetchBaseAssetReservesInPool(
-  poolInfo: PoolInfo,
+  poolInfo: YieldPoolTokenInfo | PrincipalPoolTokenInfo,
+  balancerVaultAddress: string,
+  tokenInfoByAddress: Record<string, AnyTokenListInfo>,
+  underlyingContractsByAddress: Record<
+    string,
+    ERC20 | WETH | DAI | ERC20Permit
+  >,
   signerOrProvider: Signer | Provider
 ): Promise<BigNumber>;
 interface PoolTokens {
@@ -64,7 +64,12 @@ interface PoolTokens {
   sortedAddresses: [string, string];
 }
 export declare function getPoolTokens(
-  poolInfo: PoolInfo,
+  poolInfo: YieldPoolTokenInfo | PrincipalPoolTokenInfo,
+  tokenInfoByAddress: Record<string, AnyTokenListInfo>,
+  underlyingContractsByAddress: Record<
+    string,
+    ERC20 | WETH | DAI | ERC20Permit
+  >,
   signerOrProvider: Signer | Provider
 ): PoolTokens;
 export {};
