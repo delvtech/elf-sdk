@@ -16,24 +16,38 @@
 
 import { TokenInfo, TokenList } from "@uniswap/token-lists";
 import keyBy from "lodash.keyby";
-import { AnyTokenListInfo } from "elf-tokenlist/dist/types";
+import {
+  PrincipalTokenInfo,
+  YieldPoolTokenInfo,
+  PrincipalPoolTokenInfo,
+  AssetProxyTokenInfo,
+  AnyTokenListInfo,
+  TokenTag,
+} from "elf-tokenlist";
+import { AddressesJsonFile } from "elf-tokenlist/dist/AddressesJsonFile";
+
+interface InitTokenListResult {
+  tokenList: TokenList;
+  addressesJson: AddressesJsonFile;
+  tokenInfoByAddress: Record<string, AnyTokenListInfo>;
+}
 
 /**
  * Init the tokenlist for given chain
  * @param chainName name of the chain that the tokenlist represents
- * @returns mapping of TokenInfos by address
+ * @returns InitTokenListResult
  */
-export function initTokenList(
-  chainName: string
-): Record<string, AnyTokenListInfo> {
+export function initTokenList(chainName: string): InitTokenListResult {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const tokenListJson: TokenList = require(`elf-tokenlist/dist/${chainName}.tokenlist.json`);
-  const tokenInfos = tokenListJson.tokens;
+  const tokenList: TokenList = require(`elf-tokenlist/dist/${chainName}.tokenlist.json`);
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const addressesJson: AddressesJsonFile = require(`elf-tokenlist/dist/${chainName}.addresses.json`);
+  const tokenInfos = tokenList.tokens;
   const tokenInfoByAddress: Record<string, AnyTokenListInfo> = keyBy(
     tokenInfos,
     "address"
   );
-  return tokenInfoByAddress;
+  return { tokenList, addressesJson, tokenInfoByAddress };
 }
 
 /**
@@ -47,4 +61,108 @@ export function getTokenInfo<T extends TokenInfo>(
   tokenInfoByAddress: Record<string, AnyTokenListInfo>
 ): T {
   return tokenInfoByAddress[address] as T;
+}
+
+function isAssetProxy(tokenInfo: TokenInfo): tokenInfo is PrincipalTokenInfo {
+  return !!tokenInfo.tags?.includes(TokenTag.ASSET_PROXY);
+}
+
+/**
+ * Finds tokenInfos for AssetProxies.
+ * @param tokenInfos
+ * @returns list of AssetProxyTokenInfo
+ */
+export function getAssetProxyTokenInfos(
+  tokenInfos: TokenInfo[]
+): AssetProxyTokenInfo[] {
+  return tokenInfos.filter((tokenInfo): tokenInfo is AssetProxyTokenInfo =>
+    isAssetProxy(tokenInfo)
+  );
+}
+
+function isPrincipalToken(
+  tokenInfo: TokenInfo
+): tokenInfo is PrincipalTokenInfo {
+  return !!tokenInfo?.tags?.includes(TokenTag.PRINCIPAL);
+}
+
+/**
+ * Finds tokenInfos for Principal Tokens
+ * @param tokenInfos
+ * @returns list of PrincipalTokenInfo
+ */
+export function getPrincipalTokenInfos(
+  tokenInfos: TokenInfo[]
+): PrincipalTokenInfo[] {
+  return tokenInfos.filter((tokenInfo): tokenInfo is PrincipalTokenInfo =>
+    isPrincipalToken(tokenInfo)
+  );
+}
+
+function isPrincipalPool(
+  tokenInfo: TokenInfo
+): tokenInfo is PrincipalPoolTokenInfo {
+  return !!tokenInfo.tags?.includes(TokenTag.CCPOOL);
+}
+
+/**
+ * Returns a PrincipalTokenInfo given a TokenInfo for a pool
+ * @param poolInfo
+ * @param tokenInfos
+ * @returns PrincipalTokenInfo
+ */
+export function getPrincipalTokenInfoForPool(
+  poolInfo: YieldPoolTokenInfo | PrincipalPoolTokenInfo,
+  tokenInfos: TokenInfo[]
+): PrincipalTokenInfo {
+  const principalTokenInfos = getPrincipalTokenInfos(tokenInfos);
+  if (isPrincipalPool(poolInfo)) {
+    const trancheAddress = poolInfo.extensions.bond;
+    const trancheInfo = principalTokenInfos.find(
+      (info) => info.address === trancheAddress
+    ) as PrincipalTokenInfo;
+    return trancheInfo;
+  }
+
+  const interestTokenAddress = poolInfo.extensions.interestToken;
+  const trancheInfo = principalTokenInfos.find(
+    (info) => info.extensions.interestToken === interestTokenAddress
+  ) as PrincipalTokenInfo;
+  return trancheInfo;
+}
+
+/**
+ * Returns the TokenInfo of the pool corresponding to a Principal Token
+ * @param principalTokenAddress
+ * @param tokenInfos
+ * @returns PrincipalPoolTokenInfo
+ */
+export function getPoolInfoForPrincipalToken(
+  principalTokenAddress: string,
+  tokenInfos: TokenInfo[]
+): PrincipalPoolTokenInfo {
+  const principalPools: PrincipalPoolTokenInfo[] = tokenInfos.filter(
+    (tokenInfo): tokenInfo is PrincipalPoolTokenInfo =>
+      isPrincipalPool(tokenInfo)
+  );
+  return principalPools.find(
+    ({ extensions: { bond } }) => bond === principalTokenAddress
+  ) as PrincipalPoolTokenInfo;
+}
+
+function isYieldPool(tokenInfo: TokenInfo): tokenInfo is YieldPoolTokenInfo {
+  return !!tokenInfo.tags?.includes(TokenTag.WPOOL);
+}
+
+/**
+ * Returns the TokenInfos for the Yield Pools
+ * @param tokenInfos
+ * @returns a list of YieldPoolTokenInfo
+ */
+export function getYieldPoolTokenInfos(
+  tokenInfos: TokenInfo[]
+): YieldPoolTokenInfo[] {
+  return tokenInfos.filter((tokenInfo): tokenInfo is YieldPoolTokenInfo =>
+    isYieldPool(tokenInfo)
+  );
 }
