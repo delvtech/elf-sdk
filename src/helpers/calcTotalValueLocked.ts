@@ -26,7 +26,7 @@ import {
 } from "elf-tokenlist";
 import { AddressesJsonFile } from "elf-tokenlist/dist/AddressesJsonFile";
 import { getUnderlyingContractsByAddress } from "./getUnderlyingContractsByAddress";
-import { getTokenPrice } from "./getTokenPrice";
+import { getTokenPrice } from "../prices/getTokenPrice";
 import {
   getTokenInfo,
   initTokenList,
@@ -61,8 +61,10 @@ export async function calcTotalValueLocked(
       const baseAssetContract =
         underlyingContractsByAddress[tokenInfo.extensions.underlying];
       const baseAssetPrice = await getTokenPrice(
+        chainName,
         baseAssetContract as ERC20,
-        currency
+        currency,
+        signerOrProvider
       );
       return calcTotalValueLockedForTerm(
         tokenInfo,

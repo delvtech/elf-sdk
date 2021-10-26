@@ -27,13 +27,13 @@ import {
 import { Currencies, Money } from "ts-money";
 import { ERC20 } from "elf-contracts-typechain/dist/types/ERC20";
 import { getUnderlyingContractsByAddress } from "../src/helpers/getUnderlyingContractsByAddress";
-import { getTokenPrice } from "../src/helpers/getTokenPrice";
+import { getTokenPrice } from "../src/prices/getTokenPrice";
 
 async function main() {
   const [signer] = await ethers.getSigners();
   const chainName = "mainnet";
   const tvl = await calcTotalValueLocked(chainName, signer);
-  console.log(tvl);
+  console.log("Total TVL: " + tvl.amount / 100);
 
   const currency = Currencies.USD;
   const { tokenList, addressesJson, tokenInfoByAddress } =
@@ -49,9 +49,12 @@ async function main() {
       const baseAssetContract =
         underlyingContractsByAddress[tokenInfo.extensions.underlying];
       const baseAssetPrice = await getTokenPrice(
+        chainName,
         baseAssetContract as ERC20,
-        currency
+        currency,
+        signer
       );
+      const termName = await (baseAssetContract as ERC20).name();
       const termTvl = await calcTotalValueLockedForTerm(
         tokenInfo,
         addressesJson.addresses.balancerVaultAddress,
@@ -62,13 +65,12 @@ async function main() {
         baseAssetPrice,
         signer
       );
-      return [await (baseAssetContract as ERC20).name(), termTvl];
+      return { termName, termTvl };
     })
   );
 
   results.forEach((result) => {
-    console.log(result[0]);
-    console.log(result[1]);
+    console.log(result.termName + " TVL: " + result.termTvl.amount);
   });
 }
 

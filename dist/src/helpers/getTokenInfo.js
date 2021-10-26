@@ -40,7 +40,7 @@ exports.initTokenList = initTokenList;
  * Helper function for looking up a tokenlist info
  * @param address address of the token
  * @param tokenInfoByAddress mapping of TokenInfos by address
- * @returns Mapping of TokenInfos by address
+ * @returns TokenInfo associated with the address param
  */
 function getTokenInfo(address, tokenInfoByAddress) {
     return tokenInfoByAddress[address];
@@ -50,6 +50,11 @@ function isAssetProxy(tokenInfo) {
     var _a;
     return !!((_a = tokenInfo.tags) === null || _a === void 0 ? void 0 : _a.includes(elf_tokenlist_1.TokenTag.ASSET_PROXY));
 }
+/**
+ * Finds tokenInfos for AssetProxies.
+ * @param tokenInfos
+ * @returns list of AssetProxyTokenInfo
+ */
 function getAssetProxyTokenInfos(tokenInfos) {
     return tokenInfos.filter(function (tokenInfo) {
         return isAssetProxy(tokenInfo);
@@ -60,6 +65,11 @@ function isPrincipalToken(tokenInfo) {
     var _a;
     return !!((_a = tokenInfo === null || tokenInfo === void 0 ? void 0 : tokenInfo.tags) === null || _a === void 0 ? void 0 : _a.includes(elf_tokenlist_1.TokenTag.PRINCIPAL));
 }
+/**
+ * Finds tokenInfos for Principal Tokens
+ * @param tokenInfos
+ * @returns list of PrincipalTokenInfo
+ */
 function getPrincipalTokenInfos(tokenInfos) {
     return tokenInfos.filter(function (tokenInfo) {
         return isPrincipalToken(tokenInfo);
@@ -70,6 +80,12 @@ function isPrincipalPool(tokenInfo) {
     var _a;
     return !!((_a = tokenInfo.tags) === null || _a === void 0 ? void 0 : _a.includes(elf_tokenlist_1.TokenTag.CCPOOL));
 }
+/**
+ * Returns a PrincipalTokenInfo given a TokenInfo for a pool
+ * @param poolInfo
+ * @param tokenInfos
+ * @returns PrincipalTokenInfo
+ */
 function getPrincipalTokenInfoForPool(poolInfo, tokenInfos) {
     var principalTokenInfos = getPrincipalTokenInfos(tokenInfos);
     if (isPrincipalPool(poolInfo)) {
@@ -82,6 +98,12 @@ function getPrincipalTokenInfoForPool(poolInfo, tokenInfos) {
     return trancheInfo;
 }
 exports.getPrincipalTokenInfoForPool = getPrincipalTokenInfoForPool;
+/**
+ * Returns the TokenInfo of the pool corresponding to a Principal Token
+ * @param principalTokenAddress
+ * @param tokenInfos
+ * @returns PrincipalPoolTokenInfo
+ */
 function getPoolInfoForPrincipalToken(principalTokenAddress, tokenInfos) {
     var principalPools = tokenInfos.filter(function (tokenInfo) {
         return isPrincipalPool(tokenInfo);
@@ -96,6 +118,11 @@ function isYieldPool(tokenInfo) {
     var _a;
     return !!((_a = tokenInfo.tags) === null || _a === void 0 ? void 0 : _a.includes(elf_tokenlist_1.TokenTag.WPOOL));
 }
+/**
+ * Returns the TokenInfos for the Yield Pools
+ * @param tokenInfos
+ * @returns a list of YieldPoolTokenInfo
+ */
 function getYieldPoolTokenInfos(tokenInfos) {
     return tokenInfos.filter(function (tokenInfo) {
         return isYieldPool(tokenInfo);

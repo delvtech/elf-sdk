@@ -54,7 +54,7 @@ export function initTokenList(chainName: string): InitTokenListResult {
  * Helper function for looking up a tokenlist info
  * @param address address of the token
  * @param tokenInfoByAddress mapping of TokenInfos by address
- * @returns Mapping of TokenInfos by address
+ * @returns TokenInfo associated with the address param
  */
 export function getTokenInfo<T extends TokenInfo>(
   address: string,
