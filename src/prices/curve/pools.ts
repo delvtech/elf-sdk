@@ -57,17 +57,6 @@ export function getCrv3CryptoPoolContract(
   return crv3CryptoPoolContract;
 }
 
-/*export function getCrvEursPoolContract(
-    signerOrProvider: Signer | Provider
-  ): CRVLUSD {
-    const CRVEursPoolAddress = "0x0Ce6a5fF5217e38315f87032CF90686C96627CAA";
-    const crvEursPoolContract = CRVLUSD__factory.connect(
-    CRVEursPoolAddress,
-    signerOrProvider
-    );
-    return crvEursPoolContract;
-}*/
-
 export function getSteCrvPoolContract(
   signerOrProvider: Signer | Provider
 ): CurveStethPool {
