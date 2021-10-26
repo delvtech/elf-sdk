@@ -52,11 +52,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var hardhat_1 = require("hardhat");
-var calcTvl_1 = require("../src/helpers/calcTvl");
+var calcTotalValueLocked_1 = require("../src/helpers/calcTotalValueLocked");
 var getTokenInfo_1 = require("../src/helpers/getTokenInfo");
 var ts_money_1 = require("ts-money");
 var getUnderlyingContractsByAddress_1 = require("../src/helpers/getUnderlyingContractsByAddress");
-var getTokenPrice_1 = require("../src/helpers/getTokenPrice");
+var getTokenPrice_1 = require("../src/prices/getTokenPrice");
 function main() {
     return __awaiter(this, void 0, void 0, function () {
         var signer, chainName, tvl, currency, _a, tokenList, addressesJson, tokenInfoByAddress, assetProxyTokenInfos, principalTokenInfos, results;
@@ -67,7 +67,7 @@ function main() {
                 case 1:
                     signer = (_b.sent())[0];
                     chainName = "mainnet";
-                    return [4 /*yield*/, (0, calcTvl_1.useTotalValueLockedForPlatform)(chainName, signer)];
+                    return [4 /*yield*/, (0, calcTotalValueLocked_1.calcTotalValueLocked)(chainName, signer)];
                 case 2:
                     tvl = _b.sent();
                     console.log(tvl);
@@ -82,10 +82,10 @@ function main() {
                                     case 0:
                                         underlyingContractsByAddress = (0, getUnderlyingContractsByAddress_1.getUnderlyingContractsByAddress)(chainName, signer);
                                         baseAssetContract = underlyingContractsByAddress[tokenInfo.extensions.underlying];
-                                        return [4 /*yield*/, (0, getTokenPrice_1.getTokenPrice)(baseAssetContract, currency)];
+                                        return [4 /*yield*/, (0, getTokenPrice_1.getTokenPrice)(chainName, baseAssetContract, currency, signer)];
                                     case 1:
                                         baseAssetPrice = _a.sent();
-                                        return [4 /*yield*/, (0, calcTvl_1.fetchTotalValueLockedForTerm)(tokenInfo, addressesJson.addresses.balancerVaultAddress, underlyingContractsByAddress, assetProxyTokenInfos, tokenList.tokens, tokenInfoByAddress, baseAssetPrice, signer)];
+                                        return [4 /*yield*/, (0, calcTotalValueLocked_1.calcTotalValueLockedForTerm)(tokenInfo, addressesJson.addresses.balancerVaultAddress, underlyingContractsByAddress, assetProxyTokenInfos, tokenList.tokens, tokenInfoByAddress, baseAssetPrice, signer)];
                                     case 2:
                                         termTvl = _a.sent();
                                         return [4 /*yield*/, baseAssetContract.name()];
