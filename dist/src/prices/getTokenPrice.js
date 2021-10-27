@@ -50,7 +50,7 @@ function getTokenPrice(chainName, contract, currency, signerOrProvider) {
     var _a = (0, getTokenInfo_1.getTokenInfo)(contract.address, result.tokenInfoByAddress), tokenSymbol = _a.symbol, decimals = _a.decimals;
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     var AddressesJson = require("elf-tokenlist/dist/" + chainName + ".addresses.json");
-    var _b = AddressesJson.addresses, crvtricryptoAddress = _b.crvtricryptoAddress, stecrvAddress = _b.stecrvAddress, crv3cryptoAddress = _b.crv3cryptoAddress;
+    var _b = AddressesJson.addresses, crvtricryptoAddress = _b.crvtricryptoAddress, stecrvAddress = _b.stecrvAddress, crv3cryptoAddress = _b.crv3cryptoAddress, eurscrvAddress = _b.eurscrvAddress;
     // Curve stable pools, eg: crvLUSD
     var isStablePool = (0, stablePools_1.isCurveStablePool)(chainName, contract.address);
     // Individual Curve non-stable pools, eg crvTricrypto or steCRV

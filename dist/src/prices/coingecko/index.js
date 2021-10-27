@@ -67,6 +67,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fetchCoinGeckoHistoricalPrice = exports.fetchCoinGeckoPrice = exports.getCoinGeckoId = void 0;
 var ts_money_1 = require("ts-money");
+var axios_1 = __importDefault(require("axios"));
 var date_fns_1 = require("date-fns");
 var coins_json_1 = __importDefault(require("./coins.json"));
 /**
@@ -98,12 +99,10 @@ function fetchCoinGeckoPrice(coinGeckoId, currency) {
             switch (_a.label) {
                 case 0:
                     currencyCode = currency.code.toLowerCase();
-                    return [4 /*yield*/, fetch("https://api.coingecko.com/api/v3/simple/price?ids=" + coinGeckoId + "&vs_currencies=" + currencyCode)];
+                    return [4 /*yield*/, (0, axios_1.default)("https://api.coingecko.com/api/v3/simple/price?ids=" + coinGeckoId + "&vs_currencies=" + currencyCode)];
                 case 1:
                     result = _a.sent();
-                    return [4 /*yield*/, result.json()];
-                case 2:
-                    resultJSON = (_a.sent());
+                    resultJSON = result.data;
                     price = resultJSON[coinGeckoId][currencyCode];
                     return [2 /*return*/, ts_money_1.Money.fromDecimal(price, currency, 
                         // Money.fromDecimal will throw if price has more decimals than the currency
@@ -123,10 +122,10 @@ function fetchCoinGeckoHistoricalPrice(coinGeckoId, currency, daysAgo) {
                 case 0:
                     dateString = (0, date_fns_1.format)((0, date_fns_1.subDays)(new Date(), daysAgo), "dd-MM-yyyy");
                     currencyCode = currency.code.toLowerCase();
-                    return [4 /*yield*/, fetch("https://api.coingecko.com/api/v3/coins/" + coinGeckoId + "/history?date=" + dateString)];
+                    return [4 /*yield*/, (0, axios_1.default)("https://api.coingecko.com/api/v3/coins/" + coinGeckoId + "/history?date=" + dateString)];
                 case 1:
                     result = _a.sent();
-                    return [4 /*yield*/, result.json()];
+                    return [4 /*yield*/, result.data];
                 case 2:
                     resultJSON = (_a.sent());
                     price = resultJSON["market_data"]["current_price"][currencyCode];
