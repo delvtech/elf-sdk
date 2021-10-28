@@ -42,7 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPoolTokens = exports.getBaseAssetReservesInPool = exports.getAccumulatedInterestForTranche = exports.calcTotalValueLockedForTerm = exports.calcTotalValueLocked = void 0;
 var ts_money_1 = require("ts-money");
 var utils_1 = require("ethers/lib/utils");
-var keyby_1 = __importDefault(require("lodash/keyby"));
+var lodash_keyby_1 = __importDefault(require("lodash.keyby"));
 var Tranche__factory_1 = require("elf-contracts-typechain/dist/types/factories/Tranche__factory");
 var YVaultAssetProxy__factory_1 = require("elf-contracts-typechain/dist/types/factories/YVaultAssetProxy__factory");
 var Vault__factory_1 = require("elf-contracts-typechain/dist/types/factories/Vault__factory");
@@ -115,7 +115,7 @@ function calcTotalValueLockedForTerm(trancheInfo, balancerVaultAddress, underlyi
                         var address = _a.address;
                         return Tranche__factory_1.Tranche__factory.connect(address, signerOrProvider);
                     });
-                    trancheContractsByAddress = (0, keyby_1.default)(trancheContracts, function (tranche) { return tranche.address; });
+                    trancheContractsByAddress = (0, lodash_keyby_1.default)(trancheContracts, function (tranche) { return tranche.address; });
                     address = trancheInfo.address, decimals = trancheInfo.decimals;
                     tranche = trancheContractsByAddress[address];
                     poolInfo = (0, getTokenInfo_1.getPoolInfoForPrincipalToken)(address, tokenInfos);
@@ -168,13 +168,13 @@ function getAccumulatedInterestForTranche(poolInfo, assetProxyTokenInfos, tokenI
                         var address = _a.address;
                         return Tranche__factory_1.Tranche__factory.connect(address, signerOrProvider);
                     });
-                    trancheContractsByAddress = (0, keyby_1.default)(trancheContracts, function (tranche) { return tranche.address; });
+                    trancheContractsByAddress = (0, lodash_keyby_1.default)(trancheContracts, function (tranche) { return tranche.address; });
                     trancheContract = trancheContractsByAddress[trancheAddress];
                     assetProxyContracts = assetProxyTokenInfos.map(function (_a) {
                         var address = _a.address;
                         return YVaultAssetProxy__factory_1.YVaultAssetProxy__factory.connect(address, signerOrProvider);
                     });
-                    assetProxyContractsByAddress = (0, keyby_1.default)(assetProxyContracts, function (position) { return position.address; });
+                    assetProxyContractsByAddress = (0, lodash_keyby_1.default)(assetProxyContracts, function (position) { return position.address; });
                     yVaultAssetProxy = assetProxyContractsByAddress[vaultAssetProxyAddress];
                     return [4 /*yield*/, trancheContract.valueSupplied()];
                 case 1:
@@ -223,7 +223,7 @@ function getPoolForYieldToken(yieldTokenAddress, YieldPoolTokenInfos, signerOrPr
         var address = _a.address;
         return WeightedPool__factory_1.WeightedPool__factory.connect(address, signerOrProvider);
     });
-    var yieldPoolContractsByAddress = (0, keyby_1.default)(yieldPoolContracts, function (yieldPool) { return yieldPool.address; });
+    var yieldPoolContractsByAddress = (0, lodash_keyby_1.default)(yieldPoolContracts, function (yieldPool) { return yieldPool.address; });
     return yieldPoolContractsByAddress[yieldPool.address];
 }
 /**

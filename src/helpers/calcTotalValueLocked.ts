@@ -3,7 +3,7 @@ import { TokenInfo, TokenList } from "@uniswap/token-lists";
 import { Contract, Signer, BigNumber } from "ethers";
 import { formatUnits } from "ethers/lib/utils";
 import { Provider } from "@ethersproject/providers";
-import keyBy from "lodash/keyby";
+import keyBy from "lodash.keyby";
 
 import { Tranche__factory } from "elf-contracts-typechain/dist/types/factories/Tranche__factory";
 import { YVaultAssetProxy__factory } from "elf-contracts-typechain/dist/types/factories/YVaultAssetProxy__factory";
