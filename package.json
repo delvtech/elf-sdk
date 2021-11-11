@@ -49,8 +49,8 @@
     "dependencies": {
         "axios": "^0.24.0",
         "date-fns": "^2.25.0",
-        "elf-contracts-typechain": "github:element-fi/elf-contracts-typechain",
-        "elf-tokenlist": "github:element-fi/elf-tokenlist",
+        "elf-contracts-typechain": "git+https://github.com/element-fi/elf-contracts-typechain.git",
+        "elf-tokenlist": "git+https://github.com/element-fi/elf-tokenlist.git",
         "lodash.keyby": "^4.6.0",
         "ts-money": "^0.4.6",
         "tsc": "^2.0.3"
