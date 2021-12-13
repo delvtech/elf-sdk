@@ -22,7 +22,7 @@ export function calcFixedAPR(
 ): number {
   if (secondsUntilMaturity > 0) {
     const timeRemaining = secondsUntilMaturity / ONE_YEAR_IN_SECONDS;
-    return ((1 - spotPrice) / timeRemaining) * 100;
+    return ((1 - spotPrice)/spotPrice / timeRemaining) * 100;
   } else {
     return 0;
   }
