@@ -20,16 +20,16 @@ import { BigNumber } from "ethers";
 
 describe("calcFixedAPR", () => {
   it("should properly calculate fixed APR", () => {
-    const spotPrice = 0.982;
-    const timeUntilMaturity = 7689600;
+    const spotPrice = 0.9903009860201194;
+    const timeUntilMaturity = 11852714;
     const result = calcFixedAPR(spotPrice, timeUntilMaturity);
-    expect(result).to.equal(7.382022471910118);
+    expect(result).to.equal(2.6058485759440213);
   });
 });
 
 describe("calcFixedAPRTimeZero", () => {
   it("should return fixed APR of 0%", () => {
-    const spotPrice = 0.982;
+    const spotPrice = 0.9903009860201194;
     const timeUntilMaturity = 0;
     const result = calcFixedAPR(spotPrice, timeUntilMaturity);
     expect(result).to.equal(0);
@@ -38,7 +38,7 @@ describe("calcFixedAPRTimeZero", () => {
 
 describe("calcFixedAPRTimeNegative", () => {
   it("should return fixed APR of 0%", () => {
-    const spotPrice = 0.982;
+    const spotPrice = 0.9903009860201194;
     const timeUntilMaturity = -4;
     const result = calcFixedAPR(spotPrice, timeUntilMaturity);
     expect(result).to.equal(0);
